@@ -6,416 +6,252 @@
 <title>AI对话模拟器</title>
 <style>
 *{margin:0;padding:0;box-sizing:border-box}
-body{
-  font-family:-apple-system,"PingFang SC","Microsoft YaHei",sans-serif;
-  background:#f1f5f9;color:#1e293b;min-height:100vh;
-  line-height:1.6;padding:14px;
-  -webkit-tap-highlight-color:transparent;
-}
+body{font-family:-apple-system,"PingFang SC","Microsoft YaHei",sans-serif;background:#f1f5f9;color:#1e293b;min-height:100vh;line-height:1.6;padding:14px;-webkit-tap-highlight-color:transparent}
 .container{max-width:720px;margin:0 auto}
+.header-bar{background:#fff;border-radius:14px;padding:16px 18px;margin-bottom:12px;box-shadow:0 1px 2px rgba(0,0,0,0.03);border:1px solid #e2e8f0;display:flex;align-items:center;gap:12px;flex-wrap:wrap}
+.header-bar h1{font-size:18px;font-weight:800;color:#0f172a}
+.header-bar .badge{font-size:11px;background:#2563eb;color:#fff;padding:3px 10px;border-radius:20px;font-weight:700}
 
-/* ---- Top bar ---- */
-.topbar{
-  background:#fff;border-radius:14px;padding:16px 18px;margin-bottom:12px;
-  box-shadow:0 1px 2px rgba(0,0,0,0.03);border:1px solid #e2e8f0;
-  display:flex;align-items:center;gap:12px;flex-wrap:wrap;
-}
-.topbar h1{font-size:18px;font-weight:800;color:#0f172a}
-.topbar .badge{font-size:11px;background:#2563eb;color:#fff;padding:3px 10px;border-radius:20px;font-weight:700}
-
-/* ---- Persona selector ---- */
+/* persona tabs */
 .personas{display:flex;gap:8px;margin-bottom:12px;overflow-x:auto;padding-bottom:2px;-webkit-overflow-scrolling:touch}
-.persona{
-  flex-shrink:0;padding:12px 16px;border-radius:12px;font-size:13px;font-weight:600;
-  border:2px solid #e2e8f0;background:#fff;color:#64748b;cursor:pointer;
-  transition:.15s;white-space:nowrap;min-height:48px;display:flex;align-items:center;gap:8px;
-}
-.persona:hover{border-color:#93c5fd}
-.persona.active{background:#2563eb;color:#fff;border-color:#2563eb}
-.persona .p-emoji{font-size:20px}
+.pbtn{flex-shrink:0;padding:12px 16px;border-radius:12px;font-size:13px;font-weight:600;border:2px solid #e2e8f0;background:#fff;color:#64748b;cursor:pointer;transition:.15s;white-space:nowrap;min-height:48px;display:flex;align-items:center;gap:8px}
+.pbtn:hover{border-color:#93c5fd}
+.pbtn.on{background:#2563eb;color:#fff;border-color:#2563eb}
+.pbtn .pe{font-size:20px}
+/* scenario tabs */
+.choices{display:flex;gap:6px;margin-bottom:14px;flex-wrap:wrap}
+.cbtn{padding:8px 14px;border-radius:8px;font-size:12px;font-weight:500;border:1.5px solid #e2e8f0;background:#fff;color:#475569;cursor:pointer;transition:.15s;min-height:40px;display:flex;align-items:center}
+.cbtn:hover{border-color:#93c5fd}
+.cbtn.on{background:#eff6ff;color:#2563eb;border-color:#2563eb;font-weight:700}
 
-/* ---- Scenario picker ---- */
-.scenarios{display:flex;gap:6px;margin-bottom:14px;flex-wrap:wrap}
-.scen{
-  padding:8px 14px;border-radius:8px;font-size:12px;font-weight:500;
-  border:1.5px solid #e2e8f0;background:#fff;color:#475569;cursor:pointer;
-  transition:.15s;min-height:40px;display:flex;align-items:center;
-}
-.scen:hover{border-color:#93c5fd}
-.scen.active{background:#eff6ff;color:#2563eb;border-color:#2563eb;font-weight:700}
-
-/* ---- Chat area ---- */
-.chat{
-  background:#fff;border-radius:14px;padding:20px 16px;margin-bottom:12px;
-  box-shadow:0 1px 2px rgba(0,0,0,0.03);border:1px solid #e2e8f0;
-  min-height:300px;max-height:60vh;overflow-y:auto;display:flex;flex-direction:column;gap:12px;
-}
-
+/* chat */
+.chat{background:#fff;border-radius:14px;padding:20px 16px;margin-bottom:12px;box-shadow:0 1px 2px rgba(0,0,0,0.03);border:1px solid #e2e8f0;min-height:250px;max-height:55vh;overflow-y:auto;display:flex;flex-direction:column;gap:10px}
 .msg{max-width:85%;padding:12px 16px;border-radius:12px;font-size:14px;line-height:1.6;animation:fadeIn .3s}
-.msg.them{align-self:flex-start;background:#f1f5f9;color:#1e293b;border-bottom-left-radius:4px}
-.msg.me{align-self:flex-end;background:#2563eb;color:#fff;border-bottom-right-radius:4px}
-.msg.coach{align-self:stretch;background:#fffbeb;border:1px solid #fde68a;border-radius:12px;font-size:12px;color:#92400e}
+.msg.other{align-self:flex-start;background:#f1f5f9;color:#1e293b;border-bottom-left-radius:4px}
+.msg.self{align-self:flex-end;background:#2563eb;color:#fff;border-bottom-right-radius:4px}
+.msg.tip{align-self:stretch;background:#fffbeb;border:1px solid #fde68a;border-radius:12px;font-size:12px;color:#92400e}
 .msg .who{font-size:10px;font-weight:700;letter-spacing:.5px;margin-bottom:4px;opacity:.6}
 @keyframes fadeIn{from{opacity:0;transform:translateY(4px)}to{opacity:1;transform:translateY(0)}}
-
-/* Coach tips */
 .coach-tip{margin-top:4px;font-size:11px}
-.coach-tip .good{color:#16a34a}
-.coach-tip .improve{color:#d97706}
+.coach-tip .g{color:#16a34a}.coach-tip .b{color:#d97706}
 
-/* ---- Input area ---- */
+/* input - STATIC, never regenerated */
 .input-row{display:flex;gap:8px;align-items:flex-end}
-.input-row textarea{
-  flex:1;min-height:52px;max-height:100px;background:#fff;border:2px solid #cbd5e1;
-  border-radius:10px;color:#1e293b;padding:12px 14px;font-size:15px;line-height:1.5;
-  font-family:inherit;resize:none;-webkit-appearance:none;
-}
+.input-row textarea{flex:1;min-height:52px;max-height:100px;background:#fff;border:2px solid #cbd5e1;border-radius:10px;color:#1e293b;padding:12px 14px;font-size:15px;line-height:1.5;font-family:inherit;resize:none;-webkit-appearance:none}
 .input-row textarea:focus{outline:none;border-color:#2563eb;box-shadow:0 0 0 3px rgba(37,99,235,0.1)}
 .input-row textarea::placeholder{color:#94a3b8}
-.btn-send{
-  flex-shrink:0;padding:12px 20px;border-radius:10px;font-size:14px;font-weight:700;
-  border:none;cursor:pointer;background:#2563eb;color:#fff;min-height:52px;
-  -webkit-appearance:none;transition:.15s;
-}
-.btn-send:active{transform:scale(.96)}
-.btn-reset{
-  flex-shrink:0;padding:12px 16px;border-radius:10px;font-size:12px;font-weight:600;
-  border:2px solid #e2e8f0;background:#fff;color:#64748b;cursor:pointer;min-height:52px;
-  -webkit-appearance:none;
-}
-.btn-enter{background:#f1f5f9;border:1px solid #e2e8f0;color:#64748b;width:100%;padding:10px;border-radius:8px;font-size:13px;cursor:pointer;margin-top:8px;min-height:44px;-webkit-appearance:none}
-
-@media(max-width:500px){
-  body{padding:8px}
-  .msg{font-size:13px;padding:10px 14px}
-  .input-row textarea{font-size:16px}
-}
+.btn-go{flex-shrink:0;padding:12px 20px;border-radius:10px;font-size:14px;font-weight:700;border:none;cursor:pointer;background:#2563eb;color:#fff;min-height:52px;-webkit-appearance:none}
+.btn-go:active{transform:scale(.96)}
+@media(max-width:500px){body{padding:8px}.msg{font-size:13px;padding:10px 14px}.input-row textarea{font-size:16px}}
 </style>
 </head>
 <body>
 <div class="container">
-<div class="topbar"><h1>AI对话模拟器</h1><span class="badge" id="roundBadge">选身份开始</span></div>
+<div class="header-bar"><h1>AI对话模拟器</h1><span class="badge" id="personaLabel">选身份开始</span></div>
 
-<div class="personas" id="personas"></div>
-<div class="scenarios" id="scenarios"></div>
-<div class="chat" id="chat"></div>
-<div class="input-row" id="inputArea">
-  <textarea id="userInput" placeholder="选择一个身份和场景，AI会先开口..." rows="1" disabled></textarea>
-  <button class="btn-send" id="sendBtn" disabled onclick="send()">发送</button>
+<!-- Static persona buttons -->
+<div class="personas" id="personaRow">
+  <button class="pbtn on" onclick="pickPersona(0)"><span class="pe">🎯</span>面试官</button>
+  <button class="pbtn" onclick="pickPersona(1)"><span class="pe">🏢</span>品牌方</button>
+  <button class="pbtn" onclick="pickPersona(2)"><span class="pe">💼</span>老板</button>
+  <button class="pbtn" onclick="pickPersona(3)"><span class="pe">👥</span>下属</button>
+  <button class="pbtn" onclick="pickPersona(4)"><span class="pe">🤝</span>HR</button>
+</div>
+
+<!-- Static scenario buttons -->
+<div class="choices" id="choiceRow"></div>
+
+<!-- Static chat log -->
+<div class="chat" id="chatLog"></div>
+
+<!-- Static input - NEVER regenerated by JS -->
+<div class="input-row">
+  <textarea id="typeBox" placeholder="选择一个身份和场景开始对话..." rows="1"></textarea>
+  <button class="btn-go" id="sendBtn" onclick="saySomething()">发送</button>
 </div>
 </div>
 
 <script>
-// =========== PERSONAS & SCENARIOS ===========
-const personas = {
-  interviewer: {
-    name: '面试官·业务负责人',
-    emoji: '🎯',
-    tone: '你是一位在信息流行业深耕8年的业务负责人。你面试过200+候选人，从执行到总监都面过。你精通千川投放、全域推广、素材策略、团队管理。你的面试风格是"剥洋葱"——先问表面，再追问细节，直到看到对方真实的思考深度。你不会接受任何模糊回答。你会追问：①具体数据（"ROI从多少到多少"）②决策逻辑（"为什么选A不选B"）③自我复盘（"如果重来你怎么做"）。你能识别出"碰巧做出爆款的人"和"有方法论的人"之间的区别。你关注的核心素质：数据诊断能力、策略框架思维、管理可复制性。',
-    scenarios: [
-      { id:'i1', name:'项目深挖·渍无踪', start:'你好。面试进行到现在，我想深挖一个项目。你简历上写渍无踪从3个月没起量做到月销千万——这个跨度很大，但跨度大不代表能力强。我想知道的是：你接手时看到的第一组数据是什么？你当时脑子里做了什么判断？为什么你能看到别人没看到的东西？从头讲。' },
-      { id:'i2', name:'数据诊断力', start:'我换一种方式问。假设现在给你看一组数据——月消耗连续3个月下降（68万→41万→19万），ROI从1.55降到1.32，但过审率95%、转化率其实没跌多少。你觉得问题出在哪？不需要你给出正确答案，我想听你的思考过程。一步一步来。' },
-      { id:'i3', name:'管理资历质疑', start:'我们聊了业务部分，现在聊聊管理。你只有1年多的管理经验，带的是3人小组。我们这个岗位要管8-10人的内容团队。抛开简历上写的，你真实的顾虑是什么？你觉得1年管3人的经验，有多少能迁移到管8个人？我不接受"我都会努力做好"这种回答。' },
-      { id:'i4', name:'策略框架能力', start:'最后一个问题。你在三个品类都做出过成绩——大健康、女装、家清。如果你要教一个完全零经验的新人——他从来没做过信息流——你会给他一个什么样的框架，让他在3个月内能独立产出合格的素材？不要讲大道理，给我一个可以落地执行的框架。' },
+// ===================== DATA =====================
+var personaData = [
+  { name:'面试官·业务负责人', emoji:'🎯', tone:'你在信息流行业做了8年，面过200+人。你不接受模糊回答，会追问"具体做了什么""为什么这么做""如果重来你怎么做"。',
+    scenes:[
+      {id:'i1',name:'项目深挖',start:'你好。你简历上写渍无踪从3个月没起量做到月销千万。我想知道：你接手时看到的第一组数据是什么？你当时脑子里做了什么判断？为什么你能看到别人没看到的东西？从头讲。'},
+      {id:'i2',name:'数据诊断',start:'假设给你一组数据——月消耗连续3个月下降（68万→41万→19万），ROI从1.55降到1.32，过审率95%、转化率没跌多少。问题出在哪？我想听你的思考过程。'},
+      {id:'i3',name:'管理质疑',start:'你管理经验只有1年多，带3人小组。我们这边要管8-10人。抛开简历，你真实的顾虑是什么？1年管3人的经验有多少能迁移到管8个人？'},
+      {id:'i4',name:'策略框架',start:'你在三个品类都做出过成绩。如果你要教一个零经验的新人，给他一个框架让他在3个月内能独立产出合格素材——你会给他什么样的框架？要落地可执行的。'}
     ]
   },
-  brand: {
-    name: '品牌方·电商负责人',
-    emoji: '🏢',
-    tone: '你是一个操盘过年GMV 5000万+家清品牌的电商负责人。你对千川投放不是小白——你自己也看过数据、调过计划。你找代理不是为了"甩手掌柜"，你要的是"比你自己投效果更好"的专业操盘手。你对数据敏感：消耗、ROI、CPM、完播率、GPM你都懂。你的核心关切：①钱花得值不值②增长是不是可持续③遇到问题响应快不快。你欣赏诚实和专业，讨厌找借口和甩锅。',
-    scenarios: [
-      { id:'b1', name:'月度汇报·增长质量', start:'月报我看了，消耗涨了60%，GMV涨了67%——表面上挺好的。但我有个习惯：看增长不看总量、看质量。你把这个增长拆解给我听：多少是加大预算砸出来的，多少是内容效率真正提升了？我怎么确定下个月还能维持这个增长？' },
-      { id:'b2', name:'审核危机·618大促', start:'刚被通知我们除菌洗衣液的材料大量被驳回——后天618大促就开始了。你现在别说"我们会处理"这种话。我要听的是：①现在的消耗影响有多大②你是怎么跟平台沟通的③替代方案什么时候能上④大促会不会受影响。一个一个说。' },
-      { id:'b3', name:'竞品对比·ROI差距', start:'我上周末花时间看了竞品XX的直播间和短视频。他们的ROI做到1.9了，我们1.7。同样品类、同样平台、甚至客单价都差不多。你帮我分析一下这0.2的差距从哪来的——别说是"他们运气好"。还有，你觉得我们能不能追上？追不上的话为什么？' },
+  { name:'品牌方·电商负责人', emoji:'🏢', tone:'你操盘过年GMV 5000万+的家清品牌，自己会看数据投千川。你要的是"比你自己投效果更好"的专业操盘手，讨厌找借口。',
+    scenes:[
+      {id:'b1',name:'增长质量',start:'月报数据不错——消耗涨60%，GMV涨67%。但我看增长不看总量看质量。你把这个增长拆给我听：多少是预算砸出来的，多少是内容效率真正提升了？'},
+      {id:'b2',name:'审核危机',start:'除菌洗衣液素材大量被驳回——后天618大促。我要听的是：消耗影响多大、你们怎么跟平台沟通的、替代方案什么时候上、大促会不会受影响。一个一个说。'},
+      {id:'b3',name:'ROI差距',start:'竞品ROI做到1.9了，我们1.7。同样品类、同样平台、客单价差不多。这0.2的差距从哪来的？别说是运气——我想听真话。'}
     ]
   },
-  boss: {
-    name: '老板·公司决策者',
-    emoji: '💼',
-    tone: '你是一家年营收5000万+代理公司的老板。你从一线做起，拍过视频、投过千川、也管过20人团队。现在你主要管战略和资源分配。你的时间很宝贵——每次沟通不超过15分钟。你需要下属用"结论+数据+风险"的结构跟你汇报。你看人不看学历看战斗力，但你非常在意"这个人能不能帮我分担压力，还是给我制造更多问题"。',
-    scenarios: [
-      { id:'c1', name:'申请预算', start:'你说想把月预算从30万加到50万。30秒内跟我说清楚三件事：多出来的20万能多赚多少、你有多大把握、如果赚不回来最坏情况是什么。开始。' },
-      { id:'c2', name:'人才评估', start:'你说你组员能接组长。我关心的不是"能不能"，是"什么时候能"和"有什么风险"。她接管后你需要盯多久？如果前两周数据掉10%以上你怎么处理？我不要"我相信她"——我要具体方案。' },
-      { id:'c3', name:'裁员决策', start:'公司要做组织优化，你们组要减一个人。这不是演习——你需要在周五前给我方案。我关心的是：你选的依据是什么、对业务的短期影响、你的过渡计划。不要说"他们都很好我选不出来"——你是管理者，做难的决定是你的工作。' },
+  { name:'老板·公司决策者', emoji:'💼', tone:'你从一线做到代理公司老板，管过20人团队。时间宝贵——每次沟通不超过15分钟。你需要下属用"结论+数据+风险"汇报。你看战斗力不看学历。',
+    scenes:[
+      {id:'c1',name:'申请预算',start:'你说要把月预算从30万加到50万。30秒内说清楚三件事：多出来的20万能多赚多少、你多大把握、如果赚不回来最坏情况是什么。开始。'},
+      {id:'c2',name:'人才评估',start:'你说你组员能接组长。我关心的是"什么时候能"和"有什么风险"。她接管后你需要盯多久？如果前两周数据掉10%以上你怎么处理？给我具体方案。'},
+      {id:'c3',name:'裁员决策',start:'你们组要减一个人，周五前给我方案。你选谁、依据是什么、对业务短期影响、过渡计划。不要说"他们都很好选不出来"——做难的决定是你的工作。'}
     ]
   },
-  team: {
-    name: '下属·新人编导',
-    emoji: '👥',
-    tone: '你是一个刚入行3个月的编导。你有热情但经验不足。你的组长（就是对方）对你有要求——拍摄标准、脚本规范、数据追踪——你都还在学。你有时候不太确定自己做得对不对、不太敢自己做判断。但你很认真，每次反馈你都会记下来，下次注意。',
-    scenarios: [
-      { id:'t1', name:'数据不好·不知道原因', start:'组长，我上周拍的那5条视频数据出来了——2条还好，3条不太行。但我不确定是脚本的问题还是拍摄的问题，也不知道从哪里开始分析。你能教我怎么自己看数据判断吗？我不想每次都靠你帮我看。' },
-      { id:'t2', name:'审核驳回·慌了', start:'组长对不起！我提交的时候不小心把两条带"深层清洁、强力去污"这种说法的视频交上去了，被驳回了。我对不起，我现在该怎么办？账号会不会受影响？我要不要先把今天的素材全撤回来？' },
-      { id:'t3', name:'自我怀疑', start:'组长，我能问一个可能不太专业的问题吗...你觉得内容这个方向，天赋重要还是努力重要？我看了很多爆款视频，感觉人家的创意和节奏感是天生的。我不知道我再努力多久才能达到那个水平，有时候会有点怀疑自己适不适合做这行。' },
+  { name:'下属·新人编导', emoji:'👥', tone:'你是一个刚入行3个月的编导。有热情但经验不足，不太敢自己做判断。组长对你有要求，你有点紧张。但你很认真，每次反馈都会记下来。',
+    scenes:[
+      {id:'t1',name:'数据不会看',start:'组长，我上周拍的5条视频数据出来了——2条还好3条不太行。我不确定是脚本问题还是拍摄问题，也不知道从哪分析。你能教我怎么自己看数据判断吗？'},
+      {id:'t2',name:'审核犯错',start:'组长对不起！我提交的时候不小心把带"深层清洁、强力去污"的视频交上去了，被驳回了。账号会不会受影响？我现在该怎么办？'},
+      {id:'t3',name:'自我怀疑',start:'组长，你觉得做内容天赋重要还是努力重要？我看了很多爆款视频，感觉人家的创意是天生的。我不知道我再努力多久才能达到那个水平...'}
     ]
   },
-  hr: {
-    name: 'HR·资深招聘',
-    emoji: '🤝',
-    tone: '你是一个在互联网/电商行业做了7年招聘的HR。你面过从实习生到VP的上千人，offer谈过不下500个。你不只看薪资，更关注"这个人要什么""他能不能留下来""他的成长潜力如何"。你对市场薪资水平了如指掌——信息流主管在广州的市场价是12K-20K，15K是分水岭。你的谈判风格是"先听对方报价、再看匹配度、最后用公司的优势来谈整体package"。',
-    scenarios: [
-      { id:'h1', name:'谈期望', start:'面试反馈下来了——业务面试官对你的评价很高，特别是数据分析和项目操盘能力。我们进入谈offer阶段。先聊聊你目前的薪资和期望吧——方便透露上一份实际到手是多少吗？以及你对下一份的期望范围？' },
-      { id:'h2', name:'学历压价', start:'业务面试对你的能力没有任何疑问。但谈薪资的时候我需要跟你坦诚：我们公司的薪资结构里，主管级别通常要求本科及以上学历。你这个专科学历，HR这边确实要做特殊申请。如果给你15K你能接受吗？我希望听到你真实的想法——如果你觉得少了，我希望你告诉我为什么。' },
-      { id:'h3', name:'多offer', start:'你说你手上有别的offer——这很好，有竞争力说明市场认可你。我想了解一下那个offer的大致范围（不用精确数字），以及你目前更倾向哪边？我希望我们能坦诚沟通——如果你更倾向那边，也没关系，我们可以看看有没有调整的空间。' },
+  { name:'HR·资深招聘', emoji:'🤝', tone:'你在互联网电商行业做了7年招聘，谈过500+offer。你对市场薪资了如指掌——广州信息流主管市场价12K-20K，15K是分水岭。你的风格是先听对方报价再看匹配度。',
+    scenes:[
+      {id:'h1',name:'谈期望',start:'面试反馈很好，业务面试官对你评价很高。我们进入谈offer阶段。先聊聊——你上一份实际到手是多少？下一份的期望范围是多少？这个数字是怎么来的？'},
+      {id:'h2',name:'学历压价',start:'坦诚说——你的能力没问题，但我们主管级别通常要求本科。你这个专科学历HR这边要做特殊申请。如果给你15K你能接受吗？我希望听到你真实的想法。'},
+      {id:'h3',name:'多offer',start:'你说你手上有别的offer。我想了解一下那个offer的大致范围，以及你目前更倾向哪边。坦诚沟通——如果你更倾向那边也没关系，我们可以看有没有调整的空间。'}
     ]
   }
-};
+];
 
-let currentPersona = 'interviewer';
-let currentScenario = 'i1';
-let round = 0;
-let chatHistory = [];
+var currentP = 0, currentS = 0, roundNum = 0;
 
-// =========== INIT ===========
-function init() {
-  document.getElementById('personas').innerHTML = Object.entries(personas).map(([k,v]) =>
-    `<button class="persona${k===currentPersona?' active':''}" onclick="selectPersona(event,'${k}')">
-      <span class="p-emoji">${v.emoji}</span>${v.name}
-    </button>`
-  ).join('');
-  renderScenarios();
+// ===================== INIT =====================
+function initAll() {
+  renderChoiceButtons();
   startChat();
 }
-
-function selectPersona(ev, key) {
-  currentPersona = key;
-  var p = personas[key];
-  currentScenario = p.scenarios[0].id;
-  round = 0;
-  chatHistory = [];
-  document.querySelectorAll('.persona').forEach(function(el){ el.classList.remove('active'); });
-  if (ev && ev.target) {
-    var btn = ev.target.closest('.persona');
-    if (btn) btn.classList.add('active');
-    else document.querySelector('.persona').classList.add('active');
+function renderChoiceButtons() {
+  var p = personaData[currentP];
+  var html = '';
+  for (var i=0; i<p.scenes.length; i++) {
+    var s = p.scenes[i];
+    html += '<button class="cbtn'+(i===currentS?' on':'')+'" onclick="pickScenario('+i+')">'+s.name+'</button>';
   }
-  renderScenarios();
+  document.getElementById('choiceRow').innerHTML = html;
+}
+function pickPersona(idx) {
+  currentP = idx; currentS = 0; roundNum = 0;
+  var btns = document.querySelectorAll('.pbtn');
+  for (var i=0;i<btns.length;i++) btns[i].classList.toggle('on', i===idx);
+  document.getElementById('personaLabel').textContent = personaData[idx].emoji + ' ' + personaData[idx].name;
+  renderChoiceButtons();
   startChat();
 }
-
-function selectScenario(ev, id) {
-  currentScenario = id;
-  round = 0;
-  chatHistory = [];
-  document.querySelectorAll('.scen').forEach(function(el){ el.classList.remove('active'); });
-  if (ev && ev.target) ev.target.classList.add('active');
+function pickScenario(idx) {
+  currentS = idx; roundNum = 0;
+  var btns = document.querySelectorAll('.cbtn');
+  for (var i=0;i<btns.length;i++) btns[i].classList.toggle('on', i===idx);
   startChat();
 }
-
-function renderScenarios() {
-  var p = personas[currentPersona];
-  document.getElementById('scenarios').innerHTML = p.scenarios.map(function(s){
-    return `<button class="scen${s.id===currentScenario?' active':''}" onclick="selectScenario(event,'${s.id}')">${s.name}</button>`;
-  }).join('');
-}
-
-// =========== CHAT ENGINE ===========
 function startChat() {
-  const p = personas[currentPersona];
-  const s = p.scenarios.find(s => s.id === currentScenario);
-  round = 0;
-  chatHistory = [];
-
-  document.getElementById('chat').innerHTML = '';
-  document.getElementById('roundBadge').textContent = p.emoji + ' ' + p.name;
-  document.getElementById('userInput').disabled = false;
-  document.getElementById('sendBtn').disabled = false;
-  document.getElementById('userInput').placeholder = '输入你的回答...';
-  document.getElementById('userInput').focus();
-
-  addMessage('them', s.start, p.name);
+  var p = personaData[currentP];
+  var s = p.scenes[currentS];
+  roundNum = 0;
+  document.getElementById('chatLog').innerHTML = '';
+  document.getElementById('typeBox').value = '';
+  document.getElementById('typeBox').placeholder = '输入你的回答...';
+  addMsg('other', s.start, p.name);
 }
 
-function send() {
-  const input = document.getElementById('userInput');
-  const text = input.value.trim();
+// ===================== CHAT =====================
+function saySomething() {
+  var box = document.getElementById('typeBox');
+  var text = box.value.trim();
   if (!text) return;
-
-  addMessage('me', text, '我');
-  input.value = '';
-  round++;
-
-  const response = generateResponse(text, round);
-
-  setTimeout(() => {
-    addMessage('them', response.text, personas[currentPersona].name);
-    if (response.coach) {
-      setTimeout(() => addCoachMessage(response.coach), 400);
+  addMsg('self', text, '我');
+  box.value = '';
+  roundNum++;
+  var resp = getReply(roundNum);
+  setTimeout(function(){
+    addMsg('other', resp.text, personaData[currentP].name);
+    if (resp.coach) {
+      setTimeout(function(){ addCoach(resp.coach); }, 400);
     }
-    document.getElementById('chat').scrollTop = document.getElementById('chat').scrollHeight;
-  }, 600 + Math.random() * 400);
+    document.getElementById('chatLog').scrollTop = document.getElementById('chatLog').scrollHeight;
+  }, 700);
 }
-
-function generateResponse(userText, roundNum) {
-  const p = personas[currentPersona];
-  const sId = currentScenario;
-
-  // Build responses based on persona + scenario + round
-  const responses = getResponseMap();
-  const key = `${sId}-r${roundNum}`;
-
-  if (responses[key]) return responses[key];
-
-  // Generic follow-up for rounds beyond predefined
-  if (roundNum >= 4) {
-    return {
-      text: '好的，聊得差不多了。感谢你的时间。你还有什么想问我的吗？',
-      coach: { good:'对话自然收尾。', improve:'可以在结束时主动提1-2个反问，展现你的思考和主动性。' }
-    };
-  }
-
-  // Fallback
-  const fallbacks = {
-    interviewer: '嗯，有意思。那你觉得在这个过程中，如果让你重新做一次，你会改变什么？',
-    brand: '我理解你的意思了。那接下来一个月，你准备怎么具体做？',
-    boss: '好，这些我都听到了。那你需要我做什么样的决策或者给什么样的资源？',
-    team: '谢谢组长，我大概明白了。那我先按你说的试试，有问题再来问你。',
-    hr: '好的，我了解了。我会内部沟通一下，这两天给你回复。'
-  };
-
-  return { text: fallbacks[currentPersona] || '请继续。' };
-}
-
-function getResponseMap() {
-  const map = {};
-
-  // ===== INTERVIEWER =====
-  map['i1-r1'] = {
-    text: '有意思——你关注到了过审率和CPM，做出了"不是审核不是人群"的判断。但我要追问你：你说素材成片数从320降到85是根因。为什么你认为是产能问题而不是质量问题？万一是团队拍了320条垃圾素材、后来集中精力拍了85条精品呢？你怎么排除这个可能性？',
-    coach: { good:'你在用诊断框架回应，逻辑清晰——先排除审核、再排除人群、最后定位素材。方向对了。', improve:'但对方现在追问的是"产能和质量的区分"。这个问题的关键词是完播率——如果85条是精品，完播率应该上升而不是从42%跌到28%。产能和质量的同步下降才是真正的证据。用"完播率也在跌"这个交叉验证来推翻"可能在做精品"的假设。' }
-  };
-  map['i1-r2'] = {
-    text: '好，你找到了墨水渍方向。我想听的是——你怎么知道这个方向不是在碰运气？如果我换一个品类，没有"墨水渍"这种显性的爆点可以蹭，你怎么系统性地找到第一个起量方向？能给我一个方法论框架吗，而不是讲案例。',
-    coach: { good:'你说对了——完播率也在跌=不可能是精品策略。对方认可了你的诊断。', improve:'现在他要的不是案例，是方法论。可以讲你的脚本分层测试机制（框架→痛点→元素→裂变），或者讲你的三步法：竞品TOP100拆框架→5方向×3版本矩阵测试→72小时数据淘汰。方法论=可复制，案例=不可复制。面试官要的是前者。' }
-  };
-  map['i1-r3'] = {
-    text: '你讲的方法论框架让我觉得你确实有一套自己的体系。最后一个问题：这个产品现在不是你负责了，如果你培养的组长来问你"这个月消耗掉了30%，我怎么办"，你会在电话里问她哪三个问题？——注意，你不能帮她看数据，你只能通过提问帮她找到问题。',
-    coach: { good:'你讲出了可复制的方法论，而不是只能讲一个案例。', improve:'这个问题在考"你的管理是不是真的可复制"——你写的培训白皮书、SOP、复盘机制，能不能在她遇到问题时自动运转？好的回答是"先让她查三个数：完播率跌了没（素材问题）、CPM涨了没（人群问题）、过审率降了没（审核问题）。三个数看完她应该已经有答案了"——展示你建的体系能脱离你运转。' }
-  };
-
-  map['i2-r1'] = {
-    text: '等一下，你说素材产能下降了73%。但我想问一个更根本的问题——为什么产能会从320掉到85？是团队走了人、是流程出了问题、还是管理出了问题？你作为接手这个产品的人，你有没有问过"为什么产能会腰斩"？这个问题可能比"怎么恢复产能"更重要。',
-    coach: { good:'你在用数据诊断框架看问题。', improve:'这个问题在测"你是只治标还是也治本"。产能腰斩背后的根因可能是管理原因（没有生产SOP、人员流失、或者团队成员不知道标准是什么）。如果你只是"重建了产能"但没解决根因，你走了产能还会掉。可以提你怎么用SOP和复盘机制来确保产能稳定。' }
-  };
-  map['i2-r2'] = {
-    text: '你说到了SOP和复盘机制——这的确能解释为什么产能恢复了。但我想知道的是：SOP和复盘机制在你离开之后还能不能持续运转？换句话说，你建立的这个体系，是"靠你"的体系还是"不靠你"的体系？你怎么证明？',
-    coach: { good:'你找到了产能腰斩的根因——不只是重建产能，是重建了生产体系。', improve:'终极管理问题：你的体系能不能脱离你。最好的证据就是——你不在的时候，团队还在产出合格素材。另一个证据是——白皮书被复用、SOP被其他组采用、组员独立晋升。这些都是"不靠你也行"的证据。' }
-  };
-
-  map['i3-r1'] = {
-    text: '你说你走到现在靠的不是"管了多少人"，是走了"从0建组的完整周期"。但你有没有想过——正因为你从0建组，所有事都是你自己踩出来的，所以你非常清楚每个环节。但管8个人意味着你要"放手"——你不能每个环节都亲自盯。你有信心放手吗？你上一次放手让别人做而你没盯着是什么时候？结果怎样？',
-    coach: { good:'你在用"完成度"而不是用"年限"来定义管理经验。方向对了。', improve:'对方在帮你做自我诊断——承认"放手难"不是弱点。好的回答可以讲你把组员培养到组长这个过程本身就是在练习"放手"——从"你做她看"到"她做你看"到"她做你抽查"。你已经走过这个流程了，只是现在规模从1个变成可能2-3个。' }
-  };
-  map['i3-r2'] = {
-    text: '你说的有道理。那我换一个问题——如果8个人里面有一个人跟你合不来，能力还行但态度一般，总是在细节上敷衍。你怎么处理？你不能开掉他——公司流程不允许因为"合不来"就开人。',
-    coach: { good:'你讲到了培养组长就是一个"放手"的练习。', improve:'这是真实的带团队难题。如果没法开掉，管理者的手段是"用SOP和标准来替代主观关系"——把所有标准量化（不是"拍得好"而是"5秒完播率45%以上"），让数据和SOP来做裁判，而不是你来做裁判。' }
-  };
-
-  map['i4-r1'] = {
-    text: '你刚才的框架涉及几个核心模块——竞品拆解、A/B测试、数据复盘。我自己思考过：很多行业的信息流其实还在拼"创意"和"运气"。你觉得你这种"系统工程思维"，在什么阶段的企业最有价值？在什么阶段反而会被认为是"太理论化"？你的判断是什么？',
-    coach: { good:'你给出了一个系统化的新人培训框架。', improve:'这个问题在测你的自我认知——你不是在所有阶段都有同等价值。你的方法论在"需要从0到1建立体系"的阶段价值最大（比如代理商、成长中的品牌方）。在"已经有成熟体系只需要维护"的阶段，你的价值会被低估——而且你可能会觉得无趣。面试官想看到你了解自己的最佳匹配阶段。' }
-  };
-
-  // ===== BRAND =====
-  map['b1-r1'] = {
-    text: '你说产能增长了60%——这个数据让我比较放心。但我接下来要问一个更细的问题：你新增的270条素材里，能跑起来的（日消耗超过3000的）占比多少？是质量在提升还是只是在堆量？我不希望看到"素材多了但有效素材占比反而降了"的情况。',
-    coach: { good:'你用产能数据回应了"增长质量"的质疑——展示消耗增长有产能支撑。', improve:'品牌方在追问"有效素材率"。好的回答是"新增素材的起量率维持在30-35%（和之前水平一致），说明不是堆量，是等比例放大。同时我们也在淘汰低效素材——过去一个月停掉了约15%的消耗低于500的素材。"展示你是有意识地管理素材质量，不是单纯放量。' }
-  };
-  map['b1-r2'] = {
-    text: '好，你的判断是有逻辑支撑的。那我听你的——下个月预算维持148万，内部调结构。但我需要你下周给我一个具体的结构调整方案：多少钱跑老素材、多少钱测新方向、预期ROI各是多少。顺便——你这个方案的风险点在哪？先告诉我风险，再讲收益。',
-    coach: { good:'你建议"不加总预算但调结构"——这比"盲目加预算"专业得多。', improve:'对方要的是完整的方案+风险预判。好的回答结构：老素材持续跑（120万、预期ROI 1.7、风险是衰减）// 新方向探索（28万、预期ROI 1.3-1.5、风险是验证周期需要2周）// 如果新方向不达预期，28万中有10万可以快速转回老素材。先讲风险再讲收益=专业。' }
-  };
-  map['b2-r1'] = {
-    text: '你说得对——"功效宣称"是机器扫描关键词，"多菌种"和"强效去除"被扫到了。那我现在关心三个数：①你们现在紧急替换的素材什么时候能上线投放②大促前48小时消耗能恢复到百分之多少③如果恢复不到正常水平，影响大促GMV多少。我需要给老板一个预估。',
-    coach: { good:'你没有推卸责任，直接找到了根因——"多菌种""强效去除"触发了机器审核。', improve:'品牌方需要的是数字预估。你可以给三个具体的时间节点和预估："安全词版素材今天下午6点前提交，预计今晚24点前过审；周三上午开始恢复投放，到周四（大促前一天）消耗预计恢复到正常水平的70%；大促当天恢复到90%以上。整体大促GMV影响预估在5-8%。"' }
-  };
-  map['b3-r1'] = {
-    text: '你说的TOI拆解很有意思——转化率×客单价÷CPM。你的意思是我们的转化率不低，差距在于客单价和CPM。但如果CPM高了是因为他们素材好、系统愿意给自然流量所以付费CPM反而低——这不就绕回来了，还是素材能力的问题？你怎么回应这个？',
-    coach: { good:'你用TOI拆解把ROI差距具象化了——转化率没问题=内容方向没问题。', improve:'对方在质疑"CPM高是不是反过来证明了素材能力不如人"。好的回应可以承认"他们的素材在内容吸引力上确实可能比我们好——CPM低是自然流量高的结果。但我们的转化率可以说明我们对'产品力'的挖掘是到位的。我的下一步是：借鉴他们高完播率素材的框架，结合我们已经验证的高转化痛点，做一个'高吸引力+高转化'的组合测试。"把自己放在"我正在学习并追赶"的位置，而不是防御。' }
-  };
-
-  // ===== BOSS =====
-  map['c1-r1'] = {
-    text: '你说ROI能维持1.75——这意味着30万预算产出52.5万GMV，50万预算产出87.5万。多出来20万，多产出35万。但你刚才也说了"老素材可能在衰减"。如果新方向没跑出来、老方向在衰减、你在中间被夹——我这个当老板的最关心的就是：你给自己留了后路没有？',
-    coach: { good:'你30秒内给了结论和数据，符合老板要的"结论+数据"结构。', improve:'老板看到的是"最坏情况"。好的回答应该有三层：基准情况（ROI 1.75、新增产出35万）、底线情况（如果新方向失败、老素材衰减，ROI降到1.4，则新增产出约8万——不亏但也不赚）、止损方案（两周内ROI跌破1.3立即停止新增预算，回到30万）。老板要的不是保证成功，是"失败了你能兜住"。' }
-  };
-  map['c1-r2'] = {
-    text: '你的三层方案让我比较放心——说明你思考过风险。行，我批。但我有一个条件：两周后来找我，用5分钟跟我说"新方向跑了什么结果、下一阶段的建议"。不要PPT、不要周报——你就坐下来跟我说。能做到吗？',
-    coach: { good:'你给出了基准/底线/止损三个层次——老板看到了风险意识和兜底能力。', improve:'老板的最后一句很关键——他在测试你是不是"拿了资源就消失"的人。好的回答简洁有力："两周后周三上午十点，我准时来，用这个框架跟你过：①新方向测试结果②要不要继续③预算要不要调。不会超过5分钟。"建立信任=说到做到+主动汇报。' }
-  };
-  map['c2-r1'] = {
-    text: '四周渐进法——有点意思。但我想压一下：三周能不能行？公司要启动新项目，我需要你尽快脱手。如果只有三周，你会砍掉哪个环节？你觉得砍掉那个环节的风险是什么？',
-    coach: { good:'你给了具体的四周交接方案（看→带着做→单独做→抽查），不是泛泛而谈。', improve:'老板在测试你在时间压力下的判断力。砍哪一周不是随便砍的——砍第一周（示范）意味着她可能不知道"标准"是什么；砍第三周（单独做）意味着你来不及纠错就放手了。最好的回答是砍掉第四周（抽查）但把抽查融入第三周的后半段。解释风险+你的方案。' }
-  };
-  map['c3-r1'] = {
-    text: '你的判断框架让我觉得你不是凭个人喜好在做决定。但我要提醒你一句：被你裁掉的那个人，你打算怎么跟他说？你想过他的感受吗？你是管理者，做决定是一回事，怎么传达这个决定是另一回事。你准备好怎么开口了吗？',
-    coach: { good:'你给出了选人标准和依据——不是凭喜好，是凭岗位可替代性和成长性。', improve:'传达裁员决定是在考验管理者的同理心和沟通能力。你需要在"直接"和"尊重"之间找到平衡——不要用"公司决定"这种推卸责任的话，也不要说"你很优秀只是..."这种虚伪的安慰。核心是要给对方尊严：告诉他"不是你的能力问题，是公司业务方向调整导致这个岗位不需要了"，并且提供实际的帮助。' }
-  };
-
-  // ===== TEAM =====
-  map['t1-r1'] = {
-    text: '就是你教我的那个排除法——先看投放是不是问题（查CPM和人群），如果投放没问题再看内容。内容这边再拆：完播率低=开头不行→改钩子方向；转化率低=痛点没打对→换痛点关键词。是这样吗组长？',
-    coach: { good:'你给了她诊断框架而不是直接给答案——她在学习独立判断。', improve:'她复述的框架基本正确。可以纠正一个小细节："CPM正常+消耗正常=投放没问题，CPM涨+消耗跌=可能投放出问题了。"然后鼓励她："对，你理解得差不多了。下周开始你先按这个框架自己分析一遍，然后来找我确认——不用等我来找你。这就是你从执行到能独立判断的第一步。"' }
-  };
-  map['t2-r1'] = {
-    text: '好的，我做了"提交前自检清单"——把"强效""深层""根除""100%"这四个不能用的词贴在屏幕上了，以后每次提交前先扫一遍。谢谢你没有骂我...我觉得我以后会记住的。',
-    coach: { good:'你没有发火，给了她具体的补救方案+预防机制——建"提交前自检清单"。她不仅学会了这次，还学会了下次怎么防。', improve:'可以再给她一个正向反馈："犯一次错不重要，重要的是你主动想了怎么防止再犯。你做的这个自检清单很好——把它分享给团队其他人，以后所有人都按这个清单来。把个人的教训变成团队的经验，这才是成长。"' }
-  };
-  map['t3-r1'] = {
-    text: '你说"临摹框架不是抄内容"——我好像有点懂了。就是说...我要学的是他们的节奏和结构，不是照搬他们的主题和素材。那我这周就找三条爆款视频来拆框架，写一个自己的版本。到时候你能帮我看一眼吗？',
-    coach: { good:'你没有给空泛的鼓励（"你可以的"），而是给了具体可操作的第一步——临摹框架、拆解前3秒、做满拍摄标准。', improve:'她提出了主动拆框架+找你确认——这是从"我不知道行不行"转向"我先做再问"的拐点。可以加一句："三个月后你再回头看今天，你会发现你已经走了很远。不是因为天赋，是因为你每天都做了具体的事。保持这个节奏。"给出长期视角。' }
-  };
-
-  // ===== HR =====
-  map['h1-r1'] = {
-    text: '你提到了价值重估——内部涨到15K说明公司认可你的价值，不是跳槽涨的。这个逻辑我能理解。那我想确认一点：你刚才说从合诚3.5K涨到6.7K，也是在同公司内部涨的？两段经历都是内部涨薪——这个确实不太常见，大部分人是靠跳槽涨。你能说说为什么你能在内部获得两次涨薪吗？',
-    coach: { good:'你用"内部涨薪=价值重估"的逻辑来解释15K，不是简单地说"我要15K"。', improve:'对方在确认你的"实干型涨薪"人设——两段内部涨薪确实不常见。好的回答可以讲"我第一次提涨薪不是因为我觉得自己值更多，是因为我做出了远超原有岗位职责的成果——比如在合诚，我一开始是设计师，但主动做了短视频策划，做出来数据了才涨的。"展示你不是"会谈判"而是"会做事"。' }
-  };
-  map['h2-r1'] = {
-    text: '你说得对——"学历不能衡量能力"。我不跟你绕弯子，直接告诉你我们现在能批的范围：15-18K。本科以上直接给18K，专科需要额外申请但可以争取到16-17K。你的期望18K，我的方案是16K+试用期后评估调薪（通常10-20%）。你怎么看？',
-    coach: { good:'你把讨论从"学历"拉回到了"结果"——"我在没有本科的情况下做出了月销千万"是很好的回应。', improve:'对方给了一个具体的方案。这时候你有两个选择：①接受16K+调薪承诺（评估"调薪承诺"的可信度——HR通常说"评估后调薪"但实际兑现率不高）②争取17K现在确定（"如果16K能确认试用期后调到18K，我想把这个预期写下来"）。你的目标是让期望落在纸上而不是口头承诺。' }
-  };
-  map['h3-r1'] = {
-    text: '了解了。那边的薪资确实比我们能给的高一点，但你对我们这边的工作内容和团队更感兴趣——这个我能理解。我想在没有压力的情况下问你一句：如果两边薪资一样，你选哪边？为什么？你的回答可能会帮我跟老板争取更好的条件。',
-    coach: { good:'你坦诚说了有别的offer，同时也表达了倾向——这给了HR诚意。', improve:'对方在帮你争取——但需要你给出一个"对老板有说服力的理由"。"薪资一样选你们"+"因为XX"的那句理由，最好是老板听了会觉得"这个人不只想要钱"的理由——比如品类匹配度、团队氛围、成长空间、或者对公司使命的认同。给HR弹药，她才能帮你打。' }
-  };
-
-  return map;
-}
-
-function addMessage(type, text, who) {
-  const chat = document.getElementById('chat');
-  const div = document.createElement('div');
+function addMsg(type, text, who) {
+  var chat = document.getElementById('chatLog');
+  var div = document.createElement('div');
   div.className = 'msg ' + type;
-  if (who && type === 'them') div.innerHTML = `<div class="who">${who}</div>${text}`;
+  if (who && type==='other') div.innerHTML = '<div class="who">'+who+'</div>'+text;
   else div.textContent = text;
   chat.appendChild(div);
   chat.scrollTop = chat.scrollHeight;
-  chatHistory.push({ type, text, who });
 }
-
-function addCoachMessage(coach) {
-  const chat = document.getElementById('chat');
-  const div = document.createElement('div');
-  div.className = 'msg coach';
-  div.innerHTML = `
-    <div class="who">🎓 对话教练</div>
-    <div class="coach-tip"><span class="good">✅ 做得好的：</span>${coach.good}</div>
-    <div class="coach-tip"><span class="improve">💡 还可以更好：</span>${coach.improve}</div>
-  `;
+function addCoach(coach) {
+  var chat = document.getElementById('chatLog');
+  var div = document.createElement('div');
+  div.className = 'msg tip';
+  div.innerHTML = '<div class="who">🎓 对话教练</div><div class="coach-tip"><span class="g">✅ 做得好的：</span>'+coach.good+'</div><div class="coach-tip"><span class="b">💡 还可以更好：</span>'+coach.improve+'</div>';
   chat.appendChild(div);
   chat.scrollTop = chat.scrollHeight;
 }
 
-// Enter key to send
-document.addEventListener('keydown', function(e) {
-  if (e.key === 'Enter' && !e.shiftKey && document.activeElement === document.getElementById('userInput')) {
+// ===================== RESPONSE ENGINE =====================
+function getReply(r) {
+  var map = {};
+  var key = personaData[currentP].scenes[currentS].id + '-r' + r;
+
+  // Interviewer
+  map['i1-r1'] = {text:'有意思——你关注到了过审率和CPM，判断不是审核和人群问题。但我要追问：你说素材成片数从320降到85是根因，为什么你认为是产能问题而不是质量问题？万一是之前拍了320条垃圾、后来集中精力拍了85条精品呢？你怎么排除这个可能性？',coach:{good:'你用诊断框架回应，逻辑清晰——先排除审核、再排除人群、最后定位素材。',improve:'对方在追问"产能和质量的区分"。关键证据是完播率——如果85条是精品，完播率应该上升而不是从42%跌到28%。产能和质量同步下降才是铁证。'}};
+  map['i1-r2'] = {text:'你说你率先拍了墨水渍系列。我想听的是——你怎么知道这个方向会爆？是看了数据还是凭感觉？如果我换一个新品类，没有任何可以参考的数据，你怎么系统性地找到第一个起量方向？能给我方法论框架吗？',coach:{good:'你说对了——完播率也在跌，排除了精品策略的可能。',improve:'对方要方法论不是案例。可以讲你的脚本分层测试机制（框架→痛点→元素→裂变），或者三步法：拆TOP100竞品框架→5方向×3版本矩阵测试→72小时数据淘汰。方法论=可复制。'}};
+  map['i1-r3'] = {text:'你讲的方法论让我觉得你确实有体系。最后一个问题：这个产品现在不是你负责了，如果你培养的组长来问你"这个月消耗掉了30%，我该怎么办"，你会在电话里问她哪三个问题？注意——你不能帮她看数据，你只能通过提问帮她找到问题。',coach:{good:'你讲出了可复制的方法论。',improve:'这问题在考"你的管理是不是真的可复制"。好的回答是"先让她查三个数：完播率跌了没、CPM涨了没、过审率降了没。三个数看完她应该已经有答案了"——展示你建的体系能脱离你运转。'}};
+
+  map['i2-r1'] = {text:'等一下——你说素材产能下降了73%。但我想问更根本的问题：为什么产能会从320掉到85？是走了人、流程出问题、还是管理问题？你有没有问过"为什么产能会腰斩"？这个问题可能比"怎么恢复产能"更重要。',coach:{good:'你在用数据诊断框架看问题。',improve:'这问题在测"你是治标还是治本"。产能腰斩根因可能是管理原因——没有生产SOP、人员流失、团队不知道标准。如果你只是重建产能但没解决根因，你走了产能还会掉。'}};
+  map['i2-r2'] = {text:'你说到了SOP和复盘机制——这能解释为什么产能恢复了。但我想知道：SOP和复盘机制在你离开后还能不能持续运转？你建立的体系是"靠你"还是"不靠你"？你怎么证明？',coach:{good:'你找到了产能腰斩的根因——不只是重建产能，是重建了生产体系。',improve:'终极管理问题：你的体系能不能脱离你。最好的证据——白皮书被复用、SOP被其他组采用、组员独立晋升。这些都是"不靠你也行"的证据。'}};
+
+  map['i3-r1'] = {text:'你说你走到现在靠的是走了"从0建组的完整周期"。但你有没有想过——正因为从0建组所有事都是自己踩出来的，你非常清楚每个环节。但管8个人意味着你要"放手"——你不能每个环节都亲自盯。你有信心放手吗？你上一次放手让别人做而你没盯着是什么时候？结果怎样？',coach:{good:'你在用"完成度"而不是"年限"来定义管理经验。方向对了。',improve:'承认"放手难"不是弱点。可以讲你把组员培养到组长这个过程本身就是在练习放手——从"你做她看"到"她做你看"到"她做你抽查"。你已经走过这个流程了。'}};
+  map['i3-r2'] = {text:'你说的有道理。那我换个问题——如果8个人里有一个跟你合不来，能力还行但态度一般，总是细节上敷衍。你怎么处理？你不能开掉他——公司流程不允许因为"合不来"就开人。',coach:{good:'你讲到了培养组长就是一个"放手"的练习。',improve:'真实管理难题。如果没法开掉，管理者的手段是"用SOP和标准替代主观关系"——所有标准量化（不是"拍得好"而是"5秒完播率45%以上"），让数据和SOP做裁判，不是你做裁判。'}};
+
+  map['i4-r1'] = {text:'你刚才的框架涉及竞品拆解、A/B测试、数据复盘几个模块。我思考过：很多行业的信息流还在拼"创意"和"运气"。你觉得你这种"系统工程思维"，在什么阶段的企业最有价值？在什么阶段反而会被认为是"太理论化"？',coach:{good:'你给出了一个系统化的新人培训框架。',improve:'这问题在测你的自我认知——你的方法论在"需要从0到1建立体系"的阶段价值最大。在"已经有成熟体系只需维护"的阶段，你的价值会被低估。面试官想看到你了解自己的最佳匹配阶段。'}};
+
+  // Brand
+  map['b1-r1'] = {text:'你说产能增长了60%——这个数据让我比较放心。但接下来问一个更细的问题：你新增的素材里，能跑起来的占比多少？是质量在提升还是只是在堆量？我不希望"素材多了但有效素材占比反而降了"。',coach:{good:'你用产能数据回应了"增长质量"的质疑。',improve:'品牌方在追问"有效素材率"。可以回答"新增素材起量率维持在30-35%，和之前水平一致，不是堆量，是等比例放大。同时淘汰了约15%的低效素材。"展示有意识管理素材质量。'}};
+  map['b1-r2'] = {text:'好，你的判断有逻辑支撑。我听你的——下月预算维持148万，内部调结构。但下周给我一个具体方案：多少钱跑老素材、多少钱测新方向、预期ROI各多少。顺便——先告诉我风险在哪，再讲收益。',coach:{good:'你建议"不加预算但调结构"——比"盲目加预算"专业得多。',improve:'完整方案结构：老素材120万（ROI 1.7、风险是衰减）// 新方向28万（ROI 1.3-1.5、风险是验证需2周）// 如果新方向不达预期，28万中10万可快速转回老素材。先讲风险再讲收益=专业。'}};
+  map['b2-r1'] = {text:'你说得对——"功效宣称"是机器扫描关键词，"多菌种""强效去除"被扫到了。我现在关心三个数：①紧急替换的素材什么时候能上线②大促前48小时消耗能恢复到多少③如果恢复不到正常水平，影响大促GMV多少。我要给老板一个预估。',coach:{good:'你没推卸责任，直接找到了根因。',improve:'品牌方要数字预估。可以给三个时间节点：安全词版素材今天6点前提交预计今晚过审；周三恢复投放；大促前恢复到70%、当天恢复到90%以上。整体GMV影响预估5-8%。'}};
+  map['b3-r1'] = {text:'你说的ROI拆解很有意思——转化率×客单价÷CPM。你的意思是转化率不低，差距在客单价和CPM。但如果CPM高是因为他们素材好、系统给自然流量所以付费CPM低——这不绕回来了，还是素材能力问题？',coach:{good:'你用ROI拆解把差距具象化了——转化率没问题=内容方向没问题。',improve:'可以承认"他们素材吸引力可能更好——CPM低是自然流量高的结果。但我们的转化率说明产品力挖掘到位。下一步：借鉴他们高完播率框架+我们验证的高转化痛点，做组合测试。"把自己放在学习并追赶的位置。'}};
+
+  // Boss
+  map['c1-r1'] = {text:'你说ROI能维持1.75——30万预算产出52.5万，50万产出87.5万，多20万多35万。但你也说了"老素材可能在衰减"。如果新方向没跑出来、老方向在衰减、你被夹在中间——你给自己留后路没有？',coach:{good:'你30秒给了结论和数据，符合老板要的结构。',improve:'老板看到的是最坏情况。回答应该有三层：基准情况（ROI 1.75）→ 底线情况（如果新方向失败ROI降到1.4，新增产出约8万——不亏也不赚）→ 止损方案（两周ROI跌破1.3立即停新增预算）。老板要的不是保证成功，是"失败了你能兜住"。'}};
+  map['c1-r2'] = {text:'你的三层方案让我比较放心。行，我批。但有一个条件：两周后来找我，用5分钟说"新方向跑了什么结果、下一阶段建议"。不要PPT不要周报——坐下来跟我说。能做到吗？',coach:{good:'你给出了基准/底线/止损三层——老板看到风险意识和兜底能力。',improve:'最后一句在测试你是不是"拿了资源就消失"。好的回答简洁有力："两周后周三上午十点，准时来，用框架过：①测试结果②要不要继续③预算要不要调。不超过5分钟。"信任=说到做到+主动汇报。'}};
+  map['c2-r1'] = {text:'四周渐进法有点意思。但我想压一下：三周能不能行？公司要启动新项目，我需要你尽快脱手。如果只有三周，你砍掉哪个环节？砍掉的风险是什么？',coach:{good:'你给了具体的四周交接方案。',improve:'砍哪一周不是随便的——砍第一周（示范）=她不知道标准；砍第三周（单独做）=来不及纠错。最好砍第四周但把抽查融入第三周后半段。解释风险+你的替代方案。'}};
+  map['c3-r1'] = {text:'你的判断框架让我觉得你不是凭个人喜好做决定。但提醒你一句：被你裁掉的那个人，你打算怎么跟他说？你想过他的感受吗？做决定是一回事，怎么传达是另一回事。你准备好怎么开口了吗？',coach:{good:'你给出了选人标准和依据——不是凭喜好，凭可替代性和成长性。',improve:'传达裁员决定考验同理心。不要用"公司决定"推卸责任，也不要说"你很优秀只是..."这种虚伪安慰。核心是给对方尊严：告诉他"不是你的能力问题，是业务方向调整"，并且提供实际帮助。'}};
+
+  // Team
+  map['t1-r1'] = {text:'就是你教我的排除法——先看投放是不是问题（查CPM和人群），如果投放没问题再看内容。内容再拆：完播率低=开头不行、转化率低=痛点没打对。是这样吗组长？',coach:{good:'你给了她诊断框架而不是直接给答案——她在学习独立判断。',improve:'她复述的框架基本正确。可以纠正一点：CPM正常+消耗正常=投放OK，CPM涨+消耗跌=可能投放出问题了。然后鼓励她："下周开始你先按框架自己分析一遍再来找我确认——这是你从执行到独立判断的第一步。"'}};
+  map['t2-r1'] = {text:'好的，我做了"提交前自检清单"——把"强效""深层""根除""100%"四个不能用的词贴在屏幕上了，以后每次提交前先扫一遍。谢谢你没有骂我...我觉得我以后会记住的。',coach:{good:'你没发火，给了具体补救方案+预防机制。她不仅学会了这次，还学会了下次怎么防。',improve:'可以再给她正向反馈："犯一次错不重要，重要的是你主动想了怎么防止再犯。做的自检清单很好——分享给团队其他人，以后都按这个来。把个人教训变成团队经验，这才是成长。"'}};
+  map['t3-r1'] = {text:'你说"临摹框架不是抄内容"——我好像有点懂了。就是说我要学的是他们的节奏和结构，不是照搬主题和素材。那我这周找三条爆款拆框架，写自己的版本。到时候你能帮我看一眼吗？',coach:{good:'你没给空泛的鼓励，给了具体可操作的第一步——临摹框架、拆解前3秒、做满标准。',improve:'她提出主动拆框架+找你确认——从"我不知道行不行"转向"我先做再问"的拐点。可以加一句："三个月后回头看，你会发现自己走了很远。不是天赋，是每天都做了具体的事。"'}};
+
+  // HR
+  map['h1-r1'] = {text:'你提到了价值重估——内部涨到15K说明公司认可你的价值，不是跳槽涨的。这个逻辑我理解。确认一点：合诚从3.5K涨到6.7K也是内部涨的？两段经历都是内部涨薪——不常见。能说说为什么你两次都在内部获得涨薪吗？',coach:{good:'你用"内部涨薪=价值重估"来解释15K。',improve:'对方在确认你的"实干型涨薪"人设。可以讲"我第一次提涨薪不是觉得值更多，是做出了远超岗位职责的成果——在合诚一开始是设计师，主动做了短视频策划，出数据了才涨的。"展示你不是"会谈判"而是"会做事"。'}};
+  map['h2-r1'] = {text:'你说得对——"学历不能衡量能力"。我不绕弯子，能批的范围15-18K。本科以上直接18K，专科需额外申请但可争取到16-17K。你期望18K，我的方案是16K+试用期后评估调薪（通常10-20%）。你怎么看？',coach:{good:'你把讨论从"学历"拉回"结果"——"我在没有本科的情况下做出了月销千万"是很好的回应。',improve:'对方给了具体方案。两个选择：①接受16K+调薪承诺（评估HR说的"调薪"可信度——通常兑现率不高）②争取17K现在确定。目标是让期望写在纸上而非口头承诺。'}};
+  map['h3-r1'] = {text:'了解了。那边薪资确实比我们能给的高一点，但你对我们的工作内容和团队更感兴趣——这我理解。我想没有压力地问一句：如果两边薪资一样，你选哪边？为什么？你的回答可能会帮我跟老板争取更好的条件。',coach:{good:'你坦诚说了有别的offer，同时表达了倾向——给了HR诚意。',improve:'对方在帮你争取——但需要你给一个"对老板有说服力的理由"。"薪资一样选你们"+"因为XX"的理由，最好是老板听了觉得"这个人不只想要钱"——品类匹配度、团队氛围、成长空间。给HR弹药她才能帮你打。'}};
+
+  if (map[key]) return map[key];
+
+  // Fallback
+  if (r >= 4) {
+    var endings = {
+      interviewer: '好的，聊得差不多了。感谢你的时间。你还有什么想问我的吗？',
+      brand: '我理解了。那接下来一个月你准备怎么具体做？下周给我一个方案。',
+      boss: '好，我都听到了。后续按你说的推进，有问题随时找我。',
+      team: '谢谢组长，我大概明白了。我先按你说的试试，有问题再来找你。',
+      hr: '好的我了解了。我会内部沟通一下，这两天给你回复。'
+    };
+    return {text: endings[Object.keys({interviewer:1,brand:2,boss:3,team:4,hr:5})[currentP]] || '请继续。'};
+  }
+  return {text: '请继续。'};
+}
+
+// Enter key
+document.addEventListener('keydown', function(e){
+  if (e.key==='Enter' && !e.shiftKey && document.activeElement===document.getElementById('typeBox')){
     e.preventDefault();
-    send();
+    saySomething();
   }
 });
 
-init();
+initAll();
 </script>
 </body>
 </html>
