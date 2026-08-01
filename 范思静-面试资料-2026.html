@@ -1,0 +1,851 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>范思静 — 面试资料（简历+作品集）</title>
+<style>
+  @page { size: A4; margin: 0; }
+
+  /* ========== 调节面板 ========== */
+  :root {
+    --panel-h: 46px;
+    --bg: #e8ecf1;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: -apple-system, "PingFang SC", "Microsoft YaHei", sans-serif;
+    background: var(--bg);
+    color: #1e293b;
+    line-height: 1.6;
+    padding-top: var(--panel-h);
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+
+  /* ===== 控制面板 ===== */
+  #panel {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 999;
+    height: var(--panel-h);
+    background: #0f172a; color: #fff;
+    display: flex; align-items: center; gap: 12px;
+    padding: 0 16px;
+    font-size: 13px;
+    box-shadow: 0 2px 12px rgba(0,0,0,0.3);
+  }
+  #panel .brand { font-weight: 700; letter-spacing: 1px; margin-right: 8px; color: #60a5fa; }
+  #panel .sep { color: #334155; }
+
+  /* 切换开关 */
+  .toggle-group {
+    display: flex; align-items: center; gap: 6px;
+  }
+  .toggle-group label { font-size: 12px; color: #94a3b8; }
+  .toggle-sw {
+    position: relative; width: 44px; height: 24px; cursor: pointer;
+  }
+  .toggle-sw input { opacity: 0; width: 0; height: 0; }
+  .toggle-sw .slider {
+    position: absolute; top: 0; left: 0; right: 0; bottom: 0;
+    background: #334155; border-radius: 24px; transition: 0.2s;
+  }
+  .toggle-sw .slider::before {
+    content: ""; position: absolute; height: 18px; width: 18px;
+    left: 3px; bottom: 3px; background: #fff; border-radius: 50%; transition: 0.2s;
+  }
+  .toggle-sw input:checked + .slider { background: #2563eb; }
+  .toggle-sw input:checked + .slider::before { transform: translateX(20px); }
+
+  #panel button {
+    background: #1e3a5f; color: #cbd5e1; border: 1px solid #334155;
+    padding: 5px 12px; border-radius: 4px; font-size: 12px; cursor: pointer;
+    transition: 0.15s;
+  }
+  #panel button:hover { background: #2563eb; color: #fff; border-color: #2563eb; }
+  #panel button.active { background: #2563eb; color: #fff; border-color: #2563eb; }
+
+  .mode-badge {
+    font-size: 10px; padding: 3px 8px; border-radius: 10px;
+    font-weight: 600; letter-spacing: 0.5px;
+  }
+  .mode-badge.exact { background: #dc2626; color: #fff; }
+  .mode-badge.safe { background: #16a34a; color: #fff; }
+
+  /* ===== 页面容器 ===== */
+  .page {
+    width: 210mm; min-height: 297mm;
+    margin: 8mm auto; background: #fff;
+    box-shadow: 0 2px 24px rgba(0,0,0,0.12);
+    page-break-after: always;
+    position: relative;
+  }
+  .page:last-child { page-break-after: auto; }
+
+  .page-num {
+    position: absolute; bottom: 8mm; right: 14mm;
+    font-size: 10px; color: #94a3b8;
+  }
+
+  /* ===== 简历页：单栏 ===== */
+  .resume-page {
+    padding: 9mm 12mm 7mm;
+  }
+
+  /* Header */
+  .r-header { text-align: left; margin-bottom: 2.5mm; }
+  .r-header h1 {
+    font-size: 22px; font-weight: 800; color: #0f172a; letter-spacing: 1px;
+    display: inline-block;
+  }
+  .r-header .r-title {
+    font-size: 11.5px; color: #2563eb; font-weight: 600; margin: 0.8mm 0;
+  }
+  .r-header .r-intent {
+    font-size: 9px; color: #475569; margin-bottom: 1.5mm;
+  }
+
+  /* Contact strip */
+  .r-contact-strip {
+    display: flex; flex-wrap: wrap; gap: 3mm;
+    font-size: 8.5px; color: #475569;
+    padding: 2mm 0; margin-bottom: 3mm;
+    border-top: 1px solid #e2e8f0; border-bottom: 1px solid #e2e8f0;
+  }
+  .r-contact-strip span { white-space: nowrap; }
+
+  /* Summary + KPI */
+  .r-summary {
+    font-size: 9.5px; color: #334155; line-height: 1.55; margin-bottom: 3mm;
+  }
+  .r-summary strong { color: #2563eb; }
+
+  .r-kpi-row { display: flex; gap: 2.5mm; margin-bottom: 4mm; }
+  .r-kpi-row .r-kpi {
+    flex: 1; text-align: center;
+    background: #eff6ff; border-radius: 3px; padding: 2.5mm 2mm;
+  }
+  .r-kpi-row .r-kpi .k { font-size: 13px; font-weight: 800; color: #2563eb; }
+  .r-kpi-row .r-kpi .l { font-size: 7.5px; color: #64748b; margin-top: 0.3mm; }
+
+  /* Sections */
+  .r-section { margin-bottom: 3mm; }
+  .r-section h3 {
+    font-size: 11px; font-weight: 700; color: #0f172a;
+    padding-bottom: 1.2mm; border-bottom: 2px solid #2563eb;
+    margin-bottom: 2mm;
+  }
+
+  /* Work experience */
+  .r-exp { margin-bottom: 2.5mm; }
+  .r-exp .r-exp-hd { display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 0.5mm; }
+  .r-exp .r-exp-role { font-size: 10.5px; font-weight: 700; color: #0f172a; }
+  .r-exp .r-exp-date { font-size: 8.5px; color: #64748b; white-space: nowrap; }
+  .r-exp .r-exp-co { font-size: 9px; color: #2563eb; font-weight: 500; margin-bottom: 1mm; }
+  .r-exp ul { padding-left: 3.5mm; }
+  .r-exp ul li { font-size: 8.5px; color: #1e293b; margin-bottom: 0.6mm; line-height: 1.4; }
+  .r-exp ul li b, .r-exp ul li strong { color: #0f172a; }
+
+  .r-tbl { width: 100%; font-size: 7.5px; border-collapse: collapse; margin-top: 1mm; }
+  .r-tbl th { background: #0f172a; color: #fff; padding: 1.5mm 2mm; text-align: left; font-weight: 500; }
+  .r-tbl td { padding: 1.5mm 2mm; border-bottom: 1px solid #e2e8f0; }
+  .r-tbl tr:nth-child(even) td { background: #f1f5f9; }
+
+  /* Bottom: skills + education */
+  .r-bottom { margin-top: 2mm; }
+  .r-skills-strip { margin-bottom: 2mm; }
+  .r-skills-strip .sk-line { margin-bottom: 1mm; display: flex; align-items: baseline; gap: 1.5mm; font-size: 8px; }
+  .r-skills-strip .sk-line .sk-cat { font-weight: 700; color: #0f172a; white-space: nowrap; min-width: 16mm; }
+  .r-skills-strip .sk-line .sk-tags { color: #475569; }
+
+  .r-edu { font-size: 8px; color: #64748b; padding-top: 1.5mm; border-top: 1px solid #e2e8f0; }
+  .r-edu strong { color: #0f172a; }
+
+  /* ===== 作品集页样式 ===== */
+  .pf-cover {
+    background: linear-gradient(160deg, #0f172a 0%, #1e3a5f 50%, #1e40af 100%);
+    color: #fff; display: flex; flex-direction: column; justify-content: center;
+    text-align: center; padding: 18mm 14mm;
+  }
+  .pf-cover .pf-badge {
+    display: inline-block; border: 1px solid rgba(255,255,255,0.2);
+    padding: 2mm 6mm; border-radius: 20px; font-size: 11px;
+    color: #94a3b8; letter-spacing: 3px; margin-bottom: 12mm;
+  }
+  .pf-cover h1 { font-size: 38px; font-weight: 800; letter-spacing: 3px; margin-bottom: 4mm; }
+  .pf-cover .pf-sub { font-size: 16px; color: #94a3b8; margin-bottom: 10mm; }
+  .pf-cover .pf-tagline {
+    font-size: 13px; color: #cbd5e1; max-width: 65%; margin: 0 auto 16mm; line-height: 1.8;
+  }
+  .pf-stats { display: flex; justify-content: center; gap: 30px; margin-bottom: 16mm; }
+  .pf-stat { text-align: center; }
+  .pf-stat .sn { font-size: 30px; font-weight: 800; color: #60a5fa; }
+  .pf-stat .sl { font-size: 11px; color: #64748b; margin-top: 2mm; }
+
+  .pf-page { padding: 16mm 14mm; }
+  .pf-sec-title {
+    font-size: 24px; font-weight: 800; color: #0f172a;
+    border-bottom: 3px solid #2563eb; padding-bottom: 3mm; margin-bottom: 6mm;
+  }
+  .pf-sec-sub { font-size: 16px; font-weight: 700; color: #0f172a; margin: 6mm 0 3mm; }
+
+  .kpi-row { display: flex; gap: 4mm; margin-bottom: 6mm; flex-wrap: wrap; }
+  .kpi-card {
+    flex: 1; min-width: 28mm;
+    background: #eff6ff; border-left: 4px solid #2563eb;
+    padding: 4mm 5mm; border-radius: 3px;
+  }
+  .kpi-card .kc-num { font-size: 20px; font-weight: 800; color: #1e40af; }
+  .kpi-card .kc-label { font-size: 10px; color: #64748b; margin-top: 1mm; }
+
+  .hl-box {
+    background: #eff6ff; border: 1px solid #bfdbfe; border-radius: 5px;
+    padding: 4mm 6mm; margin: 5mm 0;
+  }
+  .hl-box .hl-title { font-size: 12px; font-weight: 700; color: #1e40af; margin-bottom: 2mm; }
+  .hl-box ul { padding-left: 5mm; font-size: 11px; color: #334155; }
+  .hl-box ul li { margin-bottom: 1.5mm; }
+
+  .tl { margin-bottom: 4mm; padding-left: 6mm; border-left: 3px solid #2563eb; }
+  .tl .tl-title { font-size: 13px; font-weight: 700; color: #0f172a; }
+  .tl .tl-desc { font-size: 11px; color: #475569; margin-top: 1mm; }
+
+  .pf-tbl { width: 100%; border-collapse: collapse; font-size: 10.5px; margin: 4mm 0; }
+  .pf-tbl th { background: #0f172a; color: #fff; padding: 2.5mm 3mm; text-align: left; font-weight: 500; }
+  .pf-tbl td { padding: 2.5mm 3mm; border-bottom: 1px solid #e2e8f0; }
+  .pf-tbl tr:nth-child(even) td { background: #f8fafc; }
+
+  .tag { display: inline-block; font-size: 10px; background: #dbeafe; color: #1e40af; padding: 1mm 4mm; border-radius: 3px; margin: 0 2mm 2mm 0; }
+
+  .process-row { display: flex; gap: 2mm; margin: 4mm 0; align-items: center; }
+  .process-step { flex: 1; background: #eff6ff; padding: 4mm; border-radius: 4px; text-align: center; }
+  .process-step .ps-num { font-size: 18px; font-weight: 800; color: #2563eb; }
+  .process-step .ps-title { font-size: 11px; font-weight: 700; color: #0f172a; margin: 1mm 0; }
+  .process-step .ps-desc { font-size: 9px; color: #64748b; }
+  .process-arrow { color: #94a3b8; font-size: 16px; flex-shrink: 0; }
+
+  .two-col { display: flex; gap: 5mm; }
+  .two-col .col { flex: 1; }
+
+  .cap-item { margin-bottom: 3mm; }
+  .cap-item .cap-label { font-size: 10px; color: #1e293b; margin-bottom: 1mm; display: flex; justify-content: space-between; }
+  .cap-item .cap-bar { height: 3mm; background: #e2e8f0; border-radius: 2px; overflow: hidden; }
+  .cap-item .cap-fill { height: 100%; background: #2563eb; border-radius: 2px; }
+
+  .pf-end-page {
+    background: linear-gradient(160deg, #0f172a 0%, #1e3a5f 50%, #1e40af 100%);
+    color: #fff; display: flex; flex-direction: column; justify-content: center;
+    text-align: center; padding: 18mm 14mm;
+  }
+  .pf-end-page h2 { font-size: 30px; font-weight: 800; color: #fff; margin-bottom: 6mm; }
+  .pf-end-page p { font-size: 13px; color: #94a3b8; margin-bottom: 10mm; line-height: 1.8; }
+
+  p { font-size: 11px; }
+  b, strong { color: #0f172a; }
+  .green { color: #16a34a; }
+
+  /* Desensitized mode indicator */
+  body.desensitized .exact-only { display: none; }
+  body:not(.desensitized) .safe-only { display: none; }
+
+  /* Print */
+  @media print {
+    body { background: #fff; padding-top: 0; }
+    #panel { display: none !important; }
+    .page { margin: 0; box-shadow: none; }
+    body.desensitized .exact-only { display: none; }
+    body:not(.desensitized) .safe-only { display: none; }
+  }
+</style>
+</head>
+<body class="exact-mode">
+
+<!-- ============================================ -->
+<!-- 控制面板 -->
+<!-- ============================================ -->
+<div id="panel">
+  <span class="brand">范思静 · 面试资料</span>
+  <span class="sep">|</span>
+
+  <button id="btn-resume" class="active" onclick="switchView('resume')">简历</button>
+  <button id="btn-portfolio" onclick="switchView('portfolio')">作品集</button>
+  <button id="btn-all" onclick="switchView('all')">全部</button>
+
+  <span class="sep">|</span>
+
+  <div class="toggle-group">
+    <label for="modeToggle">脱敏模式</label>
+    <label class="toggle-sw">
+      <input type="checkbox" id="modeToggle" onchange="toggleMode()">
+      <span class="slider"></span>
+    </label>
+    <span id="modeBadge" class="mode-badge exact">精确版</span>
+  </div>
+
+  <span class="sep">|</span>
+
+  <button onclick="window.print()">🖨 打印 / 导出PDF</button>
+  <span style="font-size:10px;color:#64748b;margin-left:auto;">提示：打印时自动隐藏本面板和脱敏标记</span>
+</div>
+
+
+<!-- ============================================ -->
+<!-- 简历 -->
+<!-- ============================================ -->
+<div id="resumeView" class="page resume-page">
+
+  <div class="r-header">
+    <h1>范思静</h1>
+    <div class="r-title">信息流视频项目主管 / 内容操盘手</div>
+    <div class="r-intent">求职意向：信息流内容负责人 / 短视频项目主管 · 广州（品牌方 / 代理均可）</div>
+  </div>
+
+  <div class="r-contact-strip">
+    <span>📱 15218129898</span>
+    <span>✉️ fansijing@outlook.com</span>
+    <span>📍 广州</span>
+    <span>🎂 26岁</span>
+    <span>🎬 作品集：面试时展示</span>
+  </div>
+
+  <div class="r-summary">
+    <strong>核心价值：</strong>4年内容操盘经验（2021至今），3年内完成从设计师助理到信息流项目主管的三级跃升（3.5K→15K）。横跨大健康、女装、家清三大品类均交出可量化成果；能下场拍剪、能带团队出活、能对品牌方结果负责。
+  </div>
+
+  <div class="r-kpi-row">
+    <div class="r-kpi"><div class="k">1,500+</div><div class="l">策划短视频</div></div>
+    <div class="r-kpi"><div class="k">35%</div><div class="l">爆款率（行业均值~15%）</div></div>
+    <div class="r-kpi"><div class="k">千万+</div><div class="l">月销售额峰值</div></div>
+    <div class="r-kpi"><div class="k">300万+</div><div class="l">峰值月消耗</div></div>
+    <div class="r-kpi"><div class="k">3天</div><div class="l">素材迭代周期（行业7天）</div></div>
+  </div>
+
+  <div class="r-section">
+    <h3>工作经历</h3>
+
+    <div class="r-exp">
+      <div class="r-exp-hd"><span class="r-exp-role">编导组长 / 项目负责人</span><span class="r-exp-date">2025.03 — 2026.07（1年5个月）</span></div>
+      <div class="r-exp-co">故事传媒（广州）· 家清品类（渍无踪、滴露、立白、椰放）</div>
+      <ul>
+        <li><b>【旧品复活：3个月未起量 → 月销千万】</b>主导渍无踪全链路操盘。团队已放弃该品，通过<strong>推动千川转全域投放、率先研发墨水渍系列抢占内容蓝海、拓展6种以上打法</strong>，逆转至峰值月耗<strong>300万+、月销千万</strong>，半年稳定200万/月</li>
+        <li><b>【0→1起量：新品牌首周即起量】</b>独立操盘立白小白白羽绒服干洗剂，对标爆款首批素材即起量，月耗保��在<strong>百万级</strong>，撬动立白集团后续合作</li>
+        <li><b>【卡审突破 + 团队建设】</b>接手立白卫仕全品类因审核卡死，主动研究规则调整表述，过审率恢复至正常。同步建立静组SOP体系——每月复盘落地50+优化项、编写培训白皮书——效率提升<strong>62.5%</strong>，组员晋升组长</li>
+      </ul>
+    </div>
+
+    <div class="r-exp">
+      <div class="r-exp-hd"><span class="r-exp-role">短视频内容负责人（项目制合作）</span><span class="r-exp-date">2024.09 — 2024.12（4个月）</span></div>
+      <div class="r-exp-co">远巨传媒（广州）· 女装品类（雅鹿羽绒服/羽绒裤）</div>
+      <ul>
+        <li><b>【新品类快速起量：爆款率20% → 35%+】</b>以项目制形式加入，<strong>首次接触女装品类</strong>即在4个月内搭建完整内容体系。主导建立脚本分层测试机制（框架→痛点→元素→裂变四层），将爆款率从20%提升至<strong>35%+</strong>，策划500+条短视频</li>
+        <li><b>【效率标准化：人效+60%，GMV+15%】</b>主动制定剪辑标准化模板并推动复用至3个新账号，建立数据日复盘机制快速淘汰低效素材，<strong>人效提升60%</strong>，直播GMV增长15%，单条视频GMV突破<strong>30万</strong></li>
+      </ul>
+    </div>
+
+    <div class="r-exp">
+      <div class="r-exp-hd"><span class="r-exp-role">短视频策划与运营</span><span class="r-exp-date">2021.11 — 2024.09（近3年）</span></div>
+      <div class="r-exp-co">合诚实业（广州）· 大健康品类（胶原蛋白/益生菌）· <span style="color:#64748b;">从设计师助理起步，3年内薪资3.5K→6.7K，独立负责品牌内容全链路</span></div>
+      <ul>
+        <li><b>【0→1搭建：从设计助理到独立操盘】</b>作为品牌<strong>第一个内容岗</strong>加入，从设计师助理起步，3年内从零搭建抖音+小红书双平台体系，产出600+条内容（8种形式），粉丝从0做到1.5万。主动搭建追踪表建立A/B测试，迭代周期压缩至<strong>3天</strong>（超行业均值），搜索率提升15%</li>
+        <li><b>【外部资源管理：合作400+条】</b>制定品牌剪辑细化表和需求标准化规范，管理第三方视频公司累计合作<strong>400+条</strong>内容，推动平台更新频率达到每周两更</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="r-section">
+    <h3>自我评价</h3>
+    <div style="font-size:9px;line-height:1.6;">
+      <p style="margin-bottom:1.5mm;"><b>【为什么是我】</b>4年内容操盘经验，3年内完成设计师助理→信息流项目主管的三级跃升（3.5K→15K），横跨大健康、女装、家清均交出可量化成果。能下场拍剪、能带团队出活、能对品牌方结果负责。</p>
+      <p style="margin-bottom:1.5mm;"><b>【全链路操盘】</b>覆盖选品→脚本→拍摄→剪辑→投放→数据复盘全流程，爆款率30-35%（行业均值约15%）。精通千川/巨量引擎/全域推广，熟悉抖音+小红书双平台。</p>
+      <p><b>【管理可复制】</b>从0搭建SOP体系，编写的培训白皮书和组长流程规范已被团队复用，所带组员已独立晋升组长——方法论可迁移至新团队。</p>
+    </div>
+  </div>
+
+  <div class="r-section">
+    <h3>项目速览</h3>
+    <table class="r-tbl">
+      <tr><th>项目</th><th>品类</th><th>角色</th><th>核心成果</th></tr>
+      <tr><td>渍无踪去渍啫喱</td><td>家清</td><td>编导组长</td><td>旧品复活 · 月销千万 · 峰值月耗300万+</td></tr>
+      <tr><td>小白白羽绒服干洗剂</td><td>家清</td><td>项目负责人</td><td>0→1起量 · 首周起量 · 月耗百万级</td></tr>
+      <tr><td>立白卫仕洗衣液</td><td>家清</td><td>编导组长</td><td>卡审突破 · 方案可复制</td></tr>
+      <tr><td>雅鹿羽绒服</td><td>女装</td><td>内容负责人</td><td>爆款率35%+ · 单条GMV 30万</td></tr>
+      <tr><td>益品达健大健康</td><td>保健</td><td>策划运营</td><td>0→1搭建 · 搜索率+15%</td></tr>
+    </table>
+  </div>
+
+  <div class="r-section">
+    <h3>补充说明</h3>
+    <div style="font-size:8px;color:#64748b;line-height:1.5;">
+      <p>· 2024.12—2025.03 为项目制结束后的择业过渡期，持续跟进行业动态。可接受品牌方或代理公司内容负责人/项目主管岗位，base广州，亦可远程。作品集视频素材面试时可展示。</p>
+    </div>
+  </div>
+
+  <div class="r-bottom">
+    <div class="r-skills-strip">
+      <div class="sk-line"><span class="sk-cat">投放&amp;数据</span><span class="sk-tags">千川 · 巨量引擎 · 全域推广 · Excel透视表</span></div>
+      <div class="sk-line"><span class="sk-cat">内容&amp;设计</span><span class="sk-tags">剪映 · Premiere · AE · Photoshop · Illustrator · Figma</span></div>
+      <div class="sk-line"><span class="sk-cat">管理&amp;品类</span><span class="sk-tags">SOP搭建 · 团队带教 · 跨部门协调 &nbsp;|&nbsp; 家清 · 女装 · 大健康</span></div>
+    </div>
+    <div class="r-edu">
+      <strong>广东南华工商职业学院</strong> · 数字媒体应用技术 · 2019.09—2022.06 &nbsp;|&nbsp; GPA 3.6 · 优秀毕业生 · 国家奖学金
+    </div>
+  </div>
+
+</div>
+
+
+<!-- ============================================ -->
+<!-- 作品集 -->
+<!-- ============================================ -->
+<div id="portfolioView">
+
+<!-- P1: 封面 -->
+<div class="page pf-cover">
+  <div class="pf-badge">PORTFOLIO 2026</div>
+  <h1>范思静</h1>
+  <div class="pf-sub">信息流视频项目主管 · 作品集</div>
+  <div class="pf-tagline">
+    3年短视频电商全链路操盘，覆盖家清、女装、大健康三个品类。<br>
+    擅长旧品复活、0→1起量、卡审突破，数据驱动的爆款方法论沉淀。
+  </div>
+  <div class="pf-stats">
+    <div class="pf-stat"><div class="sn">1,500+</div><div class="sl">策划短视频</div></div>
+    <div class="pf-stat"><div class="sn">35%+</div><div class="sl">整体爆款率</div></div>
+    <div class="pf-stat"><div class="sn">千万级</div><div class="sl">月销售额峰值</div></div>
+    <div class="pf-stat"><div class="sn">300万+</div><div class="sl">峰值月消耗</div></div>
+  </div>
+  <div class="pf-cover" style="background:none;padding:0;margin-top:0;">
+    <p style="color:#64748b;font-size:12px;">15218129898 &nbsp;|&nbsp; 1445727280@qq.com &nbsp;|&nbsp; 广州</p>
+  </div>
+  <div class="page-num" style="color:#64748b;">1 / 7</div>
+</div>
+
+<!-- P2: 渍无踪旧品复活 -->
+<div class="page pf-page">
+  <!-- 精确版 -->
+  <div class="exact-only">
+    <div class="pf-sec-title">核心案例：渍无踪去渍啫喱 — 旧品复活</div>
+    <div class="kpi-row">
+      <div class="kpi-card"><div class="kc-num">3个月</div><div class="kc-label">接手前未起量</div></div>
+      <div class="kpi-card"><div class="kc-num">300万+</div><div class="kc-label">峰值月消耗</div></div>
+      <div class="kpi-card"><div class="kc-num">1000万+</div><div class="kc-label">月销售额</div></div>
+      <div class="kpi-card"><div class="kc-num">200万</div><div class="kc-label">稳定月消耗（持续半年）</div></div>
+      <div class="kpi-card"><div class="kc-num">150万</div><div class="kc-label">单条视频累计消耗</div></div>
+    </div>
+    <p>渍无踪（利洁时/Vanish）因公司合作下放广州分部。我入职时已<strong>连续3个月未起量</strong>，团队完全无信心，品牌方持续缩减预算。</p>
+  </div>
+  <!-- 脱敏版 -->
+  <div class="safe-only">
+    <div class="pf-sec-title">核心案例：某国际去渍品牌 — 旧品复活</div>
+    <div class="kpi-row">
+      <div class="kpi-card"><div class="kc-num">三个月</div><div class="kc-label">接手前未起量</div></div>
+      <div class="kpi-card"><div class="kc-num">300万+</div><div class="kc-label">峰值月消耗</div></div>
+      <div class="kpi-card"><div class="kc-num">千万级</div><div class="kc-label">月销售额</div></div>
+      <div class="kpi-card"><div class="kc-num">半年+</div><div class="kc-label">月耗稳定在百万级</div></div>
+      <div class="kpi-card"><div class="kc-num">百万级</div><div class="kc-label">单条视频累计消耗</div></div>
+    </div>
+    <p>国际日化集团旗下去渍品牌，因渠道调整下放至本地团队运营。我入职时该产品已<strong>连续数月未起量</strong>，团队对该品缺乏信心，品牌方持续缩减投放预算。</p>
+  </div>
+
+  <div class="pf-sec-sub">我做的三件事</div>
+
+  <div class="tl">
+    <div class="tl-title">1. 投放策略转型</div>
+    <div class="tl-desc">
+      <span class="exact-only">分析历史数据发现千川标准投放已触达天花板，推动切换至<strong>全域投放</strong>模式。运营混剪消耗占比从~23%提升至~31%。</span>
+      <span class="safe-only">分析历史数据发现标准投放模式已触达天花板，推动切换至<strong>全域投放</strong>模式，拓展流量来源渠道。混剪素材的消耗占比从约两成提升至三成以上。</span>
+    </div>
+  </div>
+  <div class="tl">
+    <div class="tl-title">2. 抓住爆点</div>
+    <div class="tl-desc">
+      <span class="exact-only">观察到竞品"邮政打墨水渍"形式在千川起量，立即研究不同墨水×不同布料的污渍制作方法，<strong>率先产出墨水渍系列视频</strong>，为该品指明方向，成为最核心跑量素材类型之一。</span>
+      <span class="safe-only">观测到竞品某特定污渍类型视频在平台上起量，立即研究不同污渍×不同材质的制作方法，<strong>率先产出该系列视频</strong>，为该品类找到核心跑量方向。</span>
+    </div>
+  </div>
+  <div class="tl">
+    <div class="tl-title">3. 突破形式限制</div>
+    <div class="tl-desc">前期品类局限在单一展示形式。全域投放后推动尝试口播、对比、沉浸式、剧情、混剪等多种内容形式，大幅拓展素材产出类型和跑量概率。</div>
+  </div>
+
+  <div class="hl-box">
+    <div class="hl-title">扭转结果</div>
+    <ul>
+      <li>从"不被看好的过渡品"变为<strong>公司核心利润产品</strong></li>
+      <li>品牌方从缩减预算 → <strong>追加投放预算</strong></li>
+      <li>产品稳定后，<strong>将组员培养至可接任组长</strong>，自己再次带队负责新品</li>
+    </ul>
+  </div>
+
+  <div class="page-num">2 / 7</div>
+</div>
+
+<!-- P3: 数据 + 复盘 -->
+<div class="page pf-page">
+  <div class="pf-sec-title">
+    <span class="exact-only">渍无踪 — 数据增长轨迹 & 持续优化</span>
+    <span class="safe-only">旧品复活 — 增长轨迹 & 持续优化</span>
+  </div>
+
+  <div class="exact-only">
+    <div class="pf-sec-sub">起量验证期（2025年3-4月）</div>
+    <table class="pf-tbl">
+      <tr><th>指标</th><th>3.4 - 3.17</th><th>3.18 - 4.5</th><th>变化</th></tr>
+      <tr><td>整体消耗</td><td>106.1万</td><td>149.1万</td><td class="green">+40%</td></tr>
+      <tr><td>整体GMV</td><td>182.7万</td><td>259.1万</td><td class="green">+42%</td></tr>
+      <tr><td>整体ROI</td><td>1.72</td><td>1.74</td><td>↑ 稳定</td></tr>
+      <tr><td>转化率</td><td>10.41%</td><td>13.85%</td><td>↑ 素材精准度提升</td></tr>
+      <tr><td>素材成片</td><td>795</td><td>902</td><td>↑</td></tr>
+      <tr><td>素材过审率</td><td>99%</td><td>99%</td><td>→ 稳定</td></tr>
+    </table>
+
+    <div class="pf-sec-sub">成熟运营期（2026年5-6月）</div>
+    <table class="pf-tbl">
+      <tr><th>指标</th><th>5.20 - 6.9</th><th>6.10 - 6.30</th><th>说明</th></tr>
+      <tr><td>整体消耗</td><td>214.9万</td><td>133.3万</td><td>618后流量正常回落</td></tr>
+      <tr><td>整体GMV</td><td>361.8万</td><td>229.3万</td><td>大促后正常回调</td></tr>
+      <tr><td>整体ROI</td><td>1.68</td><td>1.72</td><td>ROI稳定</td></tr>
+      <tr><td>素材成片</td><td>2,566</td><td>3,572</td><td class="green">产能大幅提升</td></tr>
+      <tr><td>素材过审率</td><td>99%</td><td>98%</td><td>持续高位</td></tr>
+    </table>
+  </div>
+
+  <div class="safe-only">
+    <div class="pf-sec-sub">增长轨迹</div>
+    <table class="pf-tbl">
+      <tr><th>阶段</th><th>关键指标变化</th><th>说明</th></tr>
+      <tr><td>起量验证期</td><td>消耗提升约40%，GMV提升约40%<br>转化率从约10%提升至约14%</td><td>全域投放策略见效，素材精准度提升</td></tr>
+      <tr><td>放量增长期</td><td>消耗持续爬坡，GMV创新高<br>素材成片数大幅增长</td><td>爆款方向验证后规模化复制</td></tr>
+      <tr><td>成熟运营期</td><td>消耗稳定在百万级/月，ROI保持稳定<br>素材过审率持续保持98-99%</td><td>体系化运营，产能与质量双稳定</td></tr>
+    </table>
+  </div>
+
+  <div class="pf-sec-sub">月度复盘机制</div>
+  <table class="pf-tbl">
+    <tr><th>类型</th><th>发现的问题</th><th>落地优化</th></tr>
+    <tr><td>拍摄执行</td><td>手影过重影响画面质量；补光位置不当</td><td>调整主光角度和位置；建立拍摄前灯光检查清单</td></tr>
+    <tr><td>内容策略</td><td>翻拍爆款效果不佳，未明确核心爆点</td><td>先拆解爆款核心要素再翻拍，而非直接照搬</td></tr>
+    <tr><td>合规应对</td><td>
+      <span class="exact-only">墨水渍内容因差评被平台限制</span>
+      <span class="safe-only">某类污渍内容因用户反馈被平台限制</span>
+    </td><td>
+      <span class="exact-only">统计8条起量视频中3条涉及墨水渍；果渍改为"果汁渍"说法</span>
+      <span class="safe-only">统计受影响素材占比；调整内容表述方式规避风险</span>
+    </td></tr>
+    <tr><td>拍摄细节</td><td>产品演示环节不可控因素多</td><td>优化演示流程顺序；放弃不可复现的演示方案</td></tr>
+    <tr><td>质量标准</td><td>产品呈现效果不理想；道具质量问题</td><td>开拍前统一产品准备标准；道具入库前检查</td></tr>
+  </table>
+
+  <div class="hl-box" style="margin-top:3mm;">
+    <div class="hl-title">这组数据的面试价值</div>
+    <ul>
+      <li>不是"某一条爆了"，而是从起量到稳定的<strong>完整增长曲线</strong></li>
+      <li>每个问题都有<strong>"发现→方案→落地"</strong>的闭环——证明执行力和管理习惯</li>
+      <li>沉淀了跨品类知识资产和<strong>5份规范文档</strong></li>
+    </ul>
+  </div>
+
+  <div class="page-num">3 / 7</div>
+</div>
+
+<!-- P4: 小白白 + 立白卫仕 -->
+<div class="page pf-page">
+  <!-- 精确版 -->
+  <div class="exact-only">
+    <div class="pf-sec-title">小白白羽绒服干洗剂 — 0→1起量</div>
+    <div class="kpi-row">
+      <div class="kpi-card"><div class="kc-num">首周</div><div class="kc-label">即起量（前5条视频）</div></div>
+      <div class="kpi-card"><div class="kc-num">10万+</div><div class="kc-label">首周单条消耗</div></div>
+      <div class="kpi-card"><div class="kc-num">45万+</div><div class="kc-label">项目结束单条日消耗</div></div>
+      <div class="kpi-card"><div class="kc-num">百万级</div><div class="kc-label">持续月消耗</div></div>
+    </div>
+    <p>立白集团旗下新品，零历史数据，作为<strong>项目负责人独立带队</strong>。</p>
+  </div>
+  <!-- 脱敏版 -->
+  <div class="safe-only">
+    <div class="pf-sec-title">某国产羽绒服清洁品牌 — 0→1 起量</div>
+    <div class="kpi-row">
+      <div class="kpi-card"><div class="kc-num">首周</div><div class="kc-label">即起量（首批5条视频）</div></div>
+      <div class="kpi-card"><div class="kc-num">十万级</div><div class="kc-label">首周单条消耗</div></div>
+      <div class="kpi-card"><div class="kc-num">数十万</div><div class="kc-label">项目结束单条日消耗</div></div>
+      <div class="kpi-card"><div class="kc-num">百万级</div><div class="kc-label">持续月消耗</div></div>
+    </div>
+    <p>国内日化集团旗下新品牌，缺乏历史投放数据，作为<strong>项目负责人独立带队</strong>从零搭建内容体系和投放策略。</p>
+  </div>
+
+  <div class="tl">
+    <div class="tl-title">第1周：快速对标起量</div>
+    <div class="tl-desc">对标竞品爆款框架快速产出第一批测试素材。首批素材即起量，验证了品类方向和内容框架的可行性。</div>
+  </div>
+  <div class="tl">
+    <div class="tl-title">1.5个月：放大跑量</div>
+    <div class="tl-desc">
+      <span class="exact-only">聚焦高转化素材类型，持续优化脚本结构和拍摄细节。单条日产达15万+，项目结束时跑至45万+。</span>
+      <span class="safe-only">聚焦高转化素材类型，持续优化脚本结构和拍摄细节。单条日产持续爬坡，项目结束时跑到日消耗数十万级别。</span>
+    </div>
+  </div>
+  <div class="tl">
+    <div class="tl-title">长期：稳定与撬动</div>
+    <div class="tl-desc">
+      <span class="exact-only">月消耗保持百万级，<strong>撬动了立白集团深度合作</strong>（卫仕洗衣液）。</span>
+      <span class="safe-only">月消耗保持百万级，<strong>成功撬动该集团的后续深度合作</strong>（新品类项目）。</span>
+    </div>
+  </div>
+
+  <div class="hl-box">
+    <div class="hl-title">这个案例证明</div>
+    <ul>
+      <li>给我一个新品，<strong>1周内找到起量方向</strong></li>
+      <li>不是靠运气爆一条——持续产出、持续迭代、持续放量</li>
+      <li>从编导组长到<strong>项目负责人</strong>，独立对品牌方结果负责</li>
+    </ul>
+  </div>
+
+  <!-- 精确版 - 立白卫仕 -->
+  <div class="exact-only">
+    <div class="pf-sec-title" style="margin-top:8mm;">立白卫仕除菌洗衣液 — 卡审突破</div>
+    <p>立白卫仕除菌洗衣液是立白集团与故事传媒的深度合作项目。产品上线后遭遇<strong>全品类视频卡审</strong>——除菌类产品因涉及功效宣称被平台大量驳回，导致所有素材无法正常投放。</p>
+    <div class="tl">
+      <div class="tl-title">从"全卡"到"不卡"</div>
+      <div class="tl-desc">研究审核规则后，发现核心问题在<strong>菌种表述</strong>。将"多菌种/多种细菌"改为单一"除菌"表述，视频过审率从几乎为0恢复到正常水平。产出27条脚本，方案可复用至其他除菌品类。</div>
+    </div>
+  </div>
+
+  <!-- 脱敏版 - 卡审突破 -->
+  <div class="safe-only">
+    <div class="pf-sec-title" style="margin-top:8mm;">某除菌品类 — 卡审突破</div>
+    <p>功效型产品因涉及敏感宣称被平台大量驳回，<strong>全品类素材无法正常投放</strong>。</p>
+    <div class="tl">
+      <div class="tl-title">从"全卡"到"不卡"</div>
+      <div class="tl-desc">深入研究平台审核规则后，发现核心问题在于<strong>功效表述方式</strong>。将宽泛宣称改为聚焦表述，视频过审率从几乎为0恢复到正常水平。积累的审核应对经验可复用至同类产品，产出20+条合规脚本。</div>
+    </div>
+  </div>
+
+  <div class="hl-box" style="margin-top:4mm;">
+    <div class="hl-title">面试价值</div>
+    <ul>
+      <li>不仅能做爆款，还能解决<strong>"别人解决不了"的合规问题</strong></li>
+      <li>方案的可复制性高——后续同类产品可直接复用</li>
+    </ul>
+  </div>
+
+  <div class="page-num">4 / 7</div>
+</div>
+
+<!-- P5: 合诚 + 跨品类 -->
+<div class="page pf-page">
+  <div class="pf-sec-title">
+    <span class="exact-only">合诚实业（大健康）— 品牌方从0到1</span>
+    <span class="safe-only">某健康品牌 — 品牌方内容体系从0到1</span>
+  </div>
+
+  <div class="exact-only">
+    <div class="kpi-row">
+      <div class="kpi-card"><div class="kc-num">400+</div><div class="kc-label">短视频产出</div></div>
+      <div class="kpi-card"><div class="kc-num">200+</div><div class="kc-label">图文产出</div></div>
+      <div class="kpi-card"><div class="kc-num">+18%</div><div class="kc-label">小红书转粉率</div></div>
+      <div class="kpi-card"><div class="kc-num">+22%</div><div class="kc-label">抖音点击率</div></div>
+      <div class="kpi-card"><div class="kc-num">+15%</div><div class="kc-label">搜索率（超行业5%）</div></div>
+    </div>
+    <p>2021年我作为<strong>第一个内容岗位员工</strong>加入合诚实业，从零搭建品牌在抖音和小红书的短视频+图文内容体系。<strong>这是我职业生涯的起点，也是最长的一段经历（近3年）。</strong></p>
+  </div>
+  <div class="safe-only">
+    <div class="kpi-row">
+      <div class="kpi-card"><div class="kc-num">600+</div><div class="kc-label">短视频 + 图文产出</div></div>
+      <div class="kpi-card"><div class="kc-num">显著提升</div><div class="kc-label">各平台关键指标</div></div>
+      <div class="kpi-card"><div class="kc-num">0→1</div><div class="kc-label">双平台内容体系搭建</div></div>
+      <div class="kpi-card"><div class="kc-num">3天</div><div class="kc-label">素材迭代周期</div></div>
+    </div>
+    <p>我作为<strong>第一个内容岗位员工</strong>加入该公司，从零搭建品牌在抖音和小红书的短视频+图文内容体系。<strong>这是我职业生涯的起点，也是最长的一段经历（近3年）。</strong></p>
+  </div>
+
+  <div class="two-col">
+    <div class="col">
+      <div class="hl-box">
+        <div class="hl-title">核心贡献</div>
+        <ul>
+          <li>从0到1搭建抖音+小红书双平台内容体系</li>
+          <li>建立品类视觉素材库（图片+短视频，成为后续内容生产的基础设施）</li>
+          <li>独立搭建视频效果追踪表，跑通A/B测试流程</li>
+          <li>素材迭代周期从7天压缩至3天</li>
+          <li>产出8种以上内容形式（口播/科普/剧情/热点借势等）</li>
+          <li>管理第三方供应商合作，累计数百条内容</li>
+        </ul>
+      </div>
+    </div>
+    <div class="col">
+      <div class="hl-box">
+        <div class="hl-title">这段经历的面试价值</div>
+        <ul>
+          <li><strong>品牌方视角</strong>：不只是流量操盘，理解品牌长期建设和视觉资产管理</li>
+          <li><strong>0→1能力</strong>：无前人、无模板、无数据体系下自己搭建一切</li>
+          <li><strong>多平台思维</strong>：抖音（转化）+ 小红书（种草）双平台</li>
+          <li><strong>近3年稳定性</strong>：证明能在一个地方持续深耕</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <div class="pf-sec-sub" style="margin-top:5mm;">跨品类经验</div>
+  <table class="pf-tbl">
+    <tr><th>品类</th><th>代表产品类型</th><th>主要形式</th><th>核心成果</th></tr>
+    <tr><td>家清·去渍</td><td>去渍啫喱</td><td>口播+对比+混剪</td><td>月销千万级</td></tr>
+    <tr><td>家清·羽绒服清洁</td><td>羽绒服干洗剂</td><td>口播+演示+直播</td><td>首周起量，月耗百万级</td></tr>
+    <tr><td>家清·除菌</td><td>除菌洗衣液</td><td>多种开头+混剪</td><td>卡审突破</td></tr>
+    <tr><td>女装·羽绒</td><td>羽绒服/羽绒裤</td><td>户外实拍+展示</td><td>爆款率30%+，单条GMV 30万</td></tr>
+    <tr><td>大健康</td><td>口服美容/益生菌</td><td>口播+科普+剧情</td><td>品牌搜索率显著提升</td></tr>
+    <tr><td>家清·地板清洁</td><td>地板清洁液</td><td>机器音+展示</td><td>持续产出爆款脚本</td></tr>
+  </table>
+
+  <div class="page-num">5 / 7</div>
+</div>
+
+<!-- P6: 方法论 -->
+<div class="page pf-page">
+  <div class="pf-sec-title">我的方法论 & 能力体系</div>
+
+  <div class="pf-sec-sub">信息流视频起量五步法</div>
+  <div class="process-row">
+    <div class="process-step">
+      <div class="ps-num">1</div>
+      <div class="ps-title">竞品拆解</div>
+      <div class="ps-desc">找对标/拆框架/提取爆点</div>
+    </div>
+    <div class="process-arrow">→</div>
+    <div class="process-step">
+      <div class="ps-num">2</div>
+      <div class="ps-title">A/B测试</div>
+      <div class="ps-desc">多版本脚本/多开头/多形式</div>
+    </div>
+    <div class="process-arrow">→</div>
+    <div class="process-step">
+      <div class="ps-num">3</div>
+      <div class="ps-title">数据验证</div>
+      <div class="ps-desc">消耗/ROI/转化/人群画像</div>
+    </div>
+    <div class="process-arrow">→</div>
+    <div class="process-step">
+      <div class="ps-num">4</div>
+      <div class="ps-title">爆款裂变</div>
+      <div class="ps-desc">翻拍/混剪复刻/变体测试</div>
+    </div>
+    <div class="process-arrow">→</div>
+    <div class="process-step">
+      <div class="ps-num">5</div>
+      <div class="ps-title">体系沉淀</div>
+      <div class="ps-desc">SOP/模板/知识库/培训</div>
+    </div>
+  </div>
+
+  <div class="pf-sec-sub">脚本分层测试体系</div>
+  <table class="pf-tbl">
+    <tr><th>层级</th><th>策略</th><th>目的</th></tr>
+    <tr><td>第一层：框架测试</td><td>同一产品，5-8种不同框架结构</td><td>找到最优框架</td></tr>
+    <tr><td>第二层：痛点测试</td><td>同一框架，不同痛点关键词</td><td>找到最高转化痛点</td></tr>
+    <tr><td>第三层：元素测试</td><td>同一痛点，不同开头/人声/画面</td><td>微调提升跑量概率</td></tr>
+    <tr><td>第四层：裂变</td><td>爆款框架 × 新痛点/场景/人群</td><td>规模化复制</td></tr>
+  </table>
+
+  <div class="pf-sec-sub">团队效率体系</div>
+  <div class="two-col">
+    <div class="col">
+      <div class="hl-box">
+        <div class="hl-title">剪辑模板化</div>
+        <p style="font-size:10px;">爆款结构拆解为可复用模板（开头→展示→对比→催促），剪辑按模板套用，<strong>效率提升60%+</strong></p>
+      </div>
+    </div>
+    <div class="col">
+      <div class="hl-box">
+        <div class="hl-title">日复盘机制</div>
+        <p style="font-size:10px;">每日追踪素材跑量数据，快速淘汰低效素材、加倍高效素材，<strong>迭代周期从周级压缩到天级</strong></p>
+      </div>
+    </div>
+  </div>
+
+  <div class="pf-sec-sub" style="margin-top:5mm;">能力掌握度</div>
+  <div class="cap-item">
+    <div class="cap-label"><span>信息流投放 & 数据复盘</span><span>精通</span></div>
+    <div class="cap-bar"><div class="cap-fill" style="width:95%"></div></div>
+  </div>
+  <div class="cap-item">
+    <div class="cap-label"><span>视频内容策划 & 制作</span><span>精通</span></div>
+    <div class="cap-bar"><div class="cap-fill" style="width:95%"></div></div>
+  </div>
+  <div class="cap-item">
+    <div class="cap-label"><span>团队管理 & 流程搭建</span><span>熟练</span></div>
+    <div class="cap-bar"><div class="cap-fill" style="width:85%"></div></div>
+  </div>
+  <div class="cap-item">
+    <div class="cap-label"><span>视觉设计 (PS/AI/Figma)</span><span>精通</span></div>
+    <div class="cap-bar"><div class="cap-fill" style="width:90%"></div></div>
+  </div>
+  <div class="cap-item">
+    <div class="cap-label"><span>跨品类内容迁移</span><span>熟练</span></div>
+    <div class="cap-bar"><div class="cap-fill" style="width:85%"></div></div>
+  </div>
+
+  <div class="page-num">6 / 7</div>
+</div>
+
+<!-- P7: 尾页 -->
+<div class="page pf-end-page">
+  <h2>范思静</h2>
+  <p>
+    信息流视频项目主管<br>
+    <span style="font-size:11px;color:#64748b;">3年全链路 · 3品类 · 千万级月销</span>
+  </p>
+  <div class="pf-stats" style="margin-bottom:12mm;">
+    <div class="pf-stat"><div class="sn" style="color:#60a5fa;">1,500+</div><div class="sl">策划视频</div></div>
+    <div class="pf-stat"><div class="sn" style="color:#60a5fa;">35%</div><div class="sl">爆款率</div></div>
+    <div class="pf-stat"><div class="sn" style="color:#60a5fa;">千万级</div><div class="sl">月销售额</div></div>
+  </div>
+  <p style="color:#94a3b8;font-size:11px;">
+    15218129898 &nbsp;|&nbsp; 1445727280@qq.com &nbsp;|&nbsp; 广州
+  </p>
+  <p style="color:#64748b;font-size:10px;margin-top:8mm;">
+    <span class="exact-only">作品集内数据均来自真实业务复盘，完整视频素材和复盘文档可面试时展示</span>
+    <span class="safe-only">面试时可提供更详细的业务数据复盘</span>
+  </p>
+  <div class="page-num" style="color:#64748b;">7 / 7</div>
+</div>
+
+</div><!-- /portfolioView -->
+
+
+<!-- ============================================ -->
+<!-- Script -->
+<!-- ============================================ -->
+<script>
+  let currentView = 'all';
+
+  function switchView(view) {
+    currentView = view;
+    document.getElementById('resumeView').style.display = (view === 'resume' || view === 'all') ? '' : 'none';
+    document.getElementById('portfolioView').style.display = (view === 'portfolio' || view === 'all') ? '' : 'none';
+    document.querySelectorAll('#panel button[id^="btn-"]').forEach(b => b.classList.remove('active'));
+    document.getElementById('btn-' + view).classList.add('active');
+  }
+
+  function toggleMode() {
+    const checked = document.getElementById('modeToggle').checked;
+    document.body.classList.toggle('desensitized', checked);
+    const badge = document.getElementById('modeBadge');
+    if (checked) {
+      badge.textContent = '脱敏版';
+      badge.className = 'mode-badge safe';
+    } else {
+      badge.textContent = '精确版';
+      badge.className = 'mode-badge exact';
+    }
+  }
+
+  // URL parameter override
+  const urlParams = new URLSearchParams(window.location.search);
+  const urlView = urlParams.get('view');
+  const initView = urlView || 'all';
+  switchView(initView);
+</script>
+
+</body>
+</html>

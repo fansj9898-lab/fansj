@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>范思静 — 信息流视频项目主管</title>
+<style>
+  @page { size: A4; margin: 0; }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  :root {
+    --navy: #0f172a;
+    --blue: #2563eb;
+    --light-blue: #eff6ff;
+    --gray: #64748b;
+    --light-gray: #f1f5f9;
+    --text: #1e293b;
+    --border: #e2e8f0;
+  }
+
+  body {
+    font-family: -apple-system, "PingFang SC", "Microsoft YaHei", sans-serif;
+    color: var(--text);
+    background: #e8ecf1;
+    line-height: 1.5;
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+
+  .page {
+    width: 210mm;
+    min-height: 297mm;
+    margin: 8mm auto;
+    background: #fff;
+    box-shadow: 0 2px 24px rgba(0,0,0,0.12);
+    display: grid;
+    grid-template-columns: 62mm 1fr;
+    overflow: hidden;
+  }
+
+  /* —— Sidebar —— */
+  .sidebar {
+    background: var(--navy);
+    color: #fff;
+    padding: 14mm 6mm 10mm;
+    display: flex;
+    flex-direction: column;
+    gap: 6mm;
+  }
+  .sidebar .avatar {
+    width: 28mm; height: 28mm;
+    border-radius: 50%;
+    background: rgba(255,255,255,0.1);
+    margin: 0 auto 2mm;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 24px; font-weight: 300; color: #94a3b8;
+  }
+  .sidebar h2 {
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    color: #64748b;
+    margin-bottom: 3mm;
+    padding-bottom: 2mm;
+    border-bottom: 1px solid rgba(255,255,255,0.1);
+  }
+  .sidebar .contact-item {
+    font-size: 10px; color: #cbd5e1; margin-bottom: 2.5mm;
+    display: flex; align-items: flex-start; gap: 3mm;
+  }
+  .sidebar .contact-item .icon { width: 4mm; flex-shrink: 0; color: #60a5fa; }
+
+  .skill-group { margin-bottom: 3mm; }
+  .skill-group .sg-title { font-size: 10px; font-weight: 600; color: #e2e8f0; margin-bottom: 1.5mm; }
+  .skill-group .sg-tags { display: flex; flex-wrap: wrap; gap: 1.5mm; }
+  .skill-group .sg-tags span {
+    font-size: 8.5px; background: rgba(255,255,255,0.08);
+    padding: 1mm 3mm; border-radius: 2mm;
+    color: #94a3b8;
+  }
+
+  .sidebar .edu p { font-size: 10px; color: #cbd5e1; margin-bottom: 1mm; }
+  .sidebar .edu .edu-school { font-weight: 600; color: #fff; }
+  .sidebar .edu .edu-meta { font-size: 8.5px; color: #64748b; margin-top: 1mm; }
+
+  /* —— Main —— */
+  .main {
+    padding: 14mm 8mm 10mm 8mm;
+  }
+  .main .header { margin-bottom: 6mm; }
+  .main .header h1 {
+    font-size: 24px; font-weight: 800; color: var(--navy); letter-spacing: 1px;
+  }
+  .main .header .title {
+    font-size: 12px; color: var(--blue); font-weight: 600; margin: 1.5mm 0 2.5mm;
+  }
+  .main .header .summary {
+    font-size: 10px; color: var(--gray); line-height: 1.6;
+  }
+
+  /* KPI strip */
+  .kpi-strip {
+    display: flex; gap: 3mm; margin-bottom: 6mm;
+  }
+  .kpi-strip .kpi {
+    flex: 1; text-align: center;
+    background: var(--light-blue); border-radius: 3px; padding: 3mm 2mm;
+  }
+  .kpi .kpi-num { font-size: 14px; font-weight: 800; color: var(--blue); }
+  .kpi .kpi-label { font-size: 8px; color: var(--gray); margin-top: 0.5mm; }
+
+  .section { margin-bottom: 5mm; }
+  .section h2 {
+    font-size: 12px; font-weight: 700; color: var(--navy);
+    padding-bottom: 1.5mm; border-bottom: 2px solid var(--blue);
+    margin-bottom: 3mm; display: flex; align-items: center; gap: 2mm;
+  }
+
+  .exp-item { margin-bottom: 4mm; }
+  .exp-item .exp-header {
+    display: flex; justify-content: space-between; align-items: baseline;
+    margin-bottom: 1mm;
+  }
+  .exp-item .exp-role { font-size: 11.5px; font-weight: 700; color: var(--navy); }
+  .exp-item .exp-date { font-size: 9px; color: var(--gray); white-space: nowrap; }
+  .exp-item .exp-company { font-size: 10px; color: var(--blue); font-weight: 500; margin-bottom: 1.5mm; }
+  .exp-item ul { padding-left: 4mm; }
+  .exp-item ul li { font-size: 9.5px; color: var(--text); margin-bottom: 1mm; line-height: 1.5; }
+  .exp-item ul li strong { color: var(--navy); }
+
+  .project-table { width: 100%; font-size: 8.5px; border-collapse: collapse; margin-top: 2mm; }
+  .project-table th {
+    background: var(--navy); color: #fff; padding: 2mm 2.5mm; text-align: left;
+    font-weight: 500;
+  }
+  .project-table td { padding: 2mm 2.5mm; border-bottom: 1px solid var(--border); }
+  .project-table tr:nth-child(even) td { background: var(--light-gray); }
+
+  .tag {
+    display: inline-block; font-size: 8px;
+    background: #dbeafe; color: #1e40af;
+    padding: 0.5mm 3mm; border-radius: 2mm; margin-right: 1.5mm;
+  }
+
+  @media print {
+    body { background: #fff; }
+    .page { margin: 0; box-shadow: none; }
+  }
+</style>
+</head>
+<body>
+
+<div class="page">
+  <!-- SIDEBAR -->
+  <div class="sidebar">
+    <div class="avatar">FSJ</div>
+
+    <div>
+      <h2>联系</h2>
+      <div class="contact-item"><span class="icon">📱</span>15218129898</div>
+      <div class="contact-item"><span class="icon">✉️</span>1445727280@qq.com</div>
+      <div class="contact-item"><span class="icon">📍</span>广州</div>
+      <div class="contact-item"><span class="icon">🎂</span>26岁</div>
+    </div>
+
+    <div>
+      <h2>核心技能</h2>
+      <div class="skill-group">
+        <div class="sg-title">投放 & 数据</div>
+        <div class="sg-tags"><span>千川</span><span>巨量引擎</span><span>全域推广</span><span>Excel透视表</span><span>数据复盘</span></div>
+      </div>
+      <div class="skill-group">
+        <div class="sg-title">内容创作</div>
+        <div class="sg-tags"><span>剪映</span><span>Premiere</span><span>AE</span><span>脚本策划</span><span>拍摄布光</span></div>
+      </div>
+      <div class="skill-group">
+        <div class="sg-title">视觉设计</div>
+        <div class="sg-tags"><span>Photoshop</span><span>Illustrator</span><span>Figma</span></div>
+      </div>
+      <div class="skill-group">
+        <div class="sg-title">管理</div>
+        <div class="sg-tags"><span>SOP搭建</span><span>团队带教</span><span>跨部门协调</span></div>
+      </div>
+    </div>
+
+    <div>
+      <h2>教育</h2>
+      <div class="edu">
+        <p class="edu-school">广东南华工商职业学院</p>
+        <p>数字媒体应用技术</p>
+        <p style="font-size:9px;color:#94a3b8;">2019.09 — 2022.06</p>
+        <p class="edu-meta">GPA 3.6/4.0 · 优秀毕业生 · 国家奖学金 · 三好学生</p>
+      </div>
+    </div>
+
+    <div>
+      <h2>品类覆盖</h2>
+      <div class="skill-group">
+        <div class="sg-tags"><span>家清</span><span>女装</span><span>大健康</span></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- MAIN -->
+  <div class="main">
+    <div class="header">
+      <h1>范思静</h1>
+      <div class="title">信息流视频项目主管 / 编导组长</div>
+      <div class="summary">
+        3年+短视频电商全链路实战。单品牌月销千万，爆款率35%+。擅长旧品复活、0→1起量、卡审突破，具备从执行到管理的完整成长路径。
+      </div>
+    </div>
+
+    <div class="kpi-strip">
+      <div class="kpi"><div class="kpi-num">1,500+</div><div class="kpi-label">策划短视频</div></div>
+      <div class="kpi"><div class="kpi-num">35%</div><div class="kpi-label">爆款率</div></div>
+      <div class="kpi"><div class="kpi-num">千万+</div><div class="kpi-label">月销售额峰值</div></div>
+      <div class="kpi"><div class="kpi-num">300万+</div><div class="kpi-label">峰值月消耗</div></div>
+      <div class="kpi"><div class="kpi-num">200万</div><div class="kpi-label">稳定月消耗(半年)</div></div>
+    </div>
+
+    <div class="section">
+      <h2>工作经历</h2>
+
+      <div class="exp-item">
+        <div class="exp-header"><span class="exp-role">编导组长 / 项目负责人</span><span class="exp-date">2025.03 — 2026.07</span></div>
+        <div class="exp-company">故事传媒（广州）· 家清品类</div>
+        <ul>
+          <li>带领静组负责<strong>渍无踪、滴露、立白、椰放</strong>等品牌的信息流视频全链路（编导→拍摄→剪辑→投放→复盘），组员后被<strong>提拔为组长</strong></li>
+          <li><strong>渍无踪旧品复活</strong>：接手时3个月未起量，通过千川→全域投放转型、墨水渍爆点突破、多形式内容拓展，达成<strong>峰值月耗300万+、月销千万</strong>，持续半年稳定200万/月，单条视频累计消耗150万</li>
+          <li><strong>小白白0→1起量</strong>：首周5条视频即起量，1.5个月日产达15万+，月耗保持<strong>百万级</strong>，撬动立白集团后续深度合作</li>
+          <li><strong>立白卫仕卡审突破</strong>：研究审核规则，通过"多菌种→单一菌种"内容策略解决全品类卡审问题</li>
+          <li><strong>明星合作</strong>：全程负责渍无踪×石榴姐拍摄（脚本→布景→无实物演练→实拍→复盘）</li>
+          <li>搭建污渍分类知识库、拍摄问题库，编写《拍摄部内容脚本培训白皮书》《组长工作流程规范》</li>
+        </ul>
+      </div>
+
+      <div class="exp-item">
+        <div class="exp-header"><span class="exp-role">短视频内容负责人（项目制）</span><span class="exp-date">2024.09 — 2024.12</span></div>
+        <div class="exp-company">远巨传媒（广州）· 女装品类（雅鹿）</div>
+        <ul>
+          <li>策划500+条短视频，<strong>爆款率35%+</strong>，单条视频GMV突破30万</li>
+          <li>建立脚本分层测试机制，爆款率从20%提升至35%；剪辑模板化复用至3个新账号，直播GMV增长15%</li>
+        </ul>
+      </div>
+
+      <div class="exp-item">
+        <div class="exp-header"><span class="exp-role">短视频策划与运营</span><span class="exp-date">2021.11 — 2024.09</span></div>
+        <div class="exp-company">合诚实业（广州）· 大健康品类</div>
+        <ul>
+          <li>从0到1搭建品牌抖音、小红书内容体系，输出图文200+条、视频400+条</li>
+          <li>小红书转粉率+18%，抖音点击率+22%，品牌搜索率+15%（超行业均值5%）</li>
+          <li>搭建大健康类目视觉库，通过A/B测试使<strong>素材迭代周期从7天压缩至3天</strong></li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="section">
+      <h2>项目速览</h2>
+      <table class="project-table">
+        <tr><th>项目</th><th>品类</th><th>角色</th><th>核心成果</th></tr>
+        <tr><td>渍无踪去渍啫喱</td><td>家清</td><td>编导组长</td><td>旧品复活 · 月销千万 · 峰值月耗300万+</td></tr>
+        <tr><td>小白白羽绒服干洗剂</td><td>家清</td><td>项目负责人</td><td>0→1起量 · 首周起量 · 月耗百万级</td></tr>
+        <tr><td>立白卫仕洗衣液</td><td>家清</td><td>编导组长</td><td>卡审突破 · 方案可复制</td></tr>
+        <tr><td>雅鹿羽绒服</td><td>女装</td><td>内容负责人</td><td>爆款率35%+ · 单条GMV 30万</td></tr>
+        <tr><td>益品达健大健康</td><td>保健</td><td>策划运营</td><td>0→1搭建 · 搜索率+15%</td></tr>
+      </table>
+    </div>
+  </div>
+</div>
+
+</body>
+</html>

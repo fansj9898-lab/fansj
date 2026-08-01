@@ -1,0 +1,17 @@
+# 忽略桌面杂项
+*.png
+*.jpg
+*.jpeg
+*.gif
+*.docx
+*.doc
+.DS_Store
+.localized
+.~*
+~$*
+# 忽略非面试相关的文件
+截屏*
+微信图片*
+OCR结果.json
+图片分类报告.txt
+1年期*

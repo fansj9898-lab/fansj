@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>范思静 · 工作台</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    font-family: -apple-system, "PingFang SC", "Microsoft YaHei", sans-serif;
+    background: #0f172a; color: #e2e8f0; min-height: 100vh;
+    padding: 40px 24px;
+  }
+  .container { max-width: 900px; margin: 0 auto; }
+  h1 { font-size: 28px; font-weight: 800; margin-bottom: 6px; letter-spacing: 1px; }
+  .subtitle { color: #64748b; font-size: 14px; margin-bottom: 32px; }
+
+  .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 16px; }
+
+  .card {
+    background: #1e293b; border-radius: 10px; padding: 22px;
+    border: 1px solid #334155; transition: 0.2s;
+  }
+  .card:hover { border-color: #2563eb; background: #1e2d47; }
+  .card .emoji { font-size: 28px; margin-bottom: 8px; }
+  .card h3 { font-size: 16px; font-weight: 700; margin-bottom: 6px; color: #fff; }
+  .card p { font-size: 13px; color: #94a3b8; line-height: 1.5; margin-bottom: 12px; }
+  .card .trigger {
+    display: inline-block; background: #2563eb; color: #fff;
+    padding: 4px 10px; border-radius: 4px; font-size: 13px; font-weight: 600;
+    font-family: monospace;
+  }
+
+  .files-section { margin-top: 36px; }
+  .files-section h2 { font-size: 18px; margin-bottom: 12px; color: #fff; }
+  .file-row {
+    display: flex; align-items: center; gap: 10px;
+    padding: 10px 14px; background: #1e293b; border-radius: 6px;
+    margin-bottom: 6px; font-size: 13px;
+  }
+  .file-row .name { flex: 1; color: #e2e8f0; }
+  .file-row .path { color: #64748b; font-size: 11px; font-family: monospace; }
+  .file-row .action {
+    background: #334155; color: #cbd5e1; border: none;
+    padding: 4px 10px; border-radius: 4px; font-size: 11px; cursor: pointer;
+  }
+  .file-row .action:hover { background: #2563eb; color: #fff; }
+
+  .quick-links { margin-top: 36px; }
+  .quick-links h2 { font-size: 18px; margin-bottom: 12px; color: #fff; }
+  .quick-links .links { display: flex; flex-wrap: wrap; gap: 8px; }
+  .quick-links a {
+    background: #1e293b; color: #60a5fa; text-decoration: none;
+    padding: 8px 14px; border-radius: 6px; font-size: 13px;
+    border: 1px solid #334155; transition: 0.15s;
+  }
+  .quick-links a:hover { border-color: #2563eb; background: #1e2d47; }
+
+  .note { margin-top: 36px; padding: 14px 18px; background: #1e293b; border-radius: 8px; font-size: 12px; color: #64748b; line-height: 1.6; }
+  .note strong { color: #94a3b8; }
+</style>
+</head>
+<body>
+<div class="container">
+  <h1>范思静 · 工作台</h1>
+  <div class="subtitle">在 Claude Code 或桌面版中输入触发词即可调用</div>
+
+  <div class="grid">
+    <div class="card">
+      <div class="emoji">📋</div>
+      <h3>投递定制</h3>
+      <p>根据JD分析匹配度，定制简历侧重点，生成单页A4 PDF到桌面</p>
+      <span class="trigger">/投递 + 粘贴JD</span>
+    </div>
+    <div class="card">
+      <div class="emoji">📝</div>
+      <h3>单独改简历</h3>
+      <p>只更新简历HTML内容，不生成PDF（微调时用）</p>
+      <span class="trigger">/简历 + 描述修改</span>
+    </div>
+    <div class="card">
+      <div class="emoji">📄</div>
+      <h3>重新生成PDF</h3>
+      <p>改完HTML后快速重新导出单页A4 PDF</p>
+      <span class="trigger">/PDF</span>
+    </div>
+    <div class="card">
+      <div class="emoji">🎤</div>
+      <h3>面试话术</h3>
+      <p>生成自我介绍、案例深挖、薪资谈判、反问等完整话术</p>
+      <span class="trigger">/面试 + 公司/岗位</span>
+    </div>
+    <div class="card">
+      <div class="emoji">🔍</div>
+      <h3>案例深挖</h3>
+      <p>针对单个项目生成深度复盘问答和追问预判</p>
+      <span class="trigger">/深挖 + 项目名</span>
+    </div>
+    <div class="card">
+      <div class="emoji">📊</div>
+      <h3>数据复盘</h3>
+      <p>输入周报/数据，输出结构化复盘：变化→归因→动作</p>
+      <span class="trigger">/复盘 + 粘贴数据</span>
+    </div>
+    <div class="card">
+      <div class="emoji">✏️</div>
+      <h3>文字润色</h3>
+      <p>把任意文本改写成你的风格：数据驱动、动词优先、短句</p>
+      <span class="trigger">/润色 + 粘贴原文</span>
+    </div>
+    <div class="card">
+      <div class="emoji">🎬</div>
+      <h3>作品集更新</h3>
+      <p>更新作品集HTML内容，同步精确版和脱敏版</p>
+      <span class="trigger">/作品集 + 描述改动</span>
+    </div>
+  </div>
+
+  <div class="files-section">
+    <h2>核心文件</h2>
+    <div class="file-row">
+      <span class="name">简历（可编辑源码）</span>
+      <span class="path">~/Desktop/范思静-面试资料-2026.html</span>
+      <button class="action" onclick="navigator.clipboard.writeText('/Users/fan/Desktop/范思静-面试资料-2026.html')">复制路径</button>
+    </div>
+    <div class="file-row">
+      <span class="name">简历 PDF</span>
+      <span class="path">~/Desktop/范思静-简历-2026.pdf</span>
+      <button class="action" onclick="navigator.clipboard.writeText('/Users/fan/Desktop/范思静-简历-2026.pdf')">复制路径</button>
+    </div>
+    <div class="file-row">
+      <span class="name">作品集（精确版）</span>
+      <span class="path">~/Desktop/范思静-作品集-2026.html</span>
+      <button class="action" onclick="navigator.clipboard.writeText('/Users/fan/Desktop/范思静-作品集-2026.html')">复制路径</button>
+    </div>
+    <div class="file-row">
+      <span class="name">作品集（脱敏版）</span>
+      <span class="path">~/Desktop/范思静-作品集-脱敏版-2026.html</span>
+      <button class="action" onclick="navigator.clipboard.writeText('/Users/fan/Desktop/范思静-作品集-脱敏版-2026.html')">复制路径</button>
+    </div>
+    <div class="file-row">
+      <span class="name">面试话术</span>
+      <span class="path">~/Desktop/面试话术-信息流视频项目主管.md</span>
+      <button class="action" onclick="navigator.clipboard.writeText('/Users/fan/Desktop/面试话术-信息流视频项目主管.md')">复制路径</button>
+    </div>
+    <div class="file-row">
+      <span class="name">完整履历</span>
+      <span class="path">~/Desktop/范思静_完整职业履历总结.md</span>
+      <button class="action" onclick="navigator.clipboard.writeText('/Users/fan/Desktop/范思静_完整职业履历总结.md')">复制路径</button>
+    </div>
+    <div class="file-row">
+      <span class="name">技能包（给其他AI用）</span>
+      <span class="path">~/Desktop/范思静-技能包/</span>
+      <button class="action" onclick="navigator.clipboard.writeText('/Users/fan/Desktop/范思静-技能包/')">复制路径</button>
+    </div>
+  </div>
+
+  <div class="quick-links">
+    <h2>快捷入口</h2>
+    <div class="links">
+      <a href="file:///Users/fan/Desktop/范思静-面试资料-2026.html">打开简历源码</a>
+      <a href="file:///Users/fan/Desktop/范思静-简历-2026.pdf">打开简历PDF</a>
+      <a href="file:///Users/fan/Desktop/范思静-作品集-2026.html">打开作品集</a>
+      <a href="file:///Users/fan/Desktop/范思静-技能包/">打开技能包</a>
+    </div>
+  </div>
+
+  <div class="note">
+    <strong>提示：</strong>这个页面是可视化工作台，所有操作实际在 Claude Code 中执行——输入卡片上的触发词即可。<br>
+    Claude Code 有 Mac 桌面版，可从 claude.ai/code 下载，体验和终端完全一样但界面更友好。
+  </div>
+</div>
+</body>
+</html>
