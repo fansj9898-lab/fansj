@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>算法模拟器 · 信息流运营</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    font-family: -apple-system, "PingFang SC", "Microsoft YaHei", sans-serif;
+    background: #0a0e17; color: #d1d5db; min-height: 100vh; padding: 24px;
+    line-height: 1.6;
+  }
+  .container { max-width: 850px; margin: 0 auto; }
+  h1 { text-align: center; font-size: 22px; color: #f9fafb; margin-bottom: 4px; }
+  .sub { text-align: center; font-size: 13px; color: #6b7280; margin-bottom: 28px; }
+
+  .step-nav { display: flex; gap: 6px; justify-content: center; margin-bottom: 24px; flex-wrap: wrap; }
+  .step-dot {
+    width: 36px; height: 36px; border-radius: 50%; display: flex; align-items: center; justify-content: center;
+    font-size: 12px; font-weight: 700; cursor: pointer; transition: 0.2s;
+    background: #111827; border: 2px solid #1f2937; color: #6b7280;
+  }
+  .step-dot:hover { border-color: #374151; }
+  .step-dot.active { background: #2563eb; color: #fff; border-color: #2563eb; box-shadow: 0 0 16px rgba(37,99,235,0.4); }
+  .step-dot.done { background: #14532d; color: #86efac; border-color: #16a34a; }
+
+  .stage-card {
+    background: #111827; border: 1px solid #1f2937; border-radius: 12px;
+    padding: 28px; margin-bottom: 16px;
+  }
+  .stage-card h2 { font-size: 18px; color: #f9fafb; margin-bottom: 4px; }
+  .stage-card .phase { font-size: 11px; color: #2563eb; font-weight: 700; letter-spacing: 2px; margin-bottom: 16px; }
+
+  /* Flow diagram */
+  .flow {
+    display: flex; flex-direction: column; gap: 8px; margin: 16px 0;
+  }
+  .flow-step {
+    display: flex; gap: 12px; align-items: flex-start;
+    padding: 14px; border-radius: 8px; background: #1a1f2e;
+  }
+  .flow-step .step-num {
+    width: 32px; height: 32px; border-radius: 50%; background: #2563eb;
+    display: flex; align-items: center; justify-content: center;
+    font-weight: 800; font-size: 14px; flex-shrink: 0; color: #fff;
+  }
+  .flow-step .step-content { flex: 1; }
+  .flow-step .step-title { font-weight: 700; color: #f9fafb; font-size: 14px; margin-bottom: 4px; }
+  .flow-step .step-desc { font-size: 12px; color: #9ca3af; }
+  .flow-arrow { text-align: center; color: #374151; font-size: 16px; }
+
+  .insight {
+    background: #0a1628; border: 1px solid #1e3a5f; border-radius: 8px;
+    padding: 14px 18px; margin-top: 16px; font-size: 12px; color: #93c5fd; line-height: 1.7;
+  }
+  .insight strong { color: #60a5fa; }
+
+  .example {
+    background: #1a0a0a; border: 1px solid #451a1a; border-radius: 8px;
+    padding: 14px 18px; margin-top: 12px; font-size: 12px;
+  }
+  .example .ex-label { color: #f87171; font-weight: 700; font-size: 10px; letter-spacing: 1px; margin-bottom: 6px; }
+
+  .btn-row { display: flex; gap: 10px; margin-top: 16px; }
+  .btn {
+    padding: 10px 24px; border-radius: 8px; font-size: 13px; font-weight: 700;
+    border: none; cursor: pointer; transition: 0.15s;
+  }
+  .btn-primary { background: #2563eb; color: #fff; }
+  .btn-primary:hover { background: #1d4ed8; }
+  .btn-ghost { background: transparent; color: #9ca3af; border: 1px solid #374151; }
+  .btn-ghost:hover { background: #1a1f2e; }
+</style>
+</head>
+<body>
+<div class="container">
+  <h1>抖音算法模拟器</h1>
+  <div class="sub">一条视频从发布到爆款，算法在背后做了7个判断——理解每一步，你就知道为什么完播率比点赞重要</div>
+
+  <div class="step-nav" id="nav"></div>
+  <div id="stage"></div>
+</div>
+
+<script>
+const steps = [
+  {
+    phase: '第1步：冷启动 — 0到200播放',
+    title: '算法拿到你的视频，第一件事是"打标签"',
+    flow: [
+      { title: '内容识别', desc: 'AI分析视频画面、语音、文字、BGM，自动打上内容标签。例如：你的视频里有"羽绒服+干洗剂+去渍对比"，标签就是#家清#清洁好物#生活技巧。' },
+      { title: '账号权重判断', desc: '算法查看你账号的历史数据——最近7天的视频平均表现、粉丝质量、是否有违规记录。新号和老号的初始流量池大小不同。' },
+      { title: '初始推荐池（200-500人）', desc: '算法把视频推给200-500个"可能感兴趣"的用户作为测试样本。这些人是在你的内容标签下历史互动活跃的用户。' },
+    ],
+    insight: '这就是为什么前5条视频不能带商业信息——一旦算法给你打上"营销号"标签，你的初始流量池就是"对营销内容容忍度高"的用户群体，后续推荐全跑偏。',
+    example: '你的小白白羽绒服干洗剂第一条视频：画面是"羽绒服沾了油渍+用干洗剂擦拭+干净如新"，算法打标签：#羽绒服清洁#生活妙招#好物分享。初始推荐给200个对#生活妙招感兴趣的人。这200个人中有52%看完了5秒以上→进入下一步。'
+  },
+  {
+    phase: '第2步：第一轮评估 — 200→1000播放',
+    title: '算法看第一批用户的反馈，决定"还推不推"',
+    flow: [
+      { title: '关键指标检查（第1优先级）', desc: '5秒完播率≥45%？→ 是：继续推。否：降低推荐权重。完播率是算法的第一道门槛——它代表了"用户对这个内容有没有兴趣"。' },
+      { title: '关键指标检查（第2优先级）', desc: '互动率（点赞+评论+转发+收藏）如何？高互动=高推荐。算法认为"用户愿意互动的内容就是好内容"。' },
+      { title: '扩大推荐池（1000-5000人）', desc: '第一轮数据达标→算法把视频推给1000-5000个"相似兴趣"的用户。这批人比第一轮200人更广泛，但仍在同一兴趣标签内。' },
+    ],
+    insight: '第一轮评估只看"用户行为"，不看"内容质量"——算法没有审美，它只通过用户的行为数据来反向判断内容好坏。这就是为什么"优化前3秒比优化画面质量更重要"——前3秒决定了用户会不会看超过5秒，直接影响算法的第一道门槛。',
+    example: null
+  },
+  {
+    phase: '第3步：第二到第N轮评估 — 1000→100000+',
+    title: '算法每轮都在做"要不要继续推"的判断，层层放大',
+    flow: [
+      { title: '赛马机制', desc: '在同一内容标签下，系统把你的视频和同类视频放在一起比较。谁的完播率更高、互动率更强，谁就拿到更多推荐。这就像100匹马同场赛跑——跑的快的继续推荐，跑的慢的淘汰。' },
+      { title: '每轮评估的指标权重变化', desc: '第1轮：完播率>点赞>评论。第3轮以后：转发+收藏>评论>点赞。因为到了更大的流量池，只有"用户愿意转发/收藏"的内容才值得给更多人看。' },
+      { title: '流量池跃迁', desc: '200→1000→5000→2万→10万→100万。每一轮数据达标就进入下一轮。到达某个池子数据不够了→就停在这个量级，不会继续推。' },
+      { title: '为什么有的视频"突然爆了"', desc: '视频发布3天后突然爆量——通常是因为：①某个大V转发了→带来精准互动②同品类出现了热点→算法重新推荐相关内容③视频在另一个标签下被重新发现（比如你的羽绒服清洁视频被算法推到了#省钱小妙招标签下）' },
+    ],
+    insight: '"爆款"不是玄学，是数据达标后的自然结果。你35%的爆款率背后的逻辑是：你比行业均值（15%）多了一倍的视频通过了前几轮的数据门槛，不是因为运气好，而是你的开头钩子设计+痛点选择+展示节奏的标准化流程，让大部分视频都能跑过第一轮。',
+    example: null
+  },
+  {
+    phase: '第4步：付费流量与自然流量的关系',
+    title: '千川投流不只是买量，它在"调教"算法',
+    flow: [
+      { title: '付费流量=给算法喂数据', desc: '千川投流本质上是在付费让算法更快地"学习"你的成交模型。每成交一单，系统就记住一次"什么样的人会买这个产品"。20-50单后，系统画出了你的目标人群画像。' },
+      { title: '付费撬动自然流量', desc: '付费带来的互动（点赞+评论+转发）会提升视频在自然推荐中的权重。一个常见的模式：千川投500元→带来1000次播放+50次互动→算法判断"这个内容互动率不错"→开始给自然流量。这就是"微付费起自然流量"的底层逻辑。' },
+      { title: '全域推广的本质', desc: '全域推广=把"人工定向"交给"算法自动定向"。标准投放时你手动选人群，全域投放时系统用你的成交模型在全平台找相似人群。全域能触达"你不知道但系统知道"的潜在用户——这就是为什么它通常能比标准投放多跑20-30%的量。' },
+    ],
+    insight: '投流不是在"买流量"，是在"训练算法"。每次成交、每次互动、每次完播，都在告诉算法"下次应该把内容推给谁"。这就是为什么素材质量比预算更重要——好素材让每一块钱的投放都在高效地训练算法，烂素材让每一块钱都在给算法喂错误信号。',
+    example: null
+  },
+  {
+    phase: '第5步：素材的生命周期',
+    title: '一条素材从上线到死亡，算法在背后做什么',
+    flow: [
+      { title: '学习期（Day 1-3）', desc: '系统在探索"谁会对这条素材感兴趣"。此时消耗不稳定、ROI波动大是正常的。不要在这3天内频繁调整出价和定向——让系统学。' },
+      { title: '放量期（Day 4-14）', desc: '系统已经学会人群模型，消耗和ROI都趋于稳定。这是素材的黄金期——保持预算充足，不要中断投放。' },
+      { title: '衰减期（Day 15-21+）', desc: '触达的人群已经被洗过一轮，完播率和点击率开始下降（CPM开始上升）。信号：完播率跌破45%+CPM涨了15%+。这时候应该：①换开头/BGM/前三帧做一个变体②或者换新素材方向。' },
+      { title: '死亡期', desc: '完播率跌破30%，ROI跌破盈亏线。果断停掉，不投入感情。但不要把素材删掉——它可能在其他人群下还有用。' },
+    ],
+    insight: '你的渍无踪单条素材跑了150万，是因为你在衰减期就开始微调而不是等到死亡期才反应。素材管理不是"爆了就随它跑"，而是"在它还健康的时候就为它的衰减做准备"。你现在产能从85条拉到400+条/月，就是因为理解了"素材永远在衰减，新素材永远要跟上"。',
+    example: null
+  },
+  {
+    phase: '第6步：账号权重与系统信任',
+    title: '你整个账号在算法眼里是一个"信用评分系统"',
+    flow: [
+      { title: '账号权重的核心要素', desc: '①历史视频平均表现（7天/30天）②粉丝质量（活跃度>数量）③违规记录（卡审、被举报）④更新频率稳定性（每天固定时段发比随机发权重更高）⑤素材过审率（高过审率=可信赖的内容创作者）' },
+      { title: '为什么账号权重重要', desc: '高权重账号=更大的初始流量池=更容易起量=系统更信任你的内容=素材探索成本更低。举个例子：一个新号的素材可能需要500元测试才能判断好坏，但老号只需要200元——因为系统已经信任你了。' },
+      { title: '什么在伤害账号权重', desc: '①频繁被审核驳回（每次驳回都扣分）②用户举报③长时间不更新④内容质量波动大（今天爆明天死）⑤更换内容赛道（系统已经学了你的标签，突然换方向系统要重新学）' },
+    ],
+    insight: '你接手的渍无踪之所以"3个月没起量"，不只是素材问题——连续3个月的低质量投放已经拉低了账号权重。你重建素材体系不只是在做新内容，更是在重建系统对账号的信任。',
+    example: null
+  },
+  {
+    phase: '第7步：总结 — 算法到底要什么？',
+    title: '如果你只记住一件事',
+    flow: [
+      { title: '算法只有一个目标', desc: '让用户留在抖音里更久。所有指标（完播率、互动率、转化率）最终都是为了这一个目标服务的。' },
+      { title: '算法最想要的三种内容', desc: '①让用户看完的（高完播率）②让用户互动的（高互动率，=用户不是被动消费而是主动参与）③让用户购买的（高转化率，=证明内容有商业价值）' },
+      { title: '你作为操盘手的工作', desc: '不是"做出爆款视频"，而是"建立一套系统，让团队持续产出能通过算法每一轮筛选的视频"。爆款是系统的产物，系统是人的产物。' },
+    ],
+    insight: '算法不神秘。它就是一个巨大的"试试看→看数据→再决定要不要继续"的循环。你所有的工作——开头优化、素材测试、方向迭代、产能建设——本质上都是在提高"通过算法每一轮筛选的概率"。理解了这一点，你就理解了信息流运营的全部。',
+    example: null
+  }
+];
+
+let currentStep = 0;
+
+function render() {
+  // Nav
+  document.getElementById('nav').innerHTML = steps.map((s, i) => {
+    let cls = 'step-dot';
+    if (i === currentStep) cls += ' active';
+    if (i < currentStep) cls += ' done';
+    return `<div class="${cls}" onclick="goTo(${i})">${i+1}</div>`;
+  }).join('');
+
+  const s = steps[currentStep];
+  let html = `
+    <div class="stage-card">
+      <div class="phase">${s.phase}</div>
+      <h2>${s.title}</h2>
+      <div class="flow">
+  `;
+
+  s.flow.forEach((f, i) => {
+    html += `
+      <div class="flow-step">
+        <div class="step-num">${i+1}</div>
+        <div class="step-content">
+          <div class="step-title">${f.title}</div>
+          <div class="step-desc">${f.desc}</div>
+        </div>
+      </div>
+    `;
+    if (i < s.flow.length - 1) {
+      html += '<div class="flow-arrow">↓</div>';
+    }
+  });
+
+  html += '</div>';
+
+  if (s.insight) {
+    html += `<div class="insight"><strong>💡 核心认知：</strong>${s.insight}</div>`;
+  }
+
+  if (s.example) {
+    html += `<div class="example"><div class="ex-label">🎯 实际案例（你的工作）</div>${s.example}</div>`;
+  }
+
+  html += `
+      <div class="btn-row">
+        ${currentStep > 0 ? `<button class="btn btn-ghost" onclick="goTo(${currentStep-1})">← 上一步</button>` : ''}
+        ${currentStep < steps.length - 1 ? `<button class="btn btn-primary" onclick="goTo(${currentStep+1})">下一步 →</button>` : `<button class="btn btn-primary" onclick="goTo(0)">重新开始</button>`}
+      </div>
+    </div>
+  `;
+
+  document.getElementById('stage').innerHTML = html;
+}
+
+function goTo(idx) {
+  currentStep = idx;
+  render();
+  window.scrollTo(0, 0);
+}
+
+render();
+</script>
+</body>
+</html>

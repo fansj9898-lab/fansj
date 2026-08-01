@@ -1,0 +1,337 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>指标翻译器 · 信息流运营</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    font-family: -apple-system, "PingFang SC", "Microsoft YaHei", sans-serif;
+    background: #0a0e17; color: #d1d5db; min-height: 100vh; padding: 24px;
+  }
+  .container { max-width: 900px; margin: 0 auto; }
+  h1 { text-align: center; font-size: 22px; margin-bottom: 4px; color: #f9fafb; }
+  .sub { text-align: center; font-size: 13px; color: #6b7280; margin-bottom: 24px; }
+
+  /* Search/filter */
+  .filter-bar { display: flex; gap: 8px; margin-bottom: 20px; flex-wrap: wrap; justify-content: center; }
+  .filter-btn {
+    padding: 6px 14px; border-radius: 20px; font-size: 12px; border: 1px solid #1f2937;
+    background: #111827; color: #9ca3af; cursor: pointer; transition: 0.15s;
+  }
+  .filter-btn:hover, .filter-btn.active { background: #2563eb; color: #fff; border-color: #2563eb; }
+
+  /* Cards */
+  .card-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 14px; }
+  .metric-card {
+    background: #111827; border: 1px solid #1f2937; border-radius: 12px;
+    padding: 22px; cursor: pointer; transition: 0.2s; position: relative; overflow: hidden;
+  }
+  .metric-card:hover { border-color: #374151; }
+  .metric-card.expanded { border-color: #2563eb; grid-column: 1/-1; }
+
+  .metric-card .name { font-size: 18px; font-weight: 800; color: #f9fafb; margin-bottom: 4px; }
+  .metric-card .en { font-size: 11px; color: #6b7280; margin-bottom: 10px; }
+  .metric-card .summary { font-size: 13px; color: #9ca3af; line-height: 1.6; display: block; }
+  .metric-card .detail { display: none; margin-top: 14px; padding-top: 14px; border-top: 1px solid #1f2937; }
+
+  .metric-card.expanded .detail { display: block; }
+  .metric-card.expanded .summary { display: none; }
+
+  .detail-section { margin-bottom: 14px; }
+  .detail-section .ds-label {
+    font-size: 10px; font-weight: 700; color: #2563eb; text-transform: uppercase;
+    letter-spacing: 1px; margin-bottom: 6px;
+  }
+  .detail-section p { font-size: 13px; color: #d1d5db; line-height: 1.7; }
+
+  .scenario { background: #0a1628; border-radius: 8px; padding: 12px 16px; margin: 8px 0; font-size: 12px; }
+  .scenario .up { color: #22c55e; }
+  .scenario .down { color: #ef4444; }
+
+  .linked { display: flex; gap: 6px; flex-wrap: wrap; margin-top: 6px; }
+  .linked span {
+    font-size: 10px; padding: 3px 10px; border-radius: 12px;
+    background: #1a1f2e; color: #60a5fa; cursor: pointer;
+  }
+  .linked span:hover { background: #2563eb; color: #fff; }
+
+  .tag {
+    display: inline-block; font-size: 10px; padding: 3px 8px; border-radius: 4px;
+    margin-right: 4px; font-weight: 600;
+  }
+  .tag-content { background: #1e3a5f; color: #93c5fd; }
+  .tag-cost { background: #451a1a; color: #fca5a5; }
+  .tag-revenue { background: #14532d; color: #86efac; }
+</style>
+</head>
+<body>
+<div class="container">
+  <h1>信息流指标翻译器</h1>
+  <div class="sub">点击任意卡片展开 → 每个指标：是什么 · 怎么算 · 涨了说明什么 · 跌了说明什么 · 跟谁联动</div>
+
+  <div class="filter-bar">
+    <button class="filter-btn active" onclick="filter('all')">全部</button>
+    <button class="filter-btn" onclick="filter('content')">内容质量</button>
+    <button class="filter-btn" onclick="filter('cost')">投放成本</button>
+    <button class="filter-btn" onclick="filter('revenue')">收入转化</button>
+    <button class="filter-btn" onclick="filter('efficiency')">效率指标</button>
+  </div>
+
+  <div class="card-grid" id="grid"></div>
+</div>
+
+<script>
+const metrics = [
+  {
+    id: 'completion-5s',
+    name: '5秒完播率',
+    en: '5-Second Completion Rate',
+    cat: 'content',
+    summary: '用户看了至少5秒的比例。这是抖音算法考核视频质量的第一道门槛——前5秒决定了这条视频有没有资格进入下一轮推荐。',
+    detail: {
+      calc: '看完5秒的用户数 ÷ 总播放量 × 100%',
+      good: '≥45% 健康。说明你的开头钩子有效，用户在继续看。',
+      bad: '<35% 需要立即优化前3秒。用户在你来得及展示产品之前就划走了。',
+      up: '前3秒钩子变强了（换了更好的开头、更冲击的画面、更痛的提问）。也可能是人群变精准了。',
+      down: '前3秒钩子失效。常见原因：①用户对这类开头审美疲劳②人群定向跑偏了（推给了不感兴趣的人）③换了BGM或画面风格后效果变差。',
+      scenario_up: '5秒完播率：42%→55%。判断：新测试的"痛点提问"钩子比旧版"产品展示"钩子更有效。下一步：把新钩子模板化，批量复制。',
+      scenario_down: '5秒完播率：51%→32%。判断：素材进入衰减周期——用户看腻了同一个开头。下一步：换钩子方向（从墨水渍换成油渍），72小时内测试新版本。',
+      linked: ['整体完播率', '点击率', 'CPM'],
+      tip: '5秒完播率是前置指标——它比GMV提前3-5天告诉你素材要衰减了。盯着它可以提前做决策。'
+    },
+    tags: ['content']
+  },
+  {
+    id: 'ctr',
+    name: '点击率',
+    en: 'Click-Through Rate (CTR)',
+    cat: 'content',
+    summary: '用户看到你的视频封面/标题后，点击进来的比例。决定了系统的"这个内容是不是值得推荐"。',
+    detail: {
+      calc: '点击数 ÷ 曝光数 × 100%',
+      good: '≥3% 健康。说明封面和标题组合有效。',
+      bad: '<1.5% 封面/标题组合失效。用户看到了但不想点——通常是因为封面没有信息增量。',
+      up: '封面更吸引人了（更好的产品展示画面、更有信息量的标题）。也可能是人群更精准。',
+      down: '封面失去吸引力，或者系统推荐给了不感兴趣的人。常见原因：①封面同质化②标题太像广告③人群定向老化。',
+      scenario_up: '点击率：2.1%→4.8%。判断：新拍的"使用前后对比"封面比纯产品图更有效。下一步：所有素材统一用对比式封面。',
+      scenario_down: '点击率：3.8%→1.9%。判断：5秒完播率也同步下降，说明素材整体疲劳——用户的厌倦从封面就开始了。',
+      linked: ['5秒完播率', 'CPM', '转化率'],
+      tip: '点击率和完播率同时下降=素材疲劳。只有点击率降但完播率没降=封面问题。分清这个才能对症下药。'
+    },
+    tags: ['content']
+  },
+  {
+    id: 'conversion',
+    name: '转化率',
+    en: 'Conversion Rate (CVR)',
+    cat: 'revenue',
+    summary: '看了视频后下单购买的比例。这是内容质量和产品力的综合体现——视频讲得清楚+产品本身值得买。',
+    detail: {
+      calc: '成交单数 ÷ 视频播放量 × 100%',
+      good: '≥10% 说明视频内容和产品匹配合格，用户看完想买。',
+      bad: '<5% 视频内容没打到购买动机。用户看了但不想买——可能是痛点不够痛、产品展示不够诱人、或者价格没有优势。',
+      up: '内容更精准地打中了购买动机（换了更痛的痛点、场景代入感更强）。也可能是人群定向更精准了。',
+      down: '内容没打到购买动机。注意：如果转化率降了但完播率和点击率没降——说明"视频好看但不想买"，这是人群跑偏了，不是素材问题。',
+      scenario_up: '转化率：9.5%→14.2%。判断：新的"口红印去渍"痛点比旧的"墨水渍"痛点更贴近女性用户日常场景。下一步：围绕"化妆品污渍"开发系列素材。',
+      scenario_down: '转化率：14.2%→8.3%。完播率和点击率正常。判断：人群定向跑偏了——系统把内容推给了爱看清洁视频但不买东西的用户。下一步：调整人群定向，加购物兴趣标签。',
+      linked: ['点击率', 'ROI', '5秒完播率'],
+      tip: '转化率降+完播率/点击率正常=人群问题，换定向。转化率降+完播率/点击率也降=素材问题，换素材。这个二分法是数据诊断的基本功。'
+    },
+    tags: ['revenue']
+  },
+  {
+    id: 'roi',
+    name: 'ROI（投资回报率）',
+    en: 'Return on Investment',
+    cat: 'revenue',
+    summary: '花了1块钱能收回多少钱。信息流行业通常叫ROI，计算公式是GMV÷消耗。',
+    detail: {
+      calc: 'GMV ÷ 消耗。例如：消耗100万，GMV 174万，ROI=1.74。',
+      good: '≥1.5 基本健康（看品类），≥1.8 优秀。注意：ROI和消耗是跷跷板——追求太高ROI会限制放量。',
+      bad: '<1.2 需要考虑优化方向——是素材不行还是产品不行还是定价不行。',
+      up: '转化率提升或人群精准度提升。也可能是换了更高客单价的产品。',
+      down: '常见原因排序：①素材衰减导致转化率降②人群成本（CPM）上升③直播间承接能力下降。先排除③再看①②。',
+      scenario_up: 'ROI：1.69→1.76。转化率从13.1%→14.8%，CPM从30→28。判断：素材质量提升+人群成本下降双重利好。可以放心加预算。',
+      scenario_down: 'ROI：1.76→1.58。CPM从28→34（+21%），转化率不变。判断：不是素材问题，是人群成本上升——标准投放的精准人群已被洗过一轮。可以启动全域测试。',
+      linked: ['CPM', '转化率', '月消耗', '月GMV'],
+      tip: 'ROI单独看没有意义。ROI跌了是CPM涨了还是转化率跌了？两个原因对应的解法完全不同。看ROI必须同时看CPM和转化率。'
+    },
+    tags: ['revenue', 'efficiency']
+  },
+  {
+    id: 'cpm',
+    name: 'CPM（千次曝光成本）',
+    en: 'Cost Per Mille',
+    cat: 'cost',
+    summary: '你的广告被看1000次要花多少钱。等于你买流量的单价。CPM涨了=买流量变贵了。',
+    detail: {
+      calc: '消耗 ÷ 曝光量 × 1000。例如：花2万拿到80万曝光，CPM=25元。',
+      good: '25-30元是家清品类的正常范围。CPM不是越低越好——太低说明你在投低质流量，转化不一定好。',
+      bad: '>35元且持续上涨，说明精准人群接近耗尽，系统在往外扩。',
+      up: '①精准人群被洗过一轮→系统在扩边缘人群→成本上升②同品类竞争加剧→大家都在投→竞价变贵③素材质量下降→系统不愿意给流量→需要加价才拿到曝光。',
+      down: '人群定向更精准了（系统找到了更便宜的精准人群），或者素材质量提升→系统愿意给更多自然流量→付费流量成本降低。',
+      scenario_up: 'CPM：26→29→34（三个月持续涨）。消耗也在涨但GMV增速放缓。判断：精准人群即将耗尽，标准投放天花板到了。启动全域推广测试。',
+      scenario_down: 'CPM：34→28。新素材方向测试成功，系统开始给更多自然流量。判断：素材质量提升拉低了流量成本。继续在该方向放量。',
+      linked: ['月消耗', 'ROI', '5秒完播率'],
+      tip: 'CPM+消耗同时涨+ROI微降=人群到顶了，切全域。CPM+消耗都在跌=素材不行了系统不给量，换素材方向。分清这两种情况，你就比90%的投手强。'
+    },
+    tags: ['cost']
+  },
+  {
+    id: 'overall-completion',
+    name: '整体完播率',
+    en: 'Overall Completion Rate',
+    cat: 'content',
+    summary: '用户看完你整条视频的比例。和5秒完播率的区别：5秒是"用户有没有被吸引"，整体是"用户有没有被留住"。',
+    detail: {
+      calc: '完整看完的用户数 ÷ 总播放量 × 100%',
+      good: '≥25%对于30秒视频算优秀。注意：15秒视频的整体完播率天然高于60秒视频，不能用同一个标准比。',
+      bad: '<15%说明视频中段内容留不住人。用户被开头吸引了，但中间觉得无聊就划走了。',
+      up: '中段内容节奏变好了——每15秒有转折点、信息密度够、没有废话。',
+      down: '中段节奏太拖——信息密度不够、内容长度超过了用户耐心、或者开头的承诺中段没有兑现。',
+      linked: ['5秒完播率', '视频时长', '互动率'],
+      tip: '5秒完播率高+整体完播率低=开头好中间烂→需要缩短视频或加密中段转折点。5秒完播率低+整体完播率也低=开头就不行→先修开头。'
+    },
+    tags: ['content']
+  },
+  {
+    id: 'interaction',
+    name: '互动率',
+    en: 'Engagement Rate',
+    cat: 'content',
+    summary: '用户和你的视频互动的比例（点赞+评论+转发+收藏）。算法用这个判断"内容有没有讨论价值"。',
+    detail: {
+      calc: '（点赞+评论+转发+收藏）÷ 播放量 × 100%',
+      good: '≥5% 说明内容引发了用户讨论或收藏欲望。',
+      bad: '<2% 内容没有互动钩子——用户看完了就走了，没留下任何痕迹。',
+      up: '加了互动引导（"你觉得哪个好用？评论区告诉我""收藏起来下次用"）。或者是内容本身有争议性/讨论价值。',
+      down: '内容太"干"——只是在展示产品，没有给用户参与的空间。加一句互动引导通常能提升1-2个百分点。',
+      linked: ['整体完播率', '转化率'],
+      tip: '互动率是算法判断"内容质量"的第二大指标（仅次于完播率）。高互动=高推荐。评论区每多一条真实评论，就多一次算法推荐的机会。'
+    },
+    tags: ['content']
+  },
+  {
+    id: 'approval-rate',
+    name: '素材过审率',
+    en: 'Approval Rate',
+    cat: 'efficiency',
+    summary: '提交的素材中被审核通过的比例。低于90%说明你的内容表述触碰了审核红线。',
+    detail: {
+      calc: '通过审核的素材数 ÷ 提交总数 × 100%',
+      good: '≥95% 内容合规，没有触碰审核红线。',
+      bad: '<80% 说明某类表述或画面持续被卡——不是偶然事件，需要系统排查。',
+      up: '正常（本来就应该高）。过审率不是越高越好——95%和100%没有差别。',
+      down: '审核政策收紧（行业性问题）或你的某类表述触碰了规则更新。关键应对：①按驳回原因分类被卡素材②找到共同的关键词③做一张"安全词/危险词对照表"。',
+      scenario_down: '过审率：98%→12%（一天内）。判断：审核政策突然收紧，"多菌种""强效去除""深层清洁"等词被机器扫到。紧急应对：制作安全词版本（"帮助去渍""清洁看得见"），24小时内恢复投放。',
+      linked: ['月消耗', '素材成片数'],
+      tip: '过审率骤降时最重要的是速度——72小时内恢复投放可以保住账号权重。每多延迟一天，恢复成本增加三倍。'
+    },
+    tags: ['efficiency']
+  },
+  {
+    id: 'material-output',
+    name: '素材成片数',
+    en: 'Material Output Volume',
+    cat: 'efficiency',
+    summary: '每月产出的有效素材数量。这个指标直接决定了系统有多少"弹药"可以去探索新人群。',
+    detail: {
+      calc: '当月通过审核且成功投放的素材数量',
+      good: '每月≥400条（日均15+条）可以支撑一个百万级消耗的产品。',
+      bad: '<200条/月，意味着系统在反复投旧素材——素材衰减会比产出速度快。',
+      up: '建立了标准化生产流程（模板化、SOP），产能提升。或者团队配置增加了。',
+      down: '团队效率问题，或者审核收紧导致过审率低。注意：素材数量降了不会立刻影响消耗——但2-3周后消耗会开始下滑（因为旧素材衰减了没有新素材接上）。',
+      scenario_down: '素材成片数：680→350。过审率正常（96%），产能下降。判断：团队人效问题，可能需要流程优化或加人。短期对策：用混剪方式快速翻新旧素材。',
+      linked: ['素材过审率', '月消耗', '剪辑效率'],
+      tip: '素材产能是消耗的滞后指标——产能降了，消耗会在2-3周后才降。盯着产能可以提前预判消耗拐点。'
+    },
+    tags: ['efficiency']
+  },
+  {
+    id: 'live-gmv-ratio',
+    name: '直播GMV占比',
+    en: 'Live-stream GMV Ratio',
+    cat: 'revenue',
+    summary: '总GMV中有多少是通过直播间成交的。这个比例在涨不一定好——它可能意味着短视频拉新能力在下降。',
+    detail: {
+      calc: '直播GMV ÷ 总GMV × 100%',
+      good: '50-65%正常。直播和短视频各有分工：短视频负责拉新，直播间负责转化和复购。',
+      bad: '>75%且持续上升——说明短视频拉新能力在减弱，增长全靠直播在吃存量。这是不可持续的。',
+      up: '可能两个原因：①直播间承接能力变强了（好）②短视频引流效率下降导致直播GMV占比被动上升（坏）。需要结合短视频的转化率和消耗来判断是哪一种。',
+      down: '短视频拉新效率提升——从短视频进入直播间的精准流量增加了。这是好事。',
+      scenario_up: '直播GMV占比：57%→63%→68%（三个月持续上升）。短视频消耗和转化率也在微降。判断：短视频素材在衰减，拉新能力下降，直播在扛着增长。下个月必须推新素材方向。',
+      linked: ['月GMV', '转化率', '月消耗'],
+      tip: '直播GMV占比是最容易被误读的指标。它涨了可能是"直播变强了"也可能是"短视频变弱了"。永远结合短视频数据交叉判断。'
+    },
+    tags: ['revenue']
+  }
+];
+
+function renderMetrics(filter) {
+  const grid = document.getElementById('grid');
+  const filtered = filter === 'all' ? metrics : metrics.filter(m => m.tags.includes(filter));
+
+  grid.innerHTML = filtered.map(m => `
+    <div class="metric-card" id="card-${m.id}" data-cat="${m.tags.join(' ')}" onclick="toggleCard('${m.id}')">
+      <span class="tag tag-${m.cat}">${m.cat==='content'?'内容质量':m.cat==='cost'?'投放成本':m.cat==='revenue'?'收入转化':'效率指标'}</span>
+      <div class="name">${m.name}</div>
+      <div class="en">${m.en}</div>
+      <div class="summary">${m.summary}</div>
+      <div class="detail">
+        <div class="detail-section"><div class="ds-label">怎么算</div><p>${m.detail.calc}</p></div>
+        <div class="detail-section"><div class="ds-label">健康值</div><p>✅ ${m.detail.good}<br>❌ ${m.detail.bad}</p></div>
+        <div class="detail-section" style="display:grid;grid-template-columns:1fr 1fr;gap:12px;">
+          <div><div class="ds-label">📈 涨了说明</div><p>${m.detail.up}</p></div>
+          <div><div class="ds-label">📉 跌了说明</div><p>${m.detail.down}</p></div>
+        </div>
+        ${m.detail.scenario_up ? `<div class="detail-section"><div class="ds-label">🟢 实操场景：涨了</div><div class="scenario">${m.detail.scenario_up}</div></div>` : ''}
+        ${m.detail.scenario_down ? `<div class="detail-section"><div class="ds-label">🔴 实操场景：跌了</div><div class="scenario">${m.detail.scenario_down}</div></div>` : ''}
+        <div class="detail-section">
+          <div class="ds-label">联动指标（点击跳转）</div>
+          <div class="linked">${m.detail.linked.map(l => {
+            const target = metrics.find(mm => mm.name === l || mm.id === l);
+            const display = target ? target.name : l;
+            return `<span onclick="event.stopPropagation();jumpToMetric('${l}')">${display}</span>`;
+          }).join('')}</div>
+        </div>
+        <div class="detail-section" style="background:#0a1628;border-radius:8px;padding:12px 16px;">
+          <div class="ds-label">💡 一句话记住</div><p style="color:#93c5fd;">${m.detail.tip}</p>
+        </div>
+      </div>
+    </div>
+  `).join('');
+}
+
+function toggleCard(id) {
+  const card = document.getElementById('card-' + id);
+  card.classList.toggle('expanded');
+  // Collapse others on mobile
+  if (window.innerWidth < 600 && card.classList.contains('expanded')) {
+    document.querySelectorAll('.metric-card').forEach(c => {
+      if (c.id !== 'card-' + id) c.classList.remove('expanded');
+    });
+  }
+}
+
+function jumpToMetric(name) {
+  const target = metrics.find(m => m.name === name || m.id === name);
+  if (!target) return;
+  const card = document.getElementById('card-' + target.id);
+  card.classList.add('expanded');
+  card.scrollIntoView({ behavior: 'smooth', block: 'center' });
+  card.style.boxShadow = '0 0 24px rgba(37,99,235,0.4)';
+  setTimeout(() => card.style.boxShadow = '', 2000);
+}
+
+function filter(cat) {
+  document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+  event.target.classList.add('active');
+  renderMetrics(cat);
+}
+
+renderMetrics('all');
+</script>
+</body>
+</html>

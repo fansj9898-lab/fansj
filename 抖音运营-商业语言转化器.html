@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>商业语言转化器 · 信息流运营</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    font-family: -apple-system, "PingFang SC", "Microsoft YaHei", sans-serif;
+    background: #0a0e17; color: #d1d5db; min-height: 100vh; padding: 24px;
+  }
+  .container { max-width: 800px; margin: 0 auto; }
+  h1 { text-align: center; font-size: 22px; color: #f9fafb; margin-bottom: 4px; }
+  .sub { text-align: center; font-size: 13px; color: #6b7280; margin-bottom: 28px; }
+
+  .converter-card {
+    background: #111827; border: 1px solid #1f2937; border-radius: 12px;
+    padding: 24px; margin-bottom: 16px;
+  }
+  .converter-card h3 { font-size: 16px; color: #f9fafb; margin-bottom: 4px; }
+  .converter-card .scene { font-size: 12px; color: #6b7280; margin-bottom: 16px; }
+
+  .raw-data {
+    background: #0a0e17; border: 1px solid #1f2937; border-radius: 8px;
+    padding: 14px 18px; margin-bottom: 14px; font-size: 12px;
+  }
+  .raw-data .label { color: #f59e0b; font-weight: 700; font-size: 10px; letter-spacing: 1px; margin-bottom: 6px; }
+  .raw-data code { color: #93c5fd; font-family: "SF Mono","Menlo",monospace; }
+
+  .translations { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; }
+  @media (max-width: 700px) { .translations { grid-template-columns: 1fr; } }
+
+  .trans-box {
+    border-radius: 8px; padding: 14px; font-size: 12px; line-height: 1.7;
+  }
+  .trans-box .who { font-size: 10px; font-weight: 700; letter-spacing: 1px; margin-bottom: 6px; }
+  .trans-box.trader { background: #1a1f2e; border: 1px solid #374151; }
+  .trans-box.trader .who { color: #60a5fa; }
+  .trans-box.brand { background: #0a1628; border: 1px solid #1e3a5f; }
+  .trans-box.brand .who { color: #f59e0b; }
+  .trans-box.boss { background: #1a0a0a; border: 1px solid #451a1a; }
+  .trans-box.boss .who { color: #f87171; }
+
+  .why { margin-top: 14px; padding-top: 14px; border-top: 1px solid #1f2937; font-size: 12px; color: #6b7280; }
+  .why strong { color: #9ca3af; }
+
+  .mode-switch { display: flex; gap: 8px; justify-content: center; margin-bottom: 24px; }
+  .mode-btn {
+    padding: 8px 18px; border-radius: 8px; font-size: 13px; font-weight: 600;
+    border: 1px solid #1f2937; background: #111827; color: #9ca3af; cursor: pointer; transition: 0.15s;
+  }
+  .mode-btn.active { background: #2563eb; color: #fff; border-color: #2563eb; }
+</style>
+</head>
+<body>
+<div class="container">
+  <h1>商业语言转化器</h1>
+  <div class="sub">同一个数据，三种语言——学会用对方听得懂的话汇报</div>
+
+  <div class="mode-switch">
+    <button class="mode-btn active" onclick="switchMode('all')">全部场景</button>
+    <button class="mode-btn" onclick="switchMode('report')">汇报类</button>
+    <button class="mode-btn" onclick="switchMode('problem')">问题类</button>
+  </div>
+
+  <div id="scenes"></div>
+</div>
+
+<script>
+const scenes = [
+  {
+    id: 1, mode: 'report',
+    title: '场景：月度汇报 — 本月消耗翻倍了',
+    context: '你是信息流项目主管，要向品牌方做月度汇报。本月消耗从92万涨到148万，GMV从156万涨到261万。',
+    raw: '月消耗 +60% | GMV +67% | ROI 1.69→1.76 | 过审率 72%→96%',
+    trader: '本月消耗148万，ROI 1.76。核心驱动是口播+对比方向稳定放量，单条素材峰值日耗突破8万。月中卡审问题已解决，过审率恢复到96%。素材产能从410条/月提升到680条。',
+    brand: '本月销售额261万，相比上月增长67%，投放效率（ROI）从1.69提升到1.76——这意味着同样的投放预算，我们的产出更高了。月中我们遇到了平台审核政策调整，团队在3天内完成了内容策略调整，消耗在一周内恢复。目前内容方向稳定，下个月有信心继续增长。',
+    boss: '这个产品本月贡献了261万GMV，投放花费148万，ROI 1.76——给公司创造了约113万的毛利空间（按40%毛利率估算）。团队的素材产能提升了65%，单位素材成本下降了20%。核心风险是现有素材方向可能在1-2个月内进入衰减周期——已启动新方向的储备测试。',
+    why: '品牌方关心的是"给我赚了多少钱"和"稳不稳定"，老板关心的是"利润"和"风险"。同一个ROI数据，对品牌方要说"效率在提升"，对老板要说"毛利空间113万+风险已储备"——信息量是一样的，但框架完全不同。'
+  },
+  {
+    id: 2, mode: 'problem',
+    title: '场景：素材卡审 — 过审率从98%跌到15%',
+    context: '品牌方打电话来质问："为什么投放停了？我的产品还在等消耗！"你需要用对方听得懂的语言解释。',
+    raw: '过审率 98%→15% | 日消耗 2.1万→0.4万 | 驳回原因：功效宣称违规',
+    trader: '审核政策突然收紧，机器扫到了"强效去渍""深层去污"这些词。我紧急做了三个动作：①暂停所有含违规词的素材提交（避免继续被驳回影响账号权重）②24小时内出了5条安全表述版素材③用沉浸式方向（天然不带功效词）的旧素材先顶上。预计一周内消耗能恢复到正常水平。',
+    brand: '平台更新了功效类内容的审核规则，不只是我们，整个去渍品类都受到影响。好消息是我们已经找到了合规的内容方向——把"强效去渍"改为"帮助清洁"，审核就通过了。团队在当天就完成了内容调整，新的素材已经开始投放，预计一周内恢复到正常投放节奏。这次调整反而逼我们探索出了一个新的内容方向（沉浸式展示），之前转化率也不错。',
+    boss: '行业性审核政策变动，全品类受影响，属于系统性风险而非我们团队的问题。团队响应速度很快——24小时内完成分析+调整+测试，目前过审率已经恢复到96%。这次事件产出了一个副产品：我们整理了一份"安全词/危险词对照表"，后续同类产品可以直接复用，不会再被同样的问题卡住。短期消耗影响大约3-5万，一周内可恢复。',
+    why: '遇到问题时，品牌方最怕的是"不知道怎么回事"和"不知道什么时候恢复"。你需要同时回答三个问题：①发生了什么（审核政策变动）②为什么不是我们的问题（全行业性的）③什么时候能恢复（一周内）④我们做了哪些事（展现行动力）。品牌方要的是"确定性"，老板要的是"可复制的经验"。'
+  },
+  {
+    id: 3, mode: 'report',
+    title: '场景：申请追加预算 — 你想把月预算从30万加到50万',
+    context: '你测试出了起量方向，想说服老板/品牌方追加预算。直接说"消耗不够跑了"是最差的说服方式。',
+    raw: '当前消耗30万/月 | ROI 1.85（稳定） | 素材过审率98% | 单条素材峰值日耗超8万 | 现有预算仅能支撑日均1万消耗',
+    trader: '当前A方向（口播+对比）ROI稳定在1.85，素材产能充足（月产300+条），单条素材峰值日耗已突破8万。现有30万月预算仅能支撑日均1万消耗，素材经常因预算不足被系统暂停，影响了跑量稳定性。建议追加到50万——多出来的20万中：12万给A方向放量，8万探索新方向。',
+    brand: '我们的主力内容方向已经验证了——ROI稳定在1.85以上，每多花1万就能回收1.85万的销售额。目前30万月预算对应的月GMV大约在55万左右。如果能追加到50万，按照同样的效率，月GMV可以提升到90万以上——增量投入20万，增量产出35万。而且我们有足够的素材储备来支撑这个消耗量级，不会出现"有钱投不出去"的情况。',
+    boss: '申请把月预算从30万调整到50万。三个理由：①主力方向ROI稳定在1.85——投1块收回1.85块，确定性高②现有预算已经限制跑量——素材经常因预算不足被系统暂停③多出来的20万预算，预计产出增量GMV约35万，增量ROI约1.75。这是一个"确定性高、风险可控"的加预算窗口——因为我们有已验证的方向和足够的素材储备。',
+    why: '要预算的核心不是"我钱不够花了"，而是"你给我更多钱，我能给你创造更多回报，而且我有证据证明这一点"。ROI稳定的数据 = 证据。素材储备充足 = 风险可控。讲清楚这两点，品牌方很难拒绝。'
+  },
+  {
+    id: 4, mode: 'problem',
+    title: '场景：产品不起量 — 品牌方问"你们的投放能力行不行？"',
+    context: '产品连续3个月消耗在下降，品牌方开始质疑你的能力。你怎么回应？',
+    raw: '月消耗：68万→41万→19万 | ROI：1.55→1.48→1.32 | 素材成片数：320→180→85',
+    trader: '产品连续3个月消耗下降，根本原因是素材产能和质量的同步下降——素材成片数从320降到85（-73%），意味着系统没有足够的新素材去探索新人群。旧素材的5秒完播率也从42%降到28%，用户已经审美疲劳。问题不在投放策略，在素材生产体系——需要重建素材产出流程。',
+    brand: '我们分析了过去3个月的数据，发现问题的核心不在投放能力，而在于内容产出跟不上。素材数量从每月320条降到了85条——不是说我们的投放变差了，而是系统没有足够的新内容去触达新用户。这就像一个商场里只有3件商品在卖，再好的销售也卖不出更多。我们已经制定了一个内容产能提升计划，目标是在4周内把素材产出恢复到200条/月以上。',
+    boss: '诊断结论：产品不起量的根因是素材供应链断裂，而非投放策略问题。证据：①过审率稳定在95%——不是审核的问题②CPM涨幅正常——不是人群的问题③素材成片数-73%+完播率持续下降——是素材产能和质量双降。解决方案分三步：重建素材生产SOP（2周）→ 新方向测试（2周）→ 验证方向后放量。建议保留产品继续投入，但要给素材生产体系重建的时间。',
+    why: '被质疑能力时，最好的回应不是"我很努力"，而是拿出数据证明"问题不在我，在这里，我有方案"。诊断框架（排除审核→排除人群→定位素材）让品牌方/老板看到你的专业判断力，而不是感觉你在找借口。'
+  },
+  {
+    id: 5, mode: 'report',
+    title: '场景：面试 — "你在这个产品上最大的贡献是什么？"',
+    context: '面试官让你用1分钟讲清楚你在渍无踪产品上的价值。',
+    raw: '接手3个月未起量→峰值月耗300万→月销千万→半年稳定200万',
+    trader: '我接手渍无踪时，产品已经3个月没起量，月消耗不到20万。我做了三件事：①把投放从标准切换到全域，拓展了流量池②研发了墨水渍系列，找到了核心爆点③建立了素材生产SOP，把月素材产能从85条拉到400+条。结果是峰值月消耗突破300万，月销千万，持续半年稳定在200万。',
+    brand: '这个产品在我接手前的状态是"团队已经放弃了"——连续3个月没起量，品牌方在缩减预算。我的价值在于把它从濒死状态拉回来。核心贡献是三件事：找到了正确的流量渠道（从标准投放到全域投放）、找到了正确的用户沟通方式（墨水渍痛点打中了家庭主妇的核心场景）、建立了一个可持续的内容生产系统（让产品不只是靠一两条爆款活着）。最终这个产品从月销不到50万做到了月销千万。',
+    boss: '我在这个产品上创造了两层价值。第一层是业务价值：把一个3个月没起量的濒死产品，做到了峰值月消耗300万、月销千万，持续半年稳定200万——按毛利率40%估算，半年给公司创造了约480万的毛利。第二层是组织价值：我建立了一套可复制的内容生产SOP和团队的复盘机制——产品稳定后我把组员培养成了组长，自己去带新品。这意味着我的能力不是"我一个人能干"，而是"我能让团队也能干"。',
+    why: '面试官问"最大贡献"时，他们不是在问数据（数据简历上已经有了），而是在问两点：①你做对了什么别人做不对的事②你的能力能不能迁移到新岗位。给投手讲方法论，给品牌方讲用户洞察，给老板讲利润和组织价值——三个角度都在展示同一件事："我不是碰运气做出一个爆款，我是有一套方法可以重复产出结果。"'
+  },
+  {
+    id: 6, mode: 'problem',
+    title: '场景：被质疑管理能力 — "你只带了1年团队，管理经验够吗？"',
+    context: '面试官质疑你的管理资历。',
+    raw: '2025.03-2026.07担任编导组长 | 管理3人团队 | 组员被提拔为组长 | 剪辑效率+62.5%',
+    trader: '我带组的时间确实只有1年多，但这一年我是"从零建组"而不是"接盘成熟团队"。组里没有老人带、没有现成流程——我从定方向、搭SOP、建复盘机制、写培训白皮书全部自己来。结果：剪辑效率提升62.5%，组员被我培养到独立晋升组长。',
+    brand: '我理解您对管理经验的关注。我的情况是——不是"学了管理才去带队"，而是"边带队边建立管理方法论"。1年多的时间里，我经历了从0建组的完整周期：搭流程→带人→出活→培养接班人。效率提升62.5%和组员晋升组长这两个结果，可以证明我的管理不只是"盯着大家干活"，而是建立了可复制的团队运作体系。',
+    boss: '1年多管理经验是事实，但有几个维度值得关注：①我是从零建组不是接盘——没有现成的SOP和流程可以参考②我走完了完整管理周期——建组→规范→放量→培养接班人③我的管理产出是"可复制的方法论"而不是"个人英雄主义"——培训白皮书和SOP至今被团队复用。管3人团队和管10人团队的管理底层逻辑是一样的：定标准→跑流程→数据反馈→迭代。规模不同，方法可迁移。',
+    why: '被质疑短板时，最好的策略不是回避，而是重新定义"经验"的含义——不是时间长短，而是密度和深度。1年的建组经历比3年的守成经历含金量更高。用"从零建组""完整周期""可复制方法论"这三个框架重新定义你的1年。'
+  }
+];
+
+function renderScenes(mode) {
+  const filtered = mode === 'all' ? scenes : scenes.filter(s => s.mode === mode);
+  document.getElementById('scenes').innerHTML = filtered.map(s => `
+    <div class="converter-card">
+      <h3>${s.title}</h3>
+      <div class="scene">${s.context}</div>
+      <div class="raw-data">
+        <div class="label">原始数据</div>
+        <code>${s.raw}</code>
+      </div>
+      <div class="translations">
+        <div class="trans-box trader">
+          <div class="who">🔧 投手语言（对内/同行）</div>
+          ${s.trader}
+        </div>
+        <div class="trans-box brand">
+          <div class="who">🎯 品牌方语言（甲方/客户）</div>
+          ${s.brand}
+        </div>
+        <div class="trans-box boss">
+          <div class="who">💰 老板语言（向上汇报）</div>
+          ${s.boss}
+        </div>
+      </div>
+      <div class="why"><strong>💡 为什么这样转化：</strong>${s.why}</div>
+    </div>
+  `).join('');
+}
+
+function switchMode(mode) {
+  document.querySelectorAll('.mode-btn').forEach(b => b.classList.remove('active'));
+  event.target.classList.add('active');
+  renderScenes(mode);
+}
+
+renderScenes('all');
+</script>
+</body>
+</html>
