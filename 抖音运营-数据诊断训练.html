@@ -1,0 +1,365 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>数据诊断训练 · 信息流运营</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    font-family: -apple-system, "PingFang SC", "Microsoft YaHei", sans-serif;
+    background: #0f172a; color: #e2e8f0; min-height: 100vh;
+    padding: 24px;
+  }
+  .container { max-width: 800px; margin: 0 auto; }
+
+  .header { text-align: center; margin-bottom: 28px; }
+  .header h1 { font-size: 22px; font-weight: 800; }
+  .header p { font-size: 13px; color: #64748b; margin-top: 4px; }
+
+  /* Scenario selector */
+  .scene-nav { display: flex; gap: 8px; margin-bottom: 24px; flex-wrap: wrap; }
+  .scene-btn {
+    padding: 8px 16px; border-radius: 8px; border: 1px solid #334155;
+    background: #1e293b; color: #94a3b8; font-size: 13px; cursor: pointer;
+    transition: 0.15s; white-space: nowrap;
+  }
+  .scene-btn:hover { border-color: #475569; color: #e2e8f0; }
+  .scene-btn.active { background: #2563eb; color: #fff; border-color: #2563eb; }
+  .scene-btn.done { background: #14532d; border-color: #16a34a; color: #86efac; }
+
+  /* Card */
+  .card {
+    background: #1e293b; border-radius: 12px; padding: 24px;
+    margin-bottom: 16px; border: 1px solid #334155;
+  }
+  .card h3 { font-size: 16px; margin-bottom: 4px; color: #f1f5f9; }
+  .card .meta { font-size: 11px; color: #64748b; margin-bottom: 16px; }
+
+  /* Data table */
+  table.data {
+    width: 100%; border-collapse: collapse; font-size: 12px; margin-bottom: 16px;
+  }
+  table.data th {
+    background: #0f172a; color: #94a3b8; padding: 8px 10px; text-align: left;
+    font-weight: 500; font-size: 11px;
+  }
+  table.data td {
+    padding: 8px 10px; border-bottom: 1px solid #1e293b;
+    font-variant-numeric: tabular-nums; font-family: "SF Mono", "Menlo", monospace;
+  }
+  table.data tr:nth-child(even) td { background: rgba(255,255,255,0.02); }
+  .up { color: #16a34a; font-weight: 600; }
+  .down { color: #dc2626; font-weight: 600; }
+  .flat { color: #94a3b8; }
+
+  /* Step sections */
+  .step { margin-top: 20px; }
+  .step-label {
+    font-size: 12px; font-weight: 700; color: #2563eb; margin-bottom: 8px;
+    text-transform: uppercase; letter-spacing: 1px;
+  }
+
+  /* Textarea */
+  textarea {
+    width: 100%; background: #0f172a; border: 1px solid #334155; border-radius: 8px;
+    color: #e2e8f0; padding: 12px; font-size: 13px; line-height: 1.6;
+    resize: vertical; min-height: 80px; font-family: inherit;
+  }
+  textarea:focus { outline: none; border-color: #2563eb; }
+
+  /* Buttons */
+  .btn-row { display: flex; gap: 10px; margin-top: 12px; }
+  .btn {
+    padding: 10px 22px; border-radius: 8px; font-size: 13px; font-weight: 700;
+    border: none; cursor: pointer; transition: 0.15s;
+  }
+  .btn-primary { background: #2563eb; color: #fff; }
+  .btn-primary:hover { background: #1d4ed8; }
+  .btn-ghost { background: #334155; color: #cbd5e1; }
+  .btn-ghost:hover { background: #475569; }
+
+  /* Reveal */
+  .reveal {
+    background: #0f172a; border: 1px solid #334155; border-radius: 8px;
+    padding: 16px; margin-top: 12px; display: none; line-height: 1.7; font-size: 13px;
+  }
+  .reveal.show { display: block; }
+  .reveal .expert-label {
+    color: #f59e0b; font-weight: 700; font-size: 12px; margin-bottom: 8px;
+  }
+  .reveal .compare {
+    margin-top: 12px; padding-top: 12px; border-top: 1px solid #1e293b;
+    font-size: 12px; color: #64748b;
+  }
+
+  .progress { font-size: 12px; color: #64748b; text-align: center; margin-top: 24px; }
+</style>
+</head>
+<body>
+<div class="container">
+  <div class="header">
+    <h1>数据诊断训练</h1>
+    <p>看真实数据 → 自己分析 → 对照专业解读 → 反复练习</p>
+  </div>
+
+  <div class="scene-nav" id="nav"></div>
+  <div id="main"></div>
+  <div class="progress" id="progress"></div>
+</div>
+
+<script>
+const scenarios = [
+  {
+    id: 1,
+    title: '素材衰减诊断',
+    level: '基础',
+    context: '你负责的渍无踪去渍啫喱，墨水渍系列素材已连续跑量3周。这是本周 vs 上周的核心数据：',
+    data: {
+      headers: ['指标', '上周', '本周', '变化'],
+      rows: [
+        ['消耗', '42.6万', '28.3万', {v:'-33.6%',c:'down'}],
+        ['GMV', '72.4万', '46.1万', {v:'-36.3%',c:'down'}],
+        ['ROI', '1.70', '1.63', {v:'-4.1%',c:'down'}],
+        ['5秒完播率', '48%', '32%', {v:'-16pp',c:'down'}],
+        ['点击率', '3.8%', '2.1%', {v:'-1.7pp',c:'down'}],
+        ['转化率', '13.5%', '13.8%', {v:'+0.3pp',c:'flat'}],
+      ]
+    },
+    steps: [
+      { label: '第一步：数据中你看到了什么？（列出2-3个关键变化）', hint: '不要急着下结论，先客观描述数据变化。哪些指标变了？变化幅度多大？' },
+      { label: '第二步：你认为是什么原因？（选择最可能的一个）', hint: '结合素材已跑3周这个背景。完播率和点击率同时下降意味着什么？转化率没变又说明什么？' },
+      { label: '第三步：下一步你会怎么做？（写1个具体动作）', hint: '别写"优化素材"这种废话。具体一点：换什么？测什么方向？' },
+    ],
+    expert: `
+      <strong>高手分析思路：</strong><br><br>
+      <strong>1. 数据说了什么：</strong>消耗下降33.6%、GMV下降36.3%是<em>结果</em>，不是原因。真正值得关注的是<strong>5秒完播率从48%跌到32%（-16个百分点）</strong>和<strong>点击率从3.8%跌到2.1%</strong>——这两个是前置指标，说明<em>用户对这条素材已经审美疲劳</em>，看到开头就划走了。<br><br>
+      <strong>2. 为什么判断是素材疲劳而不是人群饱和？</strong>关键线索是<strong>转化率没变（13.5%→13.8%）</strong>。如果人群饱和，转化率也会下降（因为投到了不匹配的人）。转化率没变，说明<em>系统还在找到对的人，但用户不愿意看了</em>——这是典型的素材疲劳。<br><br>
+      <strong>3. 正确做法：</strong>不要直接放弃这条素材。①先换<strong>前3秒开头</strong>（从"墨水渍"钩子换成"油渍"或"果汁渍"钩子）②换BGM和前三帧画面③用旧素材混剪出一条新变体，挂新计划500元测试。如果72小时后5秒完播率还没回到45%以上，再放弃。<br><br>
+      <strong>你之前的实战经验：</strong>渍无踪的墨水渍素材你就是这样处理的——没有一条素材是无限跑的，你持续半年200万/月的稳定消耗，靠的正是对每条素材衰减节奏的精准把控。
+    `,
+    didYouKnow: '完播率是前置指标，GMV是滞后指标。当GMV开始下降时，完播率通常已经跌了3-5天了。盯着完播率能让你提前3天预判素材要衰减。'
+  },
+  {
+    id: 2,
+    title: '新素材起量判断',
+    level: '基础',
+    context: '你在测试小白白羽绒服干洗剂的新方向。周一上线了5条不同框架的测试素材，每条挂了500元随心推。这是周三的数据：',
+    data: {
+      headers: ['素材', '框架类型', '消耗', '5秒完播率', '点击率', '转化率', '出单'],
+      rows: [
+        ['A', '口播+去渍对比', '487元', '52%', '4.2%', '15.1%', '18单'],
+        ['B', '纯展示+字幕', '492元', '28%', '1.3%', '8.2%', '3单'],
+        ['C', '剧情开头+产品', '485元', '61%', '3.1%', '9.5%', '7单'],
+        ['D', '痛点提问+对比', '490元', '55%', '5.8%', '18.3%', '24单'],
+        ['E', '混剪+快节奏', '488元', '38%', '2.7%', '11.0%', '9单'],
+      ]
+    },
+    steps: [
+      { label: '第一步：哪条素材表现最好？为什么？', hint: '不要只看出单数量。找到那条"完播率高 + 点击率高 + 转化率高"三高的素材。' },
+      { label: '第二步：你会优先加预算给哪条？给多少？', hint: '加预算要有逻辑，不是"感觉好就多加"。预算分配要有梯度。' },
+      { label: '第三步：除了加预算，你还会做什么动作？', hint: '一条素材跑起来之后，不是只加钱就完事了。裂变、变体、换人群——哪个是你下一步？' },
+    ],
+    expert: `
+      <strong>高手分析思路：</strong><br><br>
+      <strong>1. 素材D是明显的优胜者。</strong>三高：完播率55%（内容好）→ 点击率5.8%（钩子有效）→ 转化率18.3%（产品力强）= 出单24单。这不是"运气好出一条"，是"框架对了"——<strong>痛点提问+对比</strong>这个框架在羽绒服清洁这个品类里验证了。<br><br>
+      <strong>2. 预算分配不是均匀撒。</strong>正确做法：D加预算到2000元继续验证；B和E直接停（完播率<45%说明钩子失效）；C暂时保留但不加钱（完播率高但转化率低=内容有趣但没打中购买人群，需要换人群定向测试）。<em>淘汰要快，加注要狠——这是信息流的核心效率逻辑。</em><br><br>
+      <strong>3. 加预算的同时做裂变。</strong>以D的框架为模板，换不同的痛点（从"油渍"换成"果汁渍""口红印""圆珠笔痕迹"），拍3-5条变体同步测试。这叫<strong>一框架多吃</strong>——框架验证了，剩下的就是用不同痛点关键词去撞不同的人群。<br><br>
+      <strong>你之前的实战经验：</strong>小白白首周5条即起量，你做的就是同样的事——快速测试→找到最优框架→加预算→裂变变体。这不是玄学，是标准化流程。
+    `,
+    didYouKnow: '一条素材的完播率高但转化率低，说明"内容有趣但人群不准"——用户在娱乐而不是在购物。这时候要换人群定向，不是换素材。'
+  },
+  {
+    id: 3,
+    title: '全域投放切换判断',
+    level: '进阶',
+    context: '你的产品在千川标准投放已跑了2个月，数据如下。品牌方建议开全域推广。你需要判断：现在该不该切全域？',
+    data: {
+      headers: ['指标', '第1个月', '第2个月', '趋势'],
+      rows: [
+        ['月消耗', '85.3万', '91.7万', {v:'+7.5%',c:'up'}],
+        ['月GMV', '153.5万', '160.2万', {v:'+4.4%',c:'up'}],
+        ['ROI', '1.80', '1.75', {v:'-2.8%',c:'flat'}],
+        ['成交单数', '2,847', '2,910', {v:'+2.2%',c:'flat'}],
+        ['千次曝光成本(CPM)', '28元', '32元', {v:'+14.3%',c:'down'}],
+        ['素材过审率', '99%', '98%', {v:'-1pp',c:'flat'}],
+      ]
+    },
+    steps: [
+      { label: '第一步：这个产品在标准投放下的状态是健康的还是到瓶颈了？', hint: '看消耗增速和CPM变化。消耗还在涨但成本也在涨，这是关键信号。' },
+      { label: '第二步：如果切全域，最大的风险是什么？你准备怎么控制风险？', hint: '全域=通投=放弃精准人群定向。如果系统还没学会你的成交模型就切全域...' },
+      { label: '第三步：写一个切换方案（分几步？每步验证什么？）', hint: '切全域不是"要么不切要么全切"。分阶段、设止损线、对比验证。' },
+    ],
+    expert: `
+      <strong>高手分析思路：</strong><br><br>
+      <strong>1. 产品到了标准投放的天花板。</strong>关键信号不是消耗涨7.5%（还在涨），而是<strong>CPM从28涨到32（+14.3%）</strong>——同样的曝光变贵了，说明标准投放能触达的精准人群已经被洗过一轮，系统在往人群边缘扩。消耗涨+GMV涨+但ROI在微降=典型的"精准人群即将耗尽"信号。这时候切全域是正确的时机。<br><br>
+      <strong>2. 最大的风险不是"全域跑不动"，而是"全域跑偏了"。</strong>如果系统的成交模型还不够稳定（成交单数只有2900单，建模通常需要3000-5000单），切全域后可能把预算浪费在非目标人群上。控制方法：①先开"全域-标准投放混合模式"而非"纯全域"②设置全域预算上限（不超过总预算的30%）③对比组：保留一个标准投放计划做对照。<br><br>
+      <strong>3. 切换方案分三步：</strong>第一周：20%预算切全域，80%保留标准投放，对比ROI；第二周：如果全域ROI在标准投放的90%以上（比如1.75×0.9=1.58以上），加到40%；第三周：稳定后逐步加全域占比，全程监控CPM和转化率如果同时跌超15%，暂停全域回到标准投放。<br><br>
+      <strong>你之前的实战经验：</strong>渍无踪从标准到全域的切换，你就是这样一步步验证的——运营混剪占比从~23%提升到~31%，说明全域确实拓展了新流量池。你的判断是对的。
+    `,
+    didYouKnow: 'CPM上涨+消耗还在涨=人群即将耗尽，这时候切全域是对的。CPM上涨+消耗也跌了=素材疲劳，这时候应该换素材而不是切全域。诊断准确是决策的前提。'
+  },
+  {
+    id: 4,
+    title: '卡审后的内容策略调整',
+    level: '进阶',
+    context: '你负责的除菌洗衣液品类遭遇平台审核政策收紧。过去30天数据：过审率从98%骤降到12%。品牌方催促恢复投放。这是你手头的信息：',
+    data: {
+      headers: ['素材类型', '提交数', '过审数', '过审率', '驳回原因'],
+      rows: [
+        ['多菌种功效展示', '45', '1', '2.2%', '功效宣称违规'],
+        ['单一除菌+生活场景', '20', '14', '70%', '——'],
+        ['纯产品展示(无文字)', '15', '13', '86.7%', '——'],
+        ['达人种草(多菌种)', '10', '0', '0%', '功效宣称违规'],
+      ]
+    },
+    steps: [
+      { label: '第一步：这个数据告诉了你什么规律？哪类素材是安全的？', hint: '不要只看总数。分类看——同样是有除菌内容的素材，为什么有的过有的不过？' },
+      { label: '第二步：你会怎么调整内容策略？写3条具体的新脚本方向。', hint: '不是"不再提除菌"，而是"换一种不被卡的方式提除菌"。找到那个表述的分界线。' },
+      { label: '第三步：怎么跟品牌方沟通这个变化？对方可能觉得"别人都能跑为什么你不行"。', hint: '品牌方不懂审核规则，你要用数据说话。同时给出替代方案，不是只报问题。' },
+    ],
+    expert: `
+      <strong>高手分析思路：</strong><br><br>
+      <strong>1. 数据明确告诉你：卡的不是"除菌"这个品类，是"多菌种"这个表述。</strong>单一除菌+生活场景的过审率是70%，而多菌种功效展示的过审率只有2.2%——差距不是素材质量造成的，是<strong>审核机器扫到了"多菌种""多种细菌""广谱杀菌"这些关键词</strong>。一旦定位到问题词，解决方案就非常清晰了。<br><br>
+      <strong>2. 三条新脚本方向：</strong>①"除菌洗衣液+宝宝衣物场景"（单一除菌+安全温和叙事，避开功效宣称）②"除菌洗衣液+梅雨季阴干去味"（把卖点从"杀菌"转移到"去味"，用户心智是一样的但审核不卡）③纯产品展示+字幕只写"洁净力"（不带任何除菌字眼，靠画面本身传达产品力）。<br><br>
+      <strong>3. 跟品牌方的沟通话术：</strong>"我们测试了不同内容方向的数据（展示上面的表格），发现审核卡的是'多菌种'这个具体表述而非产品本身。我们已找到了绕过审核的内容策略——单一除菌+生活场景过审率达70%。同时我们也在测试纯场景化内容（不过多强调功效，靠画面本身），这批素材虽然转化率可能略低于功效型素材，但能保证稳定投放。建议两条腿走路：功效方向用合规表述、场景方向用画面说话。"<br><br>
+      <strong>你之前的实战经验：</strong>立白卫仕卡审突破——你把"多菌种"改成"除菌"两个字，过审率就恢复了。这个经验的核心不是"换词"，而是<strong>找到审核红线在哪，然后在红线内侧寻找最大化的表达空间</strong>。这是一个可复制到任何品类的通用能力。
+    `,
+    didYouKnow: '卡审时不要一条条试，要先做一个"方向×表述"的交叉测试表——4种方向×3种表述=12条素材，一次性找到过审的表述边界。效率比盲目重试高10倍。'
+  },
+  {
+    id: 5,
+    title: '月度复盘：找出真正的增长瓶颈',
+    level: '高手',
+    context: '这是你负责的产品过去3个月的完整数据。品牌方问：下个月的投放预算要不要加？加多少？',
+    data: {
+      headers: ['指标', '第1个月', '第2个月', '第3个月'],
+      rows: [
+        ['月消耗', '106.1万', '149.1万', '158.3万'],
+        ['月GMV', '182.7万', '259.1万', '270.5万'],
+        ['ROI', '1.72', '1.74', '1.71'],
+        ['日均GMV', '6.1万', '8.6万', '9.0万'],
+        ['素材成片数', '795', '902', '958'],
+        ['素材过审率', '99%', '99%', '98%'],
+        ['5秒完播率均值', '46%', '51%', '44%'],
+        ['转化率均值', '10.4%', '13.9%', '13.2%'],
+        ['直播GMV占比', '57.5%', '65.8%', '68.1%'],
+        ['CPM', '26元', '29元', '34元'],
+      ]
+    },
+    steps: [
+      { label: '第一步：第2个月和第3个月的增长质量有什么不同？', hint: '对比消耗增速和GMV增速。第2个月：消耗+40%，GMV+42%。第3个月：消耗+6.2%，GMV+4.4%。这两个月的增长模式完全不同。' },
+      { label: '第二步：你觉得下个月的增长瓶颈在哪里？（选一个最关键的）', hint: '看CPM趋势、完播率趋势和直播GMV占比趋势。哪个指标的变化预示了下个月最可能卡住的地方？' },
+      { label: '第三步：你会建议品牌方下个月预算怎么调？给一个具体方案。', hint: '不是简单的"加"或"不加"。预算分到哪些方向？加多少？同时做什么配套动作？' },
+    ],
+    expert: `
+      <strong>高手分析思路：</strong><br><br>
+      <strong>1. 第2个月是"效率增长"，第3个月是"惯性增长"。</strong>第2个月：消耗+40%、GMV+42%、ROI从1.72到1.74——花更多钱但效率没降，说明找到了可复制的起量方向。第3个月：消耗只+6.2%、GMV只+4.4%、但CPM从29涨到34（+17%）、完播率从51%跌到44%——<em>增长在靠惯性，成本和内容质量都在恶化</em>。<br><br>
+      <strong>2. 下个月最大的瓶颈是素材新鲜度。</strong>CPM涨了17%（人群成本上升）+ 完播率跌了7pp（用户疲劳）= 素材已经到了衰减周期。直播GMV占比从57.5%涨到68.1%——直播在扛着增长——但短视频引流效率在下降，直播是吃存量不是做增量。不解决素材问题，下个月加预算只会加速衰减。<br><br>
+      <strong>3. 建议方案：</strong><em>不加总预算，但调整结构。</em>当前预算158万/月，维持总预算不变，但：①拨20%（32万）做新素材方向的探索测试（墨水渍方向→果渍/油渍/口红渍新方向）②拨30%（47万）做素材裂变和混剪（基于现有爆款框架翻拍变体）③减少30%在衰减素材上的浪费④同时开一个全域推广的小预算测试（5万，验证能否拓展新人群）。<em>先解决素材质量再考虑加预算——这是对品牌方最负责的建议。</em><br><br>
+      <strong>你之前的实战经验：</strong>这组数据就是你渍无踪的真实数据（脱敏处理了）。你当时的判断是继续做素材创新+开全域测试，结果是稳定200万/月维持了半年——说明你的判断框架是对的。
+    `,
+    didYouKnow: 'GMV还在涨不意味着健康。前置指标（CPM、完播率）的恶化通常比GMV滞后2-4周。当GMV开始跌的时候，问题已经存在一个月了。高手的价值就是在前置指标出现信号时就做出判断。'
+  }
+];
+
+let currentScene = 0;
+let answers = {}; // { sceneId: { stepIdx: 'text' } }
+
+function init() {
+  // Nav
+  const nav = document.getElementById('nav');
+  scenarios.forEach((s, i) => {
+    const btn = document.createElement('button');
+    btn.className = 'scene-btn';
+    btn.textContent = `${s.id}. ${s.title}`;
+    btn.onclick = () => switchScene(i);
+    if (i === currentScene) btn.classList.add('active');
+    if (answers[s.id] && Object.keys(answers[s.id]).length >= 3) btn.classList.add('done');
+    nav.appendChild(btn);
+  });
+  updateProgress();
+  renderScene();
+}
+
+function switchScene(idx) {
+  currentScene = idx;
+  document.querySelectorAll('.scene-btn').forEach(b => b.classList.remove('active'));
+  document.querySelectorAll('.scene-btn')[idx].classList.add('active');
+  renderScene();
+}
+
+function updateProgress() {
+  const done = scenarios.filter(s => answers[s.id] && Object.keys(answers[s.id]).length >= 3).length;
+  document.getElementById('progress').textContent = `进度：${done}/${scenarios.length} 个场景完成分析`;
+}
+
+function renderScene() {
+  const s = scenarios[currentScene];
+  const saved = answers[s.id] || {};
+  const main = document.getElementById('main');
+  let html = '';
+
+  // Context
+  html += `<div class="card"><h3>场景${s.id}：${s.title}</h3><div class="meta">难度：${s.level}</div>`;
+  html += `<p style="font-size:13px;color:#cbd5e1;line-height:1.7;margin-bottom:16px;">${s.context}</p>`;
+
+  // Data table
+  html += '<table class="data"><tr>';
+  s.data.headers.forEach(h => html += `<th>${h}</th>`);
+  html += '</tr>';
+  s.data.rows.forEach(row => {
+    html += '<tr>';
+    row.forEach((cell, i) => {
+      if (typeof cell === 'object' && cell.c) {
+        html += `<td class="${cell.c}">${cell.v}</td>`;
+      } else {
+        html += `<td>${cell}</td>`;
+      }
+    });
+    html += '</tr>';
+  });
+  html += '</table></div>';
+
+  // Steps
+  s.steps.forEach((step, i) => {
+    const hasAnswer = saved[i] && saved[i].trim();
+    const revealId = `reveal-${s.id}-${i}`;
+    html += `<div class="card"><div class="step-label">${step.label}</div>`;
+    html += `<p style="font-size:11px;color:#64748b;margin-bottom:8px;">💡 ${step.hint}</p>`;
+    html += `<textarea id="a-${s.id}-${i}" placeholder="写下你的分析...">${saved[i] || ''}</textarea>`;
+    html += `<div class="btn-row">`;
+    html += `<button class="btn btn-primary" onclick="saveAndReveal(${s.id}, ${i})">保存 & 对照专业解读</button>`;
+    html += `</div>`;
+    html += `<div id="${revealId}" class="reveal"><div class="expert-label">🎯 专业解读</div>${s.expert}</div>`;
+    html += '</div>';
+  });
+
+  // Did you know
+  html += `<div class="card" style="border-color:#2563eb;"><div class="step-label">💡 核心认知</div><p style="font-size:13px;color:#cbd5e1;line-height:1.7;">${s.didYouKnow}</p></div>`;
+
+  main.innerHTML = html;
+}
+
+function saveAndReveal(sceneId, stepIdx) {
+  const ta = document.getElementById(`a-${sceneId}-${stepIdx}`);
+  const revealId = `reveal-${sceneId}-${stepIdx}`;
+  const reveal = document.getElementById(revealId);
+
+  if (!answers[sceneId]) answers[sceneId] = {};
+  answers[sceneId][stepIdx] = ta.value;
+
+  reveal.classList.toggle('show');
+
+  document.querySelectorAll('.scene-btn').forEach((b, i) => {
+    if (answers[scenarios[i].id] && Object.keys(answers[scenarios[i].id]).length >= 3) {
+      b.classList.add('done');
+    }
+  });
+  updateProgress();
+}
+
+init();
+</script>
+</body>
+</html>
