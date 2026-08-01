@@ -1,0 +1,574 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>虚拟操盘 · 信息流全流程模拟</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    font-family: -apple-system, "PingFang SC", "Microsoft YaHei", sans-serif;
+    background: #0a0e17; color: #d1d5db; min-height: 100vh;
+    padding: 20px; line-height: 1.6;
+  }
+  .sim { max-width: 860px; margin: 0 auto; }
+
+  /* Header */
+  .topbar {
+    display: flex; justify-content: space-between; align-items: center;
+    margin-bottom: 20px; padding: 12px 18px;
+    background: #111827; border-radius: 10px; border: 1px solid #1f2937;
+  }
+  .topbar .title { font-weight: 800; font-size: 16px; }
+  .topbar .stage-indicator { font-size: 12px; color: #6b7280; }
+  .progress-bar {
+    height: 4px; background: #1f2937; border-radius: 2px; margin-bottom: 24px;
+  }
+  .progress-bar .fill {
+    height: 100%; background: linear-gradient(90deg, #2563eb, #8b5cf6);
+    border-radius: 2px; transition: 0.5s;
+  }
+
+  /* Stage card */
+  .stage-card {
+    background: #111827; border: 1px solid #1f2937; border-radius: 12px;
+    padding: 28px; margin-bottom: 16px;
+  }
+  .stage-card h2 {
+    font-size: 18px; color: #f9fafb; margin-bottom: 6px;
+  }
+  .stage-card .stage-num {
+    font-size: 11px; color: #2563eb; font-weight: 700; letter-spacing: 1px;
+    text-transform: uppercase; margin-bottom: 8px;
+  }
+  .stage-card .context {
+    font-size: 13px; color: #9ca3af; margin-bottom: 20px; line-height: 1.7;
+  }
+
+  /* Data tables */
+  .datatable {
+    width: 100%; border-collapse: collapse; font-size: 12px; margin: 16px 0;
+  }
+  .datatable th {
+    background: #0a0e17; color: #6b7280; padding: 8px 10px; text-align: left;
+    font-weight: 500; font-size: 11px; text-transform: uppercase; letter-spacing: 0.5px;
+  }
+  .datatable td {
+    padding: 8px 10px; border-bottom: 1px solid #1a1f2e;
+    font-variant-numeric: tabular-nums; font-family: "SF Mono", "Menlo", monospace;
+  }
+  .datatable tr:nth-child(even) td { background: rgba(255,255,255,0.015); }
+  .red { color: #ef4444; font-weight: 600; }
+  .green { color: #22c55e; font-weight: 600; }
+  .amber { color: #f59e0b; font-weight: 600; }
+  .muted { color: #6b7280; }
+
+  /* Decision area */
+  .decision-label {
+    font-size: 13px; font-weight: 700; color: #f9fafb; margin: 20px 0 10px;
+  }
+  .choices { display: flex; flex-direction: column; gap: 8px; }
+  .choice {
+    background: #1a1f2e; border: 2px solid #1f2937; border-radius: 8px;
+    padding: 14px 18px; cursor: pointer; transition: 0.15s;
+    display: flex; gap: 12px; align-items: flex-start;
+  }
+  .choice:hover { border-color: #374151; background: #1e2435; }
+  .choice.selected { border-color: #2563eb; background: #1a2240; }
+  .choice .radio {
+    width: 20px; height: 20px; border-radius: 50%; border: 2px solid #374151;
+    flex-shrink: 0; margin-top: 1px; transition: 0.15s;
+  }
+  .choice.selected .radio { border-color: #2563eb; background: #2563eb; box-shadow: 0 0 0 4px rgba(37,99,235,0.2); }
+  .choice .ctext { font-size: 13px; line-height: 1.5; }
+  .choice .ctext strong { color: #f9fafb; }
+
+  /* Writing answer */
+  textarea.answer {
+    width: 100%; background: #0a0e17; border: 1px solid #1f2937; border-radius: 8px;
+    color: #d1d5db; padding: 12px; font-size: 13px; line-height: 1.6;
+    resize: vertical; min-height: 80px; font-family: inherit;
+  }
+  textarea.answer:focus { outline: none; border-color: #2563eb; }
+
+  /* Buttons */
+  .btn {
+    padding: 10px 24px; border-radius: 8px; font-size: 13px; font-weight: 700;
+    border: none; cursor: pointer; transition: 0.15s;
+  }
+  .btn-primary { background: #2563eb; color: #fff; }
+  .btn-primary:hover { background: #1d4ed8; }
+  .btn-primary:disabled { background: #374151; color: #6b7280; cursor: not-allowed; }
+  .btn-ghost { background: transparent; color: #9ca3af; border: 1px solid #374151; }
+  .btn-ghost:hover { background: #1a1f2e; }
+
+  /* Consequence */
+  .consequence {
+    margin-top: 16px; padding: 18px; border-radius: 10px;
+    font-size: 13px; line-height: 1.7; display: none;
+  }
+  .consequence.show { display: block; }
+  .consequence.good { background: #052e16; border: 1px solid #166534; color: #86efac; }
+  .consequence.ok { background: #1a1a0a; border: 1px solid #713f12; color: #fde68a; }
+  .consequence.bad { background: #2e0505; border: 1px solid #991b1b; color: #fca5a5; }
+  .consequence .data-update {
+    margin-top: 12px; padding-top: 12px; border-top: 1px solid rgba(255,255,255,0.1);
+  }
+  .consequence .data-update table { font-size: 11px; }
+  .consequence .data-update table td { padding: 4px 8px; border: none; }
+
+  /* Score overlay */
+  .score-popup {
+    position: fixed; top: 50%; left: 50%; transform: translate(-50%,-50%);
+    background: #111827; border: 2px solid #2563eb; border-radius: 16px;
+    padding: 32px; text-align: center; z-index: 10; display: none;
+    box-shadow: 0 16px 64px rgba(0,0,0,0.6);
+  }
+  .score-popup.show { display: block; }
+  .score-popup h3 { font-size: 22px; color: #f59e0b; margin-bottom: 8px; }
+  .score-popup .big-score { font-size: 56px; font-weight: 800; color: #f9fafb; }
+  .overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.6); z-index: 9; display: none; }
+  .overlay.show { display: block; }
+
+  /* Knowledge cards */
+  .insight-box {
+    background: #0a1628; border: 1px solid #1e3a5f; border-radius: 8px;
+    padding: 14px 18px; margin-top: 12px; font-size: 12px; color: #93c5fd;
+    line-height: 1.7;
+  }
+  .insight-box strong { color: #60a5fa; }
+
+  @media (max-width: 600px) {
+    .stage-card { padding: 18px; }
+    .datatable { font-size: 10px; }
+    .datatable th, .datatable td { padding: 6px 8px; }
+  }
+</style>
+</head>
+<body>
+<div class="sim">
+  <div class="topbar">
+    <span class="title">虚拟操盘 · 信息流全流程模拟</span>
+    <span class="stage-indicator" id="stageLabel">第1/6阶段</span>
+  </div>
+  <div class="progress-bar"><div class="fill" id="progressFill" style="width:0%"></div></div>
+  <div id="stageContainer"></div>
+</div>
+<div class="overlay" id="overlay"></div>
+<div class="score-popup" id="scorePopup"></div>
+
+<script>
+// ============================================================
+// SIMULATION ENGINE
+// ============================================================
+let score = 0;
+let currentStage = 0;
+let decisions = {}; // track all decisions for final scoring
+
+const stages = [
+  // ====== STAGE 1: 接手诊断 ======
+  {
+    num: 1, title: '接手诊断：这个产品还有救吗？',
+    context: `<p>你刚入职一家代理公司，被分配接手一个去渍啫喱产品。这个产品已经<strong>连续3个月没起量</strong>，团队对它完全没有信心，品牌方持续缩减预算，目前月消耗只剩不到20万。老板说：<em>"你先看看数据，判断一下还能不能救。"</em></p>`,
+    data: {
+      headers: ['指标', '3个月前', '2个月前', '上个月'],
+      rows: [
+        ['月消耗', '68.5万', '41.2万', '18.7万'],
+        ['ROI', '1.55', '1.48', '1.32'],
+        ['5秒完播率', '42%', '35%', '28%'],
+        ['素材过审率', '96%', '94%', '95%'],
+        ['月素材成片数', '320', '180', '85'],
+        ['CPM', '24元', '28元', '31元'],
+      ]
+    },
+    question: '看了这组数据，你的判断是什么？产品的问题出在哪里？',
+    type: 'choice',
+    choices: [
+      { text: 'A. 产品本身不行，建议放弃换其他品', score: 0, tier: 'bad' },
+      { text: 'B. CPM上涨说明人群成本在上升，但素材质量和数量双降才是根因——素材产出跟不上导致系统没东西跑', score: 3, tier: 'good' },
+      { text: 'C. ROI太低不划算，先砍预算等品牌方降价再投', score: 1, tier: 'ok' },
+      { text: 'D. 过审率一直很高说明不是审核问题，加大预算冲一下看看能不能起来', score: 0, tier: 'bad' },
+    ],
+    consequence: {
+      good: `<strong>✅ 判断正确。</strong><br><br>你的诊断逻辑：①过审率稳定在95%左右→不是审核卡住了②CPM从24涨到31→人群成本上升但不是断崖③<strong>素材成片数从320降到85（-73%）</strong>——这是最致命的。系统需要持续的新素材去探索新人群，素材产能腰斩意味着系统只能反复投旧素材，而旧素材的完播率已经从42%跌到28%（用户疲劳）。<br><br><strong>核心结论：产品有救，但需要重建素材生产体系。</strong>`,
+      ok: `<strong>⚠️ 判断偏了。</strong>ROI降低是<em>结果</em>不是<em>原因</em>。如果现在砍预算，素材产能会更低，形成恶性循环。该做的是先解决素材问题再看ROI。`,
+      bad: `<strong>❌ 这个判断会害死产品。</strong>放弃或盲目加预算都不对——前者放弃了可以救的产品，后者会在错误的方向上烧更多钱。正确的思路是先诊断根因再决定。`,
+    },
+    insight: '根因诊断框架：遇到产品不起量，先排除审核（过审率）→ 再排除人群（CPM是否异常）→ 最后聚焦素材（产能+质量+新鲜度）。绝大多数"不起量"本质上是"没东西跑"。'
+  },
+
+  // ====== STAGE 2: 素材测试策略 ======
+  {
+    num: 2, title: '素材测试：你只有两周和1万预算来验证方向',
+    context: `<p>你判断问题在素材。但品牌方只给两周时间和1万测试预算：<em>"证明你能找到起量方向，我才加预算。"</em></p><p>你现在要设计一个测试方案：用1万预算、两周时间，验证3-5个不同的内容方向，找到最有可能起量的那个。</p>`,
+    data: {
+      headers: ['可选方向', '逻辑', '预估单条成本', '预估转化率潜力'],
+      rows: [
+        ['A. 口播+去渍对比', '直接展示产品效果，和竞品对比', '80元/条', '高'],
+        ['B. 剧情+痛点场景', '先制造尴尬场景再引出产品', '150元/条', '中'],
+        ['C. 沉浸式去渍过程', '全程无口播，仅靠画面和字幕', '60元/条', '中高'],
+        ['D. 专家人设科普', '穿白大褂讲解去渍原理', '200元/条', '中'],
+        ['E. 混剪+快节奏', '用旧素材混剪新节奏+BGM', '30元/条', '中低'],
+      ]
+    },
+    question: '预算只有1万、时间只有两周。你怎么分配测试？选2-3个方向，并写出你的预算分配和判断逻辑。',
+    type: 'write',
+    hint: '考虑：哪个方向成本最低能最快出结果？哪个方向即使成本高但一旦验证了天花板也高？预算怎么分配才能两周内跑完至少3个方向的测试？',
+    consequence_generic: {
+      good: `<strong>✅ 最优策略：</strong>选A+C+E三个方向。A（口播+对比）是家清品类验证过最稳的方向，成本适中转化潜力最高；C（沉浸式）成本低可以快速测多条；E（混剪）几乎零成本，用现有素材快速验证人群。预算分配：A方向4000元（5条×800）、C方向3000元（5条×600）、E方向3000元（10条×300）。<br><br>为什么不全赌一个方向？因为你还不知道哪个方向能爆。两周时间足够每条素材跑完72小时测试窗口。`,
+      ok: `<strong>⚠️ 方向选对了但预算分配不够聚焦。</strong>你选了正确的方向，但预算太分散了——测试阶段核心是"快速淘汰差的方向、加倍好的方向"，不是均匀撒网。`,
+      bad: `<strong>❌ 预算分配有问题。</strong>你选了B或D方向——这两个成本高但转化潜力只是"中"，性价比太低。测试阶段成本控制很重要，因为你要用有限的预算测试尽可能多的方向。`,
+    },
+    scoring: {
+      optimal: ['A', 'C', 'E'],
+      goodIf: { minOptimal: 2, maxCost: 10000 }
+    },
+    insight: '测试阶段的核心逻辑：用最低成本、最快速度验证最多的方向。不要追求单条素材的完美，追求"72小时内判断一条素材能不能跑"的效率。你在合诚建立的A/B测试体系就是这个逻辑。'
+  },
+
+  // ====== STAGE 3: 投放策略 ======
+  {
+    num: 3, title: '投放策略：测试结果出来了，你怎么分配30万月预算？',
+    context: `<p>两周测试结束。这是各方向的测试结果。品牌方看到数据后，同意把月预算提升到<strong>30万</strong>。现在是月初，你需要做预算分配决策。</p>`,
+    data: {
+      headers: ['方向', '测试消耗', '5秒完播率', '点击率', '转化率', 'ROI', '起量速度'],
+      rows: [
+        ['A. 口播+去渍对比', '3,840元', '52%', '4.8%', '14.2%', '1.85', '快（3天内起量）'],
+        ['C. 沉浸式去渍过程', '2,880元', '61%', '3.1%', '9.5%', '1.42', '中（5天起量）'],
+        ['E. 混剪+快节奏', '2,740元', '38%', '2.8%', '11.3%', '1.55', '慢（7天才起量）'],
+      ]
+    },
+    question: '你只有30万月预算。怎么分配？写清楚每个方向的预算金额和理由。同时：要不要开全域推广？如果开，从哪个方向开？',
+    type: 'write',
+    hint: 'A方向数据最好但成本也最高。C方向完播率最高但转化率偏低。E方向成本最低但起量慢。这不是简单的"全给表现最好的那个"。考虑：预算怎么组合能让总ROI最大化？',
+    consequence_generic: {
+      good: `<strong>✅ 最优策略：</strong>A方向分配18万（60%），C方向8万（27%），E方向4万（13%）。理由：A方向ROI最高且起量最快→作为主力放量方向；C方向完播率高达61%说明内容力很强→转化率低可能是人群没对准，用3万预算切换人群定向测试；E方向低成本稳ROI→作为保底。<br><br><strong>关于全域推广：</strong>现在A方向已有明确的成交模型（ROI 1.85、转化率14.2%、已跑出3000+单），可以拿出A方向的20%预算（3.6万）开全域测试。标准投放继续跑，全域作为增量测试——这就是你说的"先标准验证再全域放量"。`,
+      ok_preview: '你理解了方向分级的逻辑，但在全域投放的判断上还不够明确——全域不是"预算多了就开"，而是"系统学会了成交模型才能开"。',
+      bad_preview: '预算过于集中在A方向——一旦A方向素材衰减（衰减一定会来），你没有B计划。内容操盘的核心不是赌对一个方向，是任何时候都有备选方向在跑。',
+    },
+    scoring: {
+      check: 'manual'
+    },
+    insight: '预算分配不是分钱，是管理风险。主力方向（60%）+测试方向（25%）+保底方向（15%）= 任何时候都有两条腿在走路。当主力衰减时，测试方向已经跑了一段时间可以直接接上——不会出现"爆款死了，一切从头来"的断档期。'
+  },
+
+  // ====== STAGE 4: 放量中的突发问题 ======
+  {
+    num: 4, title: '突发：素材审核突然收紧，过审率从98%跌到15%',
+    context: `<p>第二个月，A方向持续跑量，月消耗稳步增长到60万。但周三突然收到通知：平台审核政策收紧，除菌/去渍类产品因功效宣称问题大量驳回。这是过去一周的数据：</p>`,
+    data: {
+      headers: ['日期', '提交素材数', '过审数', '过审率', '当日消耗', '驳回原因'],
+      rows: [
+        ['周一（正常）', '15', '15', '100%', '2.1万', '——'],
+        ['周二（正常）', '14', '13', '93%', '1.9万', '——'],
+        ['周三（政策变动）', '16', '4', '25%', '1.2万', '功效宣称违规(12条)'],
+        ['周四', '14', '2', '14%', '0.6万', '功效宣称违规(12条)'],
+        ['周五', '12', '2', '17%', '0.4万', '功效宣称违规(10条)'],
+      ]
+    },
+    question: '消耗从2.1万跌到0.4万，品牌方急了。你怎么办？写清楚你的第一步、第二步、第三步。',
+    type: 'write',
+    hint: '不是"等审核恢复"——审核不会自己恢复。你需要：①先搞清楚卡的是什么表述②找到不卡的表述方式③用最快的速度让消耗回来。',
+    consequence_generic: {
+      good: `<strong>✅ 正确做法三步走：</strong><br><br><strong>第一步（当天）：</strong>立即分析被驳回素材的共同点。看驳回原因，发现全是"功效宣称违规"——机器扫到了"强效去渍""深层去污""彻底清除"这些表述。马上暂停所有含这些词的素材提交，避免继续被驳回（每次驳回都影响账号权重）。<br><br><strong>第二步（24小时内）：</strong>紧急制作5条"安全表述"素材——把"强效去渍"改成"帮助去渍"，"深层去污"改成"清洁看得见"。只用画面展示效果，文字只用中性词。同时翻出之前C方向（沉浸式）的素材——它天然不带功效表述，可以直接用。<br><br><strong>第三步（72小时内）：</strong>用安全表述素材+C方向素材重新建计划，每条500元测试。同时用分析结果通知品牌方——"审核卡的是具体表述而非产品本身，我们已找到合规表述方案，预计一周内恢复消耗水平。"<br><br><strong>结果预估：</strong>如果处理及时，消耗从周三开始跌，周末触底（0.4万），下周一开始回升，周三恢复到1.5万+，一周后回到正常水平。核心是你没有"等"——你用了3天完成了分析→调整→测试→恢复，而不是花两周抱怨审核。`,
+      ok_preview: '你找到了问题方向但动作不够快。审核收紧后的黄金窗口是72小时——72小时内找到替代方案并恢复投放，账号权重还能保得住。超过72小时，系统会认为你的账号"没有有效素材在跑"，自然流量也会下降。',
+      bad_preview: '停投等审核恢复是最差的策略——审核不会自己恢复，而你的账号会因为"长期无有效投放"被降权。消耗每跌一天，恢复就需要多花三天。',
+    },
+    insight: '卡审不是运气问题，是信息差问题。你要做的不是"等风头过去"，而是"比别人更快找到审核的红线在哪里"。找红线的方法：①按驳回原因分类→②找到被驳回素材的共同关键词→③做一张"安全词/危险词对照表"→④按对照表批量生产安全素材。你做立白卫仕时用的就是这个方法。'
+  },
+
+  // ====== STAGE 5: 月度复盘 ======
+  {
+    num: 5, title: '月度复盘：老板让你汇报这个月的成绩和问题',
+    context: `<p>第三个月结束。产品已经从月消耗18万恢复到了148万，ROI稳定在1.7+。这是本月完整数据：</p>`,
+    data: {
+      headers: ['指标', '上个月', '本月', '变化', '健康值'],
+      rows: [
+        ['月消耗', '92.6万', '148.3万', {v:'+60.1%',c:'green'}, '——'],
+        ['月GMV', '156.8万', '261.2万', {v:'+66.6%',c:'green'}, '——'],
+        ['ROI', '1.69', '1.76', {v:'+4.1%',c:'green'}, '≥1.5 ✅'],
+        ['5秒完播率均值', '47%', '53%', {v:'+6pp',c:'green'}, '≥45% ✅'],
+        ['素材成片数', '410', '680', {v:'+65.9%',c:'green'}, '——'],
+        ['素材过审率', '72%（月中卡审）', '96%', {v:'+24pp',c:'green'}, '≥95% ✅'],
+        ['CPM', '30元', '28元', {v:'-6.7%',c:'green'}, '稳定 ✅'],
+        ['转化率', '13.1%', '14.8%', {v:'+1.7pp',c:'green'}, '≥10% ✅'],
+        ['直播GMV占比', '61%', '63%', {v:'+2pp',c:'muted'}, '——'],
+      ]
+    },
+    question: '老板只给你5分钟。你怎么汇报？要求：①一句话总结本月成绩②指出一个最大的隐藏风险③给出下个月的具体建议（预算要不要加？加多少？加到哪里？）',
+    type: 'write',
+    hint: '全部指标都是绿的——但这不代表没有问题。仔细看直播GMV占比和素材成片数——虽然都在涨，但这里面藏着一个下个月会爆的问题。高手和普通人的区别：普通人看到全绿就开心，高手在全绿中找裂缝。',
+    consequence_generic: {
+      good: `<strong>✅ 高手汇报结构（5分钟）：</strong><br><br><strong>（1分钟）一句话总结：</strong>"本月消耗+60%到148万、GMV+67%到261万、ROI从1.69提升到1.76。核心驱动是A方向口播+对比素材稳定放量+月中卡审问题上快速恢复。"<br><br><strong>（2分钟）最大风险：</strong>"虽然表面数据全绿，但我关注到一个信号：直播GMV占比从61%升到63%。短视频引流GMV的增长速度（约+55%）慢于总GMV增长（+67%）——意味着直播在吃更多份额。这说明短视频素材虽然稳定，但<strong>增长动能已经在减弱</strong>。如果我们不在下个月推出新的素材爆款方向，短视频的拉新能力会持续下降，最终全部依赖直播——那是不可持续的。"<br><br><strong>（2分钟）下月建议：</strong>"建议预算维持148万不变，但调整内部结构——拨20%（30万）探索两个新方向（油渍和果汁渍），剩余80%继续跑现有主力素材。不加总预算的原因：现有素材已经接近衰减周期，加钱只会加速衰减。下个月如果新方向验证了，再考虑加预算到200万。"<br><br><strong>结果预估：</strong>品牌方认可你的专业判断（你没在数据好的时候盲目要预算），批准了新方向的探索方案。`,
+      ok_preview: '你看到了成绩但没看到风险。所有指标都绿的时候，恰恰是最应该警惕的时候——因为增长不会永远持续，而你需要比别人更早看到拐点。',
+      bad_preview: '只报喜不报忧的汇报——品牌方可能短期内会开心，但下个月数据一旦回落，他们会质疑你的判断力。高手汇报的核心是"诚实+前瞻"：告诉对方现在好，以及为什么下个月可能会不好，以及你已经在做什么来应对。',
+    },
+    insight: '复盘的核心不是"证明我干得好"，是"证明我看得远"。所有人都能看到数据涨了，但能看到"为什么涨""还能涨多久""下一个瓶颈在哪"的，才是值得付15K的项目主管。你的月度复盘记录（7-11月累计50+优化项）就是这种能力的证据。'
+  },
+
+  // ====== STAGE 6: 团队与管理 ======
+  {
+    num: 6, title: '团队管理：产品稳定后，你怎么培养人？',
+    context: `<p>产品已经稳定运行5个月，月消耗稳定在200万。品牌方满意度很高。现在老板给你一个任务：<em>"这个产品已经跑顺了，你把流程交出去，带一个新编导来接盘，你去负责另一个新品。"</em></p><p>新编导之前只做过执行，没独立带过品。你需要在一个月内让他能独立操盘这个产品。</p>`,
+    data: {
+      headers: ['交接清单', '当前状态', '需要新编导掌握的'],
+      rows: [
+        ['素材生产SOP', '已有（剪辑模板+拍摄标准）', '会照着做'],
+        ['投放计划管理', '你脑子和千川后台里', '需要教会'],
+        ['复盘机制', '你每月手动做', '需要建立流程'],
+        ['污渍分类知识库', '你整理的笔记', '需要消化'],
+        ['品牌方沟通', '你在直接对接', '需要逐步交接'],
+      ]
+    },
+    question: '你有一个月时间。写一个交接方案：第一周做什么、第二周做什么、第三周做什么、第四周做什么。目标是一个月后你只做抽查，新编导能独立跑。',
+    type: 'write',
+    hint: '不是"把文档扔给他自己学"——那叫甩锅。带人的核心是"让他先看你做→带着他做→看着他做→他做你抽查"。四周怎么分配这四个阶段？',
+    consequence_generic: {
+      good: `<strong>✅ 最优交接方案（四周渐进）：</strong><br><br><strong>第一周：看他做——你先示范。</strong>周一你完整操作一遍（建计划、看数据、写复盘），新编导在旁边记。周二到周五：你把每天的固定操作拆成"检查清单"，让他对着清单操作，你做在旁边纠正。本周目标：他能独立完成<strong>日常投放操作</strong>（建计划、调出价、看数据）。<br><br><strong>第二周：带他做——他开始上手。</strong>你不再操作，他在前你在后。每天你只看他三个东西：①他建的投放计划（是否正确）②他写的日数据小结（是否抓住了关键变化）③他当天遇到问题怎么处理的（决策质量）。本周目标：他能独立做<strong>日数据判断</strong>（知道什么时候该加预算什么时候该停）。<br><br><strong>第三周：让他做——你每天查一次。</strong>他独立操作，你每天下午5点抽查一次。故意留一个"坑"让他踩——比如素材数据异常——看他自己能不能发现和处理。本周目标：他能独立处理<strong>常见异常</strong>（素材衰减、卡审、ROI波动）。<br><br><strong>第四周：你做抽查——他独立运行。</strong>你只做两件事：①每周看一次周报②品牌方沟通你带着他一起，但由他主讲，你在旁边补位。一个月后，他能独立操盘这个产品，你知道他的判断框架是对的——因为你是看着他从"照着做"到"自己判断"一步步走过来的。<br><br><strong>结果预估：</strong>新编导在一个月后能独立运行产品（当然不会像你那么精准，但基本判断是对的），你成功抽身去带新品。两个月后他越来越熟练，老板认识到你的管理能力——不只是自己能打，还能复制出能打的人。这正是你带静组的经验：组员被提拔为组长，证明管理可复制。`,
+      ok_preview: '方向对了但节奏可以更清晰。带人的核心是"渐进放权"——不是一步到位也不是永远不放，而是四周从"你做他看"到"他做你看"的平滑过渡。',
+      bad_preview: '太快放手会让新编导出错（产品数据会掉），太慢放手会让你永远被绑在这个产品上。带人的分寸感是——让他犯小错（在可控范围内）但不让他犯大错（影响产品数据的）。',
+    },
+    insight: '管理的核心不是"自己更努力"，是"让团队的产出之和超过你一个人"。你静组的经验已经证明了这一点——剪辑模板化（效率+62.5%）、复盘机制（50+优化项）、培训白皮书（知识可复制）——这三样东西组合起来，就是你作为管理者的核心能力：把个人经验变成组织能力。'
+  },
+];
+
+// ============================================================
+// RENDER
+// ============================================================
+function render() {
+  if (currentStage >= stages.length) {
+    showFinalScore();
+    return;
+  }
+
+  const s = stages[currentStage];
+  const container = document.getElementById('stageContainer');
+  document.getElementById('stageLabel').textContent = `第${currentStage+1}/${stages.length}阶段`;
+  document.getElementById('progressFill').style.width = `${(currentStage/stages.length)*100}%`;
+
+  let html = '';
+
+  // Stage card
+  html += `<div class="stage-card">`;
+  html += `<div class="stage-num">阶段 ${s.num}</div>`;
+  html += `<h2>${s.title}</h2>`;
+  html += `<div class="context">${s.context}</div>`;
+
+  // Data table
+  html += `<table class="datatable"><tr>`;
+  s.data.headers.forEach(h => html += `<th>${h}</th>`);
+  html += '</tr>';
+  s.data.rows.forEach(row => {
+    html += '<tr>';
+    row.forEach(cell => {
+      if (typeof cell === 'object' && cell.c) {
+        html += `<td class="${cell.c}">${cell.v}</td>`;
+      } else if (typeof cell === 'string') {
+        html += `<td>${cell}</td>`;
+      } else {
+        html += `<td>${cell}</td>`;
+      }
+    });
+    html += '</tr>';
+  });
+  html += '</table>';
+
+  // Question
+  html += `<div class="decision-label">${s.question}</div>`;
+
+  if (s.type === 'choice') {
+    html += '<div class="choices" id="choices">';
+    s.choices.forEach((c, i) => {
+      html += `<div class="choice" onclick="selectChoice(${i})" id="choice-${i}">
+        <div class="radio"></div>
+        <div class="ctext">${c.text}</div>
+      </div>`;
+    });
+    html += '</div>';
+    html += `<button class="btn btn-primary" id="submitBtn" disabled onclick="submitChoice()">提交判断 →</button>`;
+  } else if (s.type === 'write') {
+    html += `<p style="font-size:11px;color:#6b7280;margin-bottom:8px;">💡 ${s.hint}</p>`;
+    html += `<textarea class="answer" id="writeAnswer" placeholder="写下你的分析和决策..."></textarea>`;
+    html += `<button class="btn btn-primary" style="margin-top:10px;" onclick="submitWrite()">提交方案</button>`;
+  }
+
+  // Consequence area (hidden initially)
+  html += `<div class="consequence" id="consequence"></div>`;
+
+  // Next button (hidden initially)
+  html += `<div style="margin-top:12px;display:none;" id="nextRow">`;
+  html += `<button class="btn btn-primary" onclick="nextStage()">进入下一阶段 →</button>`;
+  html += `</div>`;
+
+  html += '</div>';
+
+  // Stage navigator
+  html += `<div style="display:flex;gap:8px;justify-content:center;margin-top:12px;">`;
+  for (let i = 0; i < stages.length; i++) {
+    const cls = i === currentStage ? 'btn btn-primary' : (i < currentStage ? 'btn btn-ghost' : 'btn btn-ghost');
+    const label = i < currentStage ? '✓' : (i+1);
+    html += `<button class="${cls}" style="padding:6px 12px;font-size:11px;" onclick="jumpTo(${i})" ${i > currentStage ? 'disabled' : ''}>${label}</button>`;
+  }
+  html += '</div>';
+
+  container.innerHTML = html;
+
+  // Store decisions tracker
+  if (!decisions[currentStage]) decisions[currentStage] = {};
+}
+
+let selectedChoice = null;
+
+function selectChoice(idx) {
+  selectedChoice = idx;
+  document.querySelectorAll('.choice').forEach((el, i) => {
+    el.classList.toggle('selected', i === idx);
+  });
+  document.getElementById('submitBtn').disabled = false;
+}
+
+function submitChoice() {
+  const s = stages[currentStage];
+  const c = s.choices[selectedChoice];
+  const con = document.getElementById('consequence');
+  const tier = c.tier;
+
+  decisions[currentStage].choice = selectedChoice;
+  decisions[currentStage].score = c.score;
+  score += c.score;
+
+  con.className = `consequence show ${tier}`;
+  con.innerHTML = s.consequence[tier];
+  document.getElementById('nextRow').style.display = 'block';
+  document.getElementById('submitBtn').style.display = 'none';
+
+  // Add insight
+  con.innerHTML += `<div class="insight-box"><strong>💡 核心认知：</strong>${s.insight}</div>`;
+
+  // Disable choices
+  document.querySelectorAll('.choice').forEach(el => el.style.pointerEvents = 'none');
+}
+
+function submitWrite() {
+  const s = stages[currentStage];
+  const answer = document.getElementById('writeAnswer').value.trim();
+  const con = document.getElementById('consequence');
+
+  if (!answer) { alert('请先写下你的分析再提交'); return; }
+
+  decisions[currentStage].answer = answer;
+
+  // For write stages, show all tier outcomes so they can self-evaluate
+  const cg = s.consequence_generic;
+  con.className = 'consequence show good';
+  con.innerHTML = cg.good;
+
+  if (cg.ok_preview) {
+    con.innerHTML += `<div style="margin-top:12px;padding-top:12px;border-top:1px solid rgba(255,255,255,0.1);"><strong>⚠️ 如果你的方案偏离了：</strong><br>${cg.ok_preview}</div>`;
+  }
+  if (cg.bad_preview) {
+    con.innerHTML += `<div style="margin-top:8px;padding-top:8px;border-top:1px solid rgba(255,255,255,0.1);"><strong>❌ 常见误区：</strong><br>${cg.bad_preview}</div>`;
+  }
+
+  con.innerHTML += `<div class="insight-box"><strong>💡 核心认知：</strong>${s.insight}</div>`;
+
+  // Self score
+  con.innerHTML += `<div style="margin-top:12px;padding-top:12px;border-top:1px solid rgba(255,255,255,0.1);font-size:12px;color:#9ca3af;">
+    <strong>对比上面的专业方案，给自己打分（1-3分）：</strong><br>
+    <button class="btn btn-ghost" style="margin-top:6px;margin-right:6px;" onclick="selfScore(3)">3分 · 和方案基本一致</button>
+    <button class="btn btn-ghost" style="margin-top:6px;margin-right:6px;" onclick="selfScore(2)">2分 · 方向对了但不完整</button>
+    <button class="btn btn-ghost" style="margin-top:6px;" onclick="selfScore(1)">1分 · 还需要多练</button>
+  </div>`;
+
+  document.getElementById('nextRow').style.display = 'block';
+  document.getElementById('writeAnswer').disabled = true;
+}
+
+function selfScore(s) {
+  score += s;
+  decisions[currentStage].selfScore = s;
+  document.getElementById('nextRow').querySelector('button').focus();
+}
+
+function nextStage() {
+  currentStage++;
+  selectedChoice = null;
+  document.getElementById('progressFill').style.width = `${(currentStage/stages.length)*100}%`;
+  if (currentStage >= stages.length) {
+    showFinalScore();
+  } else {
+    render();
+    window.scrollTo(0, 0);
+  }
+}
+
+function jumpTo(idx) {
+  if (idx > currentStage) return; // can't skip ahead
+  currentStage = idx;
+  selectedChoice = null;
+  document.getElementById('progressFill').style.width = `${(currentStage/stages.length)*100}%`;
+  render();
+  window.scrollTo(0, 0);
+}
+
+function showFinalScore() {
+  document.getElementById('stageLabel').textContent = '完成';
+  document.getElementById('progressFill').style.width = '100%';
+
+  const maxScore = stages.filter(s => s.type === 'choice').length * 3 + stages.filter(s => s.type === 'write').length * 3;
+  const pct = Math.round((score / maxScore) * 100);
+
+  let grade;
+  if (pct >= 85) grade = { emoji: '🏆', text: '你已经具备独立操盘手的能力。诊断准、策略对、复盘深——差的只是更多实战经验。', color: '#f59e0b' };
+  else if (pct >= 60) grade = { emoji: '👍', text: '你有正确的内容直觉，但在数据分析和系统思考上还需要刻意练习。建议把数据诊断训练里的5个场景再刷一遍。', color: '#60a5fa' };
+  else grade = { emoji: '📚', text: '操盘能力需要从基础补起。建议：①把每个阶段的专业方案再读一遍②对照自己的回答找差距③一周后再做一遍这个模拟，看进步。', color: '#9ca3af' };
+
+  const container = document.getElementById('stageContainer');
+  container.innerHTML = `
+    <div class="stage-card" style="text-align:center;">
+      <div style="font-size:64px;margin-bottom:12px;">${grade.emoji}</div>
+      <h2 style="color:${grade.color};">模拟完成</h2>
+      <div style="font-size:48px;font-weight:800;color:#f9fafb;margin:12px 0;">${score}/${maxScore}</div>
+      <p style="color:#9ca3af;font-size:13px;max-width:500px;margin:0 auto 20px;">${grade.text}</p>
+      <div style="display:flex;gap:10px;justify-content:center;flex-wrap:wrap;">
+        <button class="btn btn-primary" onclick="retrySim()">重新挑战</button>
+        <button class="btn btn-ghost" onclick="reviewDecisions()">查看我的决策记录</button>
+      </div>
+    </div>`;
+}
+
+function retrySim() {
+  score = 0;
+  currentStage = 0;
+  decisions = {};
+  selectedChoice = null;
+  document.getElementById('progressFill').style.width = '0%';
+  document.getElementById('stageLabel').textContent = '第1/6阶段';
+  render();
+  window.scrollTo(0, 0);
+}
+
+function reviewDecisions() {
+  let html = '<div class="stage-card"><h2>你的决策记录</h2>';
+  for (let i = 0; i < stages.length; i++) {
+    const d = decisions[i];
+    html += `<p style="margin-top:12px;"><strong>阶段${i+1}：${stages[i].title}</strong></p>`;
+    if (d.choice !== undefined) {
+      html += `<p style="font-size:12px;color:#9ca3af;">你的选择：${stages[i].choices[d.choice].text.substring(0, 80)}... | 得分：${d.score}/3</p>`;
+    }
+    if (d.answer) {
+      html += `<p style="font-size:12px;color:#9ca3af;">你的方案：${d.answer.substring(0, 200)}...</p>`;
+    }
+    if (d.selfScore) {
+      html += `<p style="font-size:12px;color:#9ca3af;">自评：${d.selfScore}/3</p>`;
+    }
+  }
+  html += '</div>';
+  document.getElementById('stageContainer').innerHTML = html;
+}
+
+// Init
+render();
+</script>
+</body>
+</html>
