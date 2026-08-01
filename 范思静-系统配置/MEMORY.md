@@ -1,0 +1,5 @@
+- [用户档案](user-profile.md) — 范思静的基本信息、职业背景和求职方向
+- [协作偏好](feedback-style.md) — 用户偏好的沟通风格和工作方式
+- [面试准备进度](interview-prep-progress.md) — 面试准备的全部产出文件和当前进度
+- [简历写作Skill](resume-skill.md) — 根据岗位JD生成一对一量身定制简历的完整方法论和数据
+- [工作台](workbench.md) — 不同场景下的工作流定义和触发词速查
