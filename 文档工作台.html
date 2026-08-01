@@ -1,0 +1,305 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+<title>文档工作台 · 分析+流程</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:-apple-system,"PingFang SC","Microsoft YaHei",sans-serif;background:#f1f5f9;color:#1e293b;min-height:100vh;line-height:1.6;padding:14px;-webkit-tap-highlight-color:transparent}
+.container{max-width:780px;margin:0 auto}
+
+.header{text-align:center;margin-bottom:20px}
+.header h1{font-size:22px;font-weight:800;color:#0f172a}
+.header p{font-size:13px;color:#64748b;margin-top:2px}
+
+/* tab bar */
+.tabs{display:flex;gap:6px;margin-bottom:16px;overflow-x:auto;-webkit-overflow-scrolling:touch}
+.tab{padding:10px 16px;border-radius:10px;font-size:13px;font-weight:600;border:2px solid #e2e8f0;background:#fff;color:#64748b;cursor:pointer;white-space:nowrap;min-height:44px;display:flex;align-items:center;gap:6px}
+.tab:hover{border-color:#93c5fd}
+.tab.on{background:#2563eb;color:#fff;border-color:#2563eb}
+
+.card{background:#fff;border-radius:14px;padding:22px 18px;margin-bottom:14px;box-shadow:0 1px 2px rgba(0,0,0,0.03);border:1px solid #e2e8f0}
+
+/* input */
+textarea.doch{width:100%;min-height:200px;background:#fff;border:3px solid #cbd5e1;border-radius:10px;color:#1e293b;padding:14px;font-size:14px;line-height:1.7;font-family:inherit;resize:vertical;-webkit-appearance:none;margin-bottom:12px}
+textarea.doch:focus{outline:none;border-color:#2563eb;box-shadow:0 0 0 3px rgba(37,99,235,0.1)}
+textarea.doch::placeholder{color:#94a3b8}
+
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:6px;padding:12px 24px;border-radius:10px;font-size:14px;font-weight:700;border:none;cursor:pointer;min-height:48px;-webkit-appearance:none;transition:.15s}
+.btn:active{transform:scale(.97)}
+.btn-main{background:#2563eb;color:#fff;width:100%;margin-bottom:8px}
+.btn-out{background:#fff;color:#2563eb;border:2px solid #2563eb;width:100%}
+.btn-ghost{background:#f1f5f9;color:#475569;border:1px solid #e2e8f0;font-size:12px;padding:8px 16px;min-height:40px;margin:4px}
+
+/* result */
+.result{display:none}
+.result.show{display:block}
+.result-block{background:#f8fafc;border-radius:10px;padding:16px;margin-bottom:10px;font-size:13px;line-height:1.7;border-left:3px solid #2563eb}
+.result-block h4{font-size:14px;color:#0f172a;margin-bottom:8px}
+.result-block ul{padding-left:18px}
+.result-block li{margin-bottom:4px;color:#475569}
+.tag-row{display:flex;gap:4px;flex-wrap:wrap;margin-bottom:6px}
+.tag-sm{font-size:10px;padding:3px 8px;border-radius:4px;background:#eff6ff;color:#2563eb;font-weight:600}
+
+/* quick actions */
+.quick-row{display:flex;gap:8px;flex-wrap:wrap;margin-top:8px}
+.quick{flex:1;min-width:100px;padding:10px;border-radius:8px;font-size:12px;font-weight:600;border:1.5px solid #e2e8f0;background:#fff;color:#475569;cursor:pointer;text-align:center;transition:.15s;-webkit-appearance:none}
+.quick:hover{border-color:#2563eb;color:#2563eb}
+
+.copy-hint{font-size:11px;color:#16a34a;margin-top:6px;display:none}
+.copy-hint.show{display:block}
+
+@media(max-width:500px){body{padding:8px}.card{padding:16px 12px}textarea.doch{font-size:16px;min-height:150px}}
+</style>
+</head>
+<body>
+<div class="container">
+<div class="header"><h1>文档工作台</h1><p>粘贴任意文档内容 → 自动识别类型 → 拆出结构、流程、行动清单</p></div>
+
+<div class="tabs">
+  <button class="tab on" onclick="switchTab('analyze')">🔍 分析文档</button>
+  <button class="tab" onclick="switchTab('workflow')">📋 生成流程</button>
+  <button class="tab" onclick="switchTab('extract')">📊 提取数据</button>
+  <button class="tab" onclick="switchTab('brief')">✍️ 写Brief</button>
+</div>
+
+<div id="panel"></div>
+</div>
+
+<script>
+var currentTab = 'analyze';
+var lastInput = '';
+var lastResult = '';
+
+function switchTab(tab) {
+  currentTab = tab;
+  document.querySelectorAll('.tab').forEach(function(t){t.classList.toggle('on',t.textContent.includes(tab==='analyze'?'分析':tab==='workflow'?'流程':tab==='extract'?'数据':'Brief'))});
+  render();
+}
+
+function render() {
+  var p = document.getElementById('panel');
+  var html = '';
+
+  if (currentTab === 'analyze') {
+    html = `
+      <div class="card">
+        <h3 style="font-size:16px;margin-bottom:4px;">📄 粘贴你要分析的文档</h3>
+        <p style="font-size:12px;color:#64748b;margin-bottom:12px;">可以粘贴：周报、JD、项目复盘、会议记录、竞品分析、任何你拿到手的文档</p>
+        <textarea class="doch" id="docInput" placeholder="把文档内容粘贴到这里...&#10;&#10;比如：粘贴一份JD、一份周报、一段会议记录、或者你写的任何东西"></textarea>
+        <button class="btn btn-main" onclick="analyzeDoc()">🔍 分析这份文档</button>
+        <div class="quick-row">
+          <button class="quick" onclick="pasteDemo('jd')">试用·岗位JD</button>
+          <button class="quick" onclick="pasteDemo('report')">试用·周报数据</button>
+          <button class="quick" onclick="pasteDemo('review')">试用·项目复盘</button>
+        </div>
+      </div>`;
+  } else if (currentTab === 'workflow') {
+    html = `
+      <div class="card">
+        <h3 style="font-size:16px;margin-bottom:4px;">📋 从文档生成工作流程</h3>
+        <p style="font-size:12px;color:#64748b;margin-bottom:12px;">粘贴文档，我帮你拆成一步一步的操作流程</p>
+        <textarea class="doch" id="docInput2" placeholder="粘贴你要拆成流程的文档..."></textarea>
+        <button class="btn btn-main" onclick="genWorkflow()">📋 生成操作流程</button>
+      </div>`;
+  } else if (currentTab === 'extract') {
+    html = `
+      <div class="card">
+        <h3 style="font-size:16px;margin-bottom:4px;">📊 从文档中提取关键数据</h3>
+        <p style="font-size:12px;color:#64748b;margin-bottom:12px;">粘贴数据密集的文档，自动提取数字、指标、对比</p>
+        <textarea class="doch" id="docInput3" placeholder="粘贴包含数据的文档...&#10;&#10;比如：周报、月报、数据复盘、投放报表"></textarea>
+        <button class="btn btn-main" onclick="extractData()">📊 提取关键数据</button>
+      </div>`;
+  } else if (currentTab === 'brief') {
+    html = `
+      <div class="card">
+        <h3 style="font-size:16px;margin-bottom:4px;">✍️ 把文档改写成Brief/汇报/话术</h3>
+        <p style="font-size:12px;color:#64748b;margin-bottom:12px;">输入原始文档+选择目标格式，自动转换</p>
+        <textarea class="doch" id="docInput4" placeholder="粘贴原文..."></textarea>
+        <div class="quick-row" style="margin-bottom:10px;">
+          <button class="quick" onclick="transformBrief('boss')">→ 老板汇报版</button>
+          <button class="quick" onclick="transformBrief('brand')">→ 品牌方沟通版</button>
+          <button class="quick" onclick="transformBrief('interview')">→ 面试话术版</button>
+        </div>
+      </div>`;
+  }
+
+  html += '<div class="result" id="resultArea"></div>';
+  p.innerHTML = html;
+}
+
+// ==================== ANALYSIS ENGINE ====================
+
+function detectDocType(text) {
+  var t = text.toLowerCase();
+  if (t.includes('岗位')||t.includes('jd')||t.includes('职责')||t.includes('任职')||t.includes('要求')) return '岗位JD';
+  if (t.includes('消耗')||t.includes('gmv')||t.includes('roi')||t.includes('完播')||t.includes('cpm')) return '投放数据/周报';
+  if (t.includes('复盘')||t.includes('总结')||t.includes('回顾')||t.includes('下一步')) return '项目复盘';
+  if (t.includes('竞品')||t.includes('对标')||t.includes('竞对')||t.includes('分析')) return '竞品分析';
+  if (t.includes('脚本')||t.includes('拍摄')||t.includes('剪辑')||t.includes('brief')) return '内容Brief';
+  if (t.includes('会议')||t.includes('纪要')||t.includes('讨论')||t.includes('决定')) return '会议记录';
+  return '通用文档';
+}
+
+function extractNumbers(text) {
+  var nums = [];
+  var patterns = [
+    /(\d+\.?\d*)\s*万/g, /(\d+\.?\d*)\s*%/g, /(\d+\.?\d*)\s*倍/g,
+    /ROI\s*[：:]\s*(\d+\.?\d*)/gi, /GMV\s*[：:]\s*(\d+\.?\d*)/gi,
+    /(\d+)\s*条/g, /(\d+)\s*单/g, /(\d+)\s*人/g
+  ];
+  patterns.forEach(function(p){
+    var m; while((m=p.exec(text))!==null){nums.push(m[0]);}
+  });
+  return nums.slice(0,20);
+}
+
+function analyzeDoc() {
+  var text = document.getElementById('docInput').value.trim();
+  if (!text) { alert('请先粘贴文档内容'); return; }
+  lastInput = text;
+  var docType = detectDocType(text);
+  var nums = extractNumbers(text);
+  var wordCount = text.length;
+  var paragraphs = text.split(/\n\n|(?<=。)\s*(?=\S)/).filter(function(p){return p.trim().length>10});
+
+  var html = '<div class="result show">';
+  html += '<div class="result-block"><h4>📌 文档类型</h4><div class="tag-row"><span class="tag-sm">'+docType+'</span><span class="tag-sm">约'+wordCount+'字</span><span class="tag-sm">约'+paragraphs.length+'个段落</span></div></div>';
+
+  if (nums.length > 0) {
+    html += '<div class="result-block"><h4>🔢 提取到的数据</h4><div class="tag-row">';
+    nums.forEach(function(n){ html += '<span class="tag-sm">'+n+'</span>'; });
+    html += '</div></div>';
+  }
+
+  html += '<div class="result-block"><h4>📝 内容结构</h4><ol style="padding-left:18px;color:#475569">';
+  var sections = splitSections(text);
+  sections.forEach(function(s){ html += '<li style="margin-bottom:2px;">'+s+'</li>'; });
+  html += '</ol></div>';
+
+  html += '<div class="result-block"><h4>💡 建议的下一步</h4><ul>';
+  if (docType === '岗位JD') {
+    html += '<li>复制这段JD到Claude Code，输入 <b>/投递</b> 自动生成定制简历</li>';
+    html += '<li>提取关键要求，去<em>话术健身房</em>练习对应问题</li>';
+    html += '<li>在简历工作台中调整经历侧重点匹配JD关键词</li>';
+  } else if (docType === '投放数据/周报') {
+    html += '<li>去<em>数据诊断训练</em>练习分析这份数据</li>';
+    html += '<li>复制数据到Claude Code，输入 <b>/复盘</b> 自动生成复盘报告</li>';
+    html += '<li>在<em>指标翻译器</em>中查看相关指标的含义</li>';
+  } else if (docType === '项目复盘') {
+    html += '<li>这份复盘可以去<em>虚拟操盘模拟</em>中对照参考答案</li>';
+    html += '<li>提取核心数据更新到简历skill中</li>';
+    html += '<li>关键结论可以存入<em>话术健身房</em>作为面试素材</li>';
+  } else {
+    html += '<li>复制内容到Claude Code，输入 <b>/润色</b> 用你的风格改写</li>';
+    html += '<li>如果是面试相关，去<em>AI对话模拟器</em>练习对应场景</li>';
+    html += '<li>重要文档记得说"提交"保存到Git版本库</li>';
+  }
+  html += '</ul></div>';
+
+  html += '<div style="margin-top:8px">';
+  html += '<button class="btn btn-out" onclick="copyPrompt()">📋 复制分析结果+生成AI提示词</button>';
+  html += '<div class="copy-hint" id="copyHint">✅ 已复制！去Claude Code粘贴即可</div>';
+  html += '</div>';
+
+  html += '</div>';
+  lastResult = html;
+  document.getElementById('resultArea').innerHTML = html;
+  document.getElementById('resultArea').scrollIntoView({behavior:'smooth',block:'center'});
+}
+
+function splitSections(text) {
+  var lines = text.split('\n').filter(function(l){return l.trim();});
+  if (lines.length <= 5) return lines.map(function(l){return l.substring(0,80);});
+  return lines.filter(function(l){return l.length>10;}).slice(0,8).map(function(l){return l.substring(0,80);});
+}
+
+function genWorkflow() {
+  var text = (document.getElementById('docInput2')||document.getElementById('docInput')).value.trim();
+  if (!text) { alert('请先粘贴文档内容'); return; }
+  var docType = detectDocType(text);
+  var steps = [];
+
+  if (docType === '岗位JD') {
+    steps = ['第1步：提取JD中5-8个核心关键词（技能、工具、经验要求）','第2步：对照简历，标注每条经历匹配哪些关键词','第3步：调整经历侧重点——匹配度高的展开写，不相关的缩减','第4步：用JD中的原词替换简历中的同义词（JD写"全域推广"你就写"全域推广"）','第5步：生成定制版简历PDF','第6步：根据JD准备对应的面试话术'];
+  } else if (docType === '投放数据/周报') {
+    steps = ['第1步：列出所有指标的本期值 vs 上期值 vs 变化幅度','第2步：圈出变化超过±10%的指标','第3步：每个显著变化问"为什么"——归因到策略调整/执行优化/外部因素','第4步：写一句话总结本周最大的变化+原因','第5步：列出下周3个具体动作','第6步：发给品牌方/老板（用商业语言转化器翻译）'];
+  } else {
+    steps = ['第1步：通读文档，用一句话概括核心内容','第2步：提取3-5个关键信息点','第3步：确定下一步行动——这份文档要求你做什么','第4步：如果需要回复/汇报，用商业语言转化器找合适的表达方式','第5步：把文档存入对应文件夹，在Git中说"提交"保存版本'];
+  }
+
+  var html = '<div class="result show">';
+  html += '<div class="result-block"><h4>📋 操作流程 · '+docType+'</h4><ol style="padding-left:18px;">';
+  steps.forEach(function(s){ html += '<li style="margin-bottom:6px;color:#475569">'+s+'</li>'; });
+  html += '</ol></div>';
+  html += '<button class="btn btn-out" onclick="copyPrompt()">📋 复制流程</button><div class="copy-hint" id="copyHint">✅ 已复制</div>';
+  html += '</div>';
+  document.getElementById('resultArea').innerHTML = html;
+  document.getElementById('resultArea').scrollIntoView({behavior:'smooth',block:'center'});
+}
+
+function extractData() {
+  var text = (document.getElementById('docInput3')||document.getElementById('docInput')).value.trim();
+  if (!text) { alert('请先粘贴文档内容'); return; }
+  var nums = extractNumbers(text);
+
+  var html = '<div class="result show">';
+  html += '<div class="result-block"><h4>📊 提取到的关键数据</h4>';
+  if (nums.length===0) { html += '<p style="color:#64748b">未检测到明显的数据指标。请确认文档中包含数字（如消耗、ROI、百分比等）。</p>'; }
+  else { html += '<div class="tag-row">'+nums.map(function(n){return '<span class="tag-sm">'+n+'</span>'}).join('')+'</div>'; }
+  html += '</div>';
+
+  html += '<div class="result-block"><h4>💡 如何使用这些数据</h4><ul>';
+  html += '<li>复制数据到Claude Code，输入 <b>/复盘</b> 自动生成结构化复盘</li>';
+  html += '<li>去<em>指标翻译器</em>查看每个指标的含义和联动关系</li>';
+  html += '<li>去<em>虚拟操盘模拟</em>看看类似数据下高手做了什么判断</li>';
+  html += '</ul></div>';
+  html += '</div>';
+  document.getElementById('resultArea').innerHTML = html;
+  document.getElementById('resultArea').scrollIntoView({behavior:'smooth',block:'center'});
+}
+
+function transformBrief(mode) {
+  var text = document.getElementById('docInput4').value.trim();
+  if (!text) { alert('请先粘贴原文'); return; }
+  var templates = {
+    boss: {title:'向上汇报版',tips:['结论先行：一句话总结','数据支撑：1-2个关键数字','风险预判：可能出现的问题','下一步：需要老板做什么决策']},
+    brand: {title:'品牌方沟通版',tips:['先说结果再解释原因','用对方听得懂的语言（少用行业黑话）','主动提解决方案而非只报问题','给时间线和预期']},
+    interview: {title:'面试话术版',tips:['用STAR框架重述：情境→任务→行动→结果','加入具体数据','展示你的决策逻辑而非只讲做了什么','准备追问预判']}
+  };
+  var t = templates[mode];
+  var html = '<div class="result show">';
+  html += '<div class="result-block"><h4>✍️ '+t.title+' 格式框架</h4><ul>';
+  t.tips.forEach(function(tip){ html += '<li style="margin-bottom:4px;">'+tip+'</li>'; });
+  html += '</ul></div>';
+  html += '<div class="result-block"><h4>💡 下一步</h4><p style="color:#475569">将原文+"请按'+t.title+'格式改写"复制到Claude Code，输入<b>/润色</b>即可自动转换。</p></div>';
+  html += '</div>';
+  document.getElementById('resultArea').innerHTML = html;
+  document.getElementById('resultArea').scrollIntoView({behavior:'smooth',block:'center'});
+}
+
+// ==================== DEMO ====================
+function pasteDemo(type) {
+  var ta = document.getElementById('docInput');
+  var demos = {
+    jd: '【岗位JD】信息流视频项目主管\n\n岗位职责：\n1. 负责品牌在抖音/千川平台的信息流视频内容策划与投放\n2. 带领3-5人内容团队（编导+拍摄+剪辑），对投放ROI和消耗目标负责\n3. 建立素材生产SOP和复盘机制\n4. 与品牌方日常沟通，提供数据分析和策略建议\n\n任职要求：\n1. 3年以上短视频电商经验，有家清/美妆/日化品类经验优先\n2. 精通千川投放和数据分析\n3. 有团队管理经验\n4. 专科及以上学历',
+    report: '【周报数据】2025年第30周\n\n整体消耗：148.3万（上周92.6万，+60.1%）\n整体GMV：261.2万（上周156.8万，+66.6%）\n整体ROI：1.76（上周1.69，+4.1%）\n5秒完播率均值：53%（上周47%，+6pp）\n素材成片数：680条（上周410条，+65.9%）\n素材过审率：96%（上周72%，+24pp）\nCPM：28元（上周30元，-6.7%）\n转化率：14.8%（上周13.1%，+1.7pp）\n直播GMV占比：63%（上周61%，+2pp）',
+    review: '【项目复盘】渍无踪去渍啫喱旧品复活\n\n背景：接手时产品已3个月未起量，月消耗不足20万，团队无信心，品牌方缩减预算。\n\n诊断：过审率95%→不是审核问题；CPM涨幅正常→不是人群问题；素材成片数从320降到85（-73%）→根因是素材产能腰斩。\n\n行动：①重建素材生产SOP，2周内产能恢复到200+条/月②快速测试新方向，率先研发墨水渍系列→5秒完播率从28%恢复到52%③产能稳定后切换全域投放拓展流量池。\n\n结果：峰值月耗300万+，月销千万，稳定200万/月持续半年。组员培养至独立晋升组长。'
+  };
+  ta.value = demos[type] || '';
+}
+
+function copyPrompt() {
+  var text = lastInput || document.getElementById('docInput').value;
+  var prompt = '请分析以下文档：\n\n=== 文档内容 ===\n'+text+'\n=== 结束 ===\n\n请帮我：\n1. 识别文档类型和核心内容\n2. 提取关键信息和数据\n3. 给出处理这份文档的下一步建议\n4. 如果需要行动，列出具体步骤';
+  navigator.clipboard.writeText(prompt).then(function(){
+    var hint = document.getElementById('copyHint');
+    if (hint) { hint.classList.add('show'); setTimeout(function(){hint.classList.remove('show')},2000); }
+  });
+}
+
+render();
+</script>
+</body>
+</html>
