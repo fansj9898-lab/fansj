@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+<title>范思静 · 工作台</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:-apple-system,"PingFang SC","Microsoft YaHei",sans-serif;background:#0f172a;color:#e2e8f0;min-height:100vh;-webkit-tap-highlight-color:transparent}
+.app{max-width:900px;margin:0 auto;padding:16px}
+
+/* top */
+.top{display:flex;align-items:center;gap:14px;margin-bottom:20px;padding:14px 18px;background:#1e293b;border-radius:14px;border:1px solid #334155}
+.top img{width:52px;height:52px;border-radius:50%;object-fit:cover;border:2px solid #2563eb}
+.top h1{font-size:18px;font-weight:800;color:#f1f5f9}
+.top p{font-size:12px;color:#64748b;margin-top:2px}
+
+/* tabs */
+.tabs{display:flex;gap:6px;margin-bottom:16px;overflow-x:auto;padding-bottom:4px;-webkit-overflow-scrolling:touch}
+.tab{flex-shrink:0;padding:10px 16px;border-radius:10px;font-size:12px;font-weight:600;border:1.5px solid #334155;background:#1e293b;color:#94a3b8;cursor:pointer;white-space:nowrap;min-height:42px;display:flex;align-items:center;gap:6px;transition:.15s}
+.tab:hover{border-color:#475569;color:#e2e8f0}
+.tab.on{background:#2563eb;color:#fff;border-color:#2563eb}
+
+/* grid */
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:10px}
+.card{background:#1e293b;border:1px solid #334155;border-radius:12px;padding:18px 16px;cursor:pointer;transition:.15s;text-decoration:none;color:inherit;display:block}
+.card:hover{border-color:#2563eb;background:#1e2d47}
+.card .emoji{font-size:28px;margin-bottom:8px}
+.card .name{font-size:14px;font-weight:700;color:#f1f5f9;margin-bottom:3px}
+.card .desc{font-size:11px;color:#64748b;line-height:1.4}
+.card .badge{display:inline-block;font-size:10px;padding:2px 8px;border-radius:4px;margin-top:8px;font-weight:600}
+.bd-learn{background:#1e3a5f;color:#93c5fd}
+.bd-work{background:#451a1a;color:#fca5a5}
+.bd-tool{background:#1a3a1a;color:#86efac}
+
+/* divider */
+.divider{font-size:11px;font-weight:700;color:#475569;letter-spacing:1px;margin:20px 0 10px;padding-bottom:6px;border-bottom:1px solid #1e293b}
+
+/* built-in tool area */
+.tool-area{background:#1e293b;border:1px solid #334155;border-radius:14px;padding:20px;margin-top:6px}
+.tool-area textarea{width:100%;min-height:120px;background:#0f172a;border:2px solid #334155;border-radius:10px;color:#e2e8f0;padding:14px;font-size:14px;line-height:1.6;font-family:inherit;resize:vertical;-webkit-appearance:none;margin-bottom:10px}
+.tool-area textarea:focus{outline:none;border-color:#2563eb}
+.tool-area textarea::placeholder{color:#475569}
+.tool-area button{width:100%;padding:12px;border-radius:10px;font-size:14px;font-weight:700;border:none;cursor:pointer;background:#2563eb;color:#fff;min-height:48px;-webkit-appearance:none}
+.result-box{display:none;margin-top:12px;padding:14px;background:#0f172a;border-radius:10px;font-size:12px;line-height:1.7;color:#94a3b8}
+.result-box.show{display:block}
+.result-box h4{color:#e2e8f0;margin-bottom:6px}
+.result-box .tag-row{display:flex;gap:4px;flex-wrap:wrap;margin:6px 0}
+.result-box .tag{font-size:10px;padding:3px 8px;border-radius:4px;background:#1e3a5f;color:#93c5fd}
+.quick-row{display:flex;gap:6px;margin-top:8px;flex-wrap:wrap}
+.quick{flex:1;min-width:80px;padding:8px 10px;border-radius:6px;font-size:11px;font-weight:600;border:1px solid #334155;background:transparent;color:#94a3b8;cursor:pointer;text-align:center}
+.quick:hover{border-color:#2563eb;color:#2563eb}
+
+.footer{text-align:center;margin-top:24px;font-size:11px;color:#475569}
+.footer a{color:#64748b}
+@media(max-width:500px){.app{padding:10px}.grid{grid-template-columns:repeat(2,1fr);gap:8px}.card{padding:14px 12px}}
+</style>
+</head>
+<body>
+<div class="app">
+<div class="top">
+  <img src="avatar.jpg" alt="">
+  <div><h1>范思静 · 工作台</h1><p>学习 · 实战 · 求职 · 文档分析 · 一个链接全搞定</p></div>
+</div>
+
+<div class="tabs" id="tabBar">
+  <button class="tab on" onclick="showSection('home')">🏠 全部</button>
+  <button class="tab" onclick="showSection('learn')">📚 学习</button>
+  <button class="tab" onclick="showSection('practice')">🎯 实战</button>
+  <button class="tab" onclick="showSection('tools')">🛠 求职</button>
+  <button class="tab" onclick="showSection('doc')">🗂️ 文档</button>
+</div>
+
+<!-- HOME: everything -->
+<div id="sec-home">
+  <div class="divider">📚 学习训练</div>
+  <div class="grid">
+    <a class="card" href="抖音运营-知识闯关.html"><div class="emoji">🧩</div><div class="name">知识闯关</div><div class="desc">5关×5题刷知识点</div><span class="badge bd-learn">刷题</span></a>
+    <a class="card" href="抖音运营-指标翻译器.html"><div class="emoji">📊</div><div class="name">指标翻译器</div><div class="desc">10个指标详情卡片</div><span class="badge bd-learn">词典</span></a>
+    <a class="card" href="抖音运营-算法模拟器.html"><div class="emoji">🧠</div><div class="name">算法模拟器</div><div class="desc">7步拆解抖音算法</div><span class="badge bd-learn">原理</span></a>
+    <a class="card" href="抖音运营-商业语言转化器.html"><div class="emoji">🗣️</div><div class="name">商业语言转化器</div><div class="desc">数据×3种语言</div><span class="badge bd-learn">表达</span></a>
+  </div>
+
+  <div class="divider">🎯 实战模拟</div>
+  <div class="grid">
+    <a class="card" href="抖音运营-数据诊断训练.html"><div class="emoji">🔍</div><div class="name">数据诊断训练</div><div class="desc">看数据写分析</div><span class="badge bd-work">分析</span></a>
+    <a class="card" href="抖音运营-虚拟操盘模拟.html"><div class="emoji">🎮</div><div class="name">虚拟操盘模拟</div><div class="desc">6阶段完整项目</div><span class="badge bd-work">实战</span></a>
+    <a class="card" href="抖音运营-话术健身房.html"><div class="emoji">🎤</div><div class="name">话术健身房</div><div class="desc">5题×3版优化</div><span class="badge bd-work">表达</span></a>
+    <a class="card" href="AI对话模拟器.html"><div class="emoji">🤖</div><div class="name">AI对话模拟器</div><div class="desc">5身份×16场景</div><span class="badge bd-work">对话</span></a>
+  </div>
+
+  <div class="divider">🛠 求职 & 文档</div>
+  <div class="grid">
+    <a class="card" href="范思静-面试资料-2026.html"><div class="emoji">📄</div><div class="name">简历+作品集</div><div class="desc">精确版/脱敏版一键切</div><span class="badge bd-tool">求职</span></a>
+    <a class="card" href="文档工作台.html"><div class="emoji">🗂️</div><div class="name">文档工作台</div><div class="desc">分析+流程+提取数据</div><span class="badge bd-tool">分析</span></a>
+  </div>
+</div>
+
+<!-- other sections hidden by default -->
+<div id="sec-learn" style="display:none">
+  <div class="grid">
+    <a class="card" href="抖音运营-知识闯关.html"><div class="emoji">🧩</div><div class="name">知识闯关</div><div class="desc">5关×5题刷知识点</div><span class="badge bd-learn">刷题</span></a>
+    <a class="card" href="抖音运营-指标翻译器.html"><div class="emoji">📊</div><div class="name">指标翻译器</div><div class="desc">10个指标详情卡片</div><span class="badge bd-learn">词典</span></a>
+    <a class="card" href="抖音运营-算法模拟器.html"><div class="emoji">🧠</div><div class="name">算法模拟器</div><div class="desc">7步拆解抖音算法</div><span class="badge bd-learn">原理</span></a>
+    <a class="card" href="抖音运营-商业语言转化器.html"><div class="emoji">🗣️</div><div class="name">商业语言转化器</div><div class="desc">数据×3种语言</div><span class="badge bd-learn">表达</span></a>
+  </div>
+</div>
+<div id="sec-practice" style="display:none">
+  <div class="grid">
+    <a class="card" href="抖音运营-数据诊断训练.html"><div class="emoji">🔍</div><div class="name">数据诊断训练</div><div class="desc">看数据写分析</div><span class="badge bd-work">分析</span></a>
+    <a class="card" href="抖音运营-虚拟操盘模拟.html"><div class="emoji">🎮</div><div class="name">虚拟操盘模拟</div><div class="desc">6阶段完整项目</div><span class="badge bd-work">实战</span></a>
+    <a class="card" href="抖音运营-话术健身房.html"><div class="emoji">🎤</div><div class="name">话术健身房</div><div class="desc">5题×3版优化</div><span class="badge bd-work">表达</span></a>
+    <a class="card" href="AI对话模拟器.html"><div class="emoji">🤖</div><div class="name">AI对话模拟器</div><div class="desc">5身份×16场景</div><span class="badge bd-work">对话</span></a>
+  </div>
+</div>
+<div id="sec-tools" style="display:none">
+  <div class="grid">
+    <a class="card" href="范思静-面试资料-2026.html"><div class="emoji">📄</div><div class="name">简历+作品集</div><div class="desc">精确版/脱敏版一键切</div><span class="badge bd-tool">求职</span></a>
+    <a class="card" href="文档工作台.html"><div class="emoji">🗂️</div><div class="name">文档工作台</div><div class="desc">分析+流程+提取数据</div><span class="badge bd-tool">分析</span></a>
+    <a class="card" href="范思静-工作台.html"><div class="emoji">⚡</div><div class="name">Claude工作台</div><div class="desc">触发词+快捷命令</div><span class="badge bd-tool">总控</span></a>
+  </div>
+</div>
+
+<!-- BUILT-IN: Quick doc analyzer -->
+<div id="sec-doc" style="display:none">
+  <div class="tool-area">
+    <h3 style="font-size:15px;margin-bottom:8px;">📄 快速文档分析</h3>
+    <p style="font-size:11px;color:#64748b;margin-bottom:10px;">粘贴任意文档 → 识别类型 → 拆结构 → 生成下一步</p>
+    <textarea id="quickDoc" placeholder="粘贴JD、周报、复盘、会议记录..."></textarea>
+    <div class="quick-row">
+      <button class="quick" onclick="pasteQuick('jd')">试用·JD</button>
+      <button class="quick" onclick="pasteQuick('report')">试用·周报</button>
+      <button class="quick" onclick="pasteQuick('review')">试用·复盘</button>
+    </div>
+    <button onclick="analyzeQuick()">🔍 分析文档</button>
+    <div class="result-box" id="quickResult"></div>
+  </div>
+</div>
+
+<div class="footer">将本页添加到手机主屏幕 → 像App一样使用 &nbsp;|&nbsp; <a href="https://github.com/fansj9898-lab/fansj">GitHub</a></div>
+</div>
+
+<script>
+function showSection(s) {
+  document.querySelectorAll('.tab').forEach(function(t){t.classList.remove('on')});
+  var tabMap = {home:0,learn:1,practice:2,tools:3,doc:4};
+  document.querySelectorAll('.tab')[tabMap[s]].classList.add('on');
+  ['home','learn','practice','tools','doc'].forEach(function(sec){
+    var el = document.getElementById('sec-'+sec);
+    if (el) el.style.display = (sec===s?'':'none');
+  });
+}
+
+// Quick analyzer
+function analyzeQuick() {
+  var text = document.getElementById('quickDoc').value.trim();
+  if (!text) return;
+  var type = '通用文档';
+  if (text.includes('岗位')||text.includes('JD')||text.includes('任职')) type = '岗位JD';
+  else if (text.includes('消耗')||text.includes('ROI')||text.includes('GMV')) type = '投放数据/周报';
+  else if (text.includes('复盘')||text.includes('总结')) type = '项目复盘';
+
+  var nums = []; var m;
+  var pats = [/(\d+\.?\d*)\s*万/g, /(\d+\.?\d*)\s*%/g, /ROI\s*[：:]\s*(\d+\.?\d*)/gi];
+  pats.forEach(function(p){while((m=p.exec(text))!==null) nums.push(m[0])});
+
+  var r = document.getElementById('quickResult');
+  r.className = 'result-box show';
+  r.innerHTML = '<h4>📌 识别为：'+type+'</h4>';
+  if (nums.length>0) {
+    r.innerHTML += '<div class="tag-row">'+nums.slice(0,12).map(function(n){return '<span class="tag">'+n+'</span>'}).join('')+'</div>';
+  }
+  r.innerHTML += '<p style="margin-top:6px;font-size:11px;">💡 建议：复制原文到Claude Code → 输入 <b>/复盘</b> 或 <b>/润色</b> 获取深度分析</p>';
+  r.scrollIntoView({behavior:'smooth'});
+}
+
+function pasteQuick(type) {
+  var ta = document.getElementById('quickDoc');
+  var d = {
+    jd: '【岗位JD】信息流视频项目主管\n\n负责品牌在抖音/千川平台的信息流视频内容策划与投放，带领3-5人团队，对投放ROI和消耗目标负责。要求3年以上短视频电商经验，精通千川投放和数据分析。',
+    report: '本周消耗148.3万（+60%），GMV 261.2万（+67%），ROI 1.76（+4%），素材成片680条（+66%），过审率96%。',
+    review: '渍无踪接手时3个月没起量、月耗不到20万。诊断发现素材产能从320降到85是根因。重建SOP+测试墨水渍方向+切全域投放→月耗300万+、月销千万。'
+  };
+  ta.value = d[type] || '';
+}
+
+showSection('home');
+</script>
+</body>
+</html>
