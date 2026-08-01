@@ -1,0 +1,483 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>抖音运营 · 知识闯关</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    font-family: -apple-system, "PingFang SC", "Microsoft YaHei", sans-serif;
+    background: #0f172a; color: #e2e8f0; min-height: 100vh;
+    display: flex; justify-content: center; align-items: center;
+    padding: 20px;
+  }
+  .game {
+    max-width: 700px; width: 100%;
+    background: #1e293b; border-radius: 16px; padding: 36px 32px;
+    box-shadow: 0 8px 40px rgba(0,0,0,0.4);
+    position: relative; overflow: hidden;
+  }
+  .game::before {
+    content: ""; position: absolute; top: 0; left: 0; right: 0; height: 4px;
+    background: linear-gradient(90deg, #2563eb, #8b5cf6, #ec4899);
+  }
+
+  /* Header */
+  .header { text-align: center; margin-bottom: 24px; }
+  .header h1 { font-size: 24px; font-weight: 800; letter-spacing: 1px; }
+  .header .sub { font-size: 13px; color: #64748b; margin-top: 4px; }
+
+  /* Level bar */
+  .levels { display: flex; gap: 8px; justify-content: center; margin-bottom: 28px; }
+  .lv {
+    width: 40px; height: 40px; border-radius: 10px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 13px; font-weight: 700;
+    background: #334155; color: #64748b;
+    transition: 0.3s; cursor: default; position: relative;
+  }
+  .lv.done { background: #16a34a; color: #fff; }
+  .lv.active { background: #2563eb; color: #fff; box-shadow: 0 0 16px rgba(37,99,235,0.5); animation: pulse 1.5s infinite; }
+  .lv.locked { background: #1e293b; border: 2px solid #334155; color: #475569; }
+  @keyframes pulse { 0%,100% { box-shadow: 0 0 12px rgba(37,99,235,0.4); } 50% { box-shadow: 0 0 24px rgba(37,99,235,0.7); } }
+
+  /* Question */
+  .q-counter { font-size: 12px; color: #64748b; margin-bottom: 8px; }
+  .q-title { font-size: 17px; font-weight: 700; color: #f1f5f9; margin-bottom: 20px; line-height: 1.6; }
+
+  /* Options */
+  .options { display: flex; flex-direction: column; gap: 10px; }
+  .opt {
+    background: #334155; border: 2px solid transparent; border-radius: 10px;
+    padding: 14px 18px; font-size: 14px; color: #cbd5e1; cursor: pointer;
+    transition: 0.15s; text-align: left; line-height: 1.5;
+    display: flex; align-items: center; gap: 10px;
+  }
+  .opt:hover { background: #3b4f6b; border-color: #475569; }
+  .opt .letter {
+    width: 28px; height: 28px; border-radius: 7px;
+    background: #1e293b; display: flex; align-items: center; justify-content: center;
+    font-weight: 700; font-size: 13px; flex-shrink: 0;
+  }
+  .opt.correct { background: #14532d; border-color: #16a34a; }
+  .opt.correct .letter { background: #16a34a; color: #fff; }
+  .opt.wrong { background: #450a0a; border-color: #dc2626; }
+  .opt.wrong .letter { background: #dc2626; color: #fff; }
+  .opt.disabled { pointer-events: none; opacity: 0.7; }
+  .opt.disabled:not(.correct):not(.wrong) { opacity: 0.4; }
+
+  /* Explanation */
+  .explain {
+    margin-top: 16px; padding: 14px 18px; border-radius: 10px;
+    font-size: 13px; line-height: 1.6; display: none;
+  }
+  .explain.correct-explain { background: #14532d; border: 1px solid #16a34a; color: #86efac; display: block; }
+  .explain.wrong-explain { background: #450a0a; border: 1px solid #dc2626; color: #fca5a5; display: block; }
+
+  /* Button */
+  .btn-row { margin-top: 20px; display: flex; gap: 10px; justify-content: center; }
+  .btn {
+    padding: 10px 28px; border-radius: 8px; font-size: 14px; font-weight: 700;
+    border: none; cursor: pointer; transition: 0.15s;
+  }
+  .btn-next { background: #2563eb; color: #fff; }
+  .btn-next:hover { background: #1d4ed8; }
+  .btn-retry { background: #334155; color: #cbd5e1; }
+  .btn-retry:hover { background: #475569; }
+
+  /* Score */
+  .score-bar {
+    display: flex; justify-content: space-between; align-items: center;
+    margin-bottom: 20px; font-size: 13px; color: #64748b;
+  }
+  .score-bar .stars { color: #f59e0b; font-size: 18px; letter-spacing: 2px; }
+
+  /* Win */
+  .win { text-align: center; }
+  .win .trophy { font-size: 64px; margin-bottom: 12px; }
+  .win h2 { font-size: 22px; margin-bottom: 8px; color: #f59e0b; }
+  .win p { color: #94a3b8; font-size: 14px; line-height: 1.7; }
+
+  /* Responsive */
+  @media (max-width: 500px) {
+    .game { padding: 24px 18px; }
+    .q-title { font-size: 15px; }
+    .opt { font-size: 13px; padding: 12px 14px; }
+    .levels { gap: 5px; }
+    .lv { width: 34px; height: 34px; font-size: 11px; }
+  }
+</style>
+</head>
+<body>
+
+<div class="game" id="game"></div>
+
+<script>
+// ========== 题库 ==========
+const questions = {
+  1: { // 账号定位与基础
+    title: '账号定位与基础',
+    qs: [
+      {
+        q: '抖音账号定位的四维模型是哪四个维度？',
+        opts: ['内容形式 × 发布频率 × 粉丝数量 × 变现方式', '行业赛道 × 内容形式 × 人设风格 × 变现路径', '视频时长 × 发布时间 × 话题标签 × 音乐选择', '账号年龄 × 粉丝画像 × 内容质量 × 互动率'],
+        ans: 1,
+        explain: '四维定位法：行业赛道（做什么领域） × 内容形式（口播/剧情/展示） × 人设风格（专业/亲和/搞笑） × 变现路径（带货/广告/知识付费）。四个维度交叉才能找到差异化切入点。'
+      },
+      {
+        q: '新账号前5条视频最重要的原则是什么？',
+        opts: ['每条都投DOU+快速起量', '避免任何商业信息和硬广', '尽量模仿头部账号的爆款', '多发几条测试不同的发布时间'],
+        ans: 1,
+        explain: '新号前5条视频绝对不能带商业信息（产品植入、品牌logo、营销话术），否则系统会给你打上"营销号"标签，后续推流受限。前5条的核心是让算法认识你——"这是一个正常的内容创作者"。'
+      },
+      {
+        q: '抖音算法考核一条视频的核心指标排序是什么？',
+        opts: ['点赞 > 评论 > 完播率 > 转发', '完播率 > 点赞 > 评论 > 转发 > 收藏', '转发 > 评论 > 点赞 > 完播率', '发布时间 > 话题标签 > 完播率 > 点赞'],
+        ans: 1,
+        explain: '算法第一优先级是完播率（用户有没有看完），然后是互动深度：点赞（最浅）→ 评论（中等）→ 转发/收藏（最深）。所以前3秒钩子定生死，中间每15秒设一个转折点留住人。'
+      },
+      {
+        q: '同一个WiFi下最多能运营几个账号不被限流？',
+        opts: ['1个', '3个', '5个', '不限，只要内容不同就行'],
+        ans: 1,
+        explain: '同一WiFi下不超过3个账号，超过会被系统判定为"营销矩阵"而限流。如果需要运营更多账号，要用不同的网络IP或手机流量。'
+      },
+      {
+        q: '账号昵称最有效的命名方式是什么？',
+        opts: ['越短越好，好记就行', '行业关键词 + 记忆点，如"美妆侦探小圆"', '随便取，内容好才是关键', '用真实姓名最可信'],
+        ans: 1,
+        explain: '行业关键词帮助搜索曝光，记忆点帮助用户记住你。"美妆侦探小圆"= 赛道（美妆）+ 人设（侦探=专业分析）+ 昵称（小圆=亲切），一个名字完成了搜索SEO和人设建立两件事。'
+      }
+    ]
+  },
+  2: { // 内容策略与脚本
+    title: '内容策略与脚本',
+    qs: [
+      {
+        q: '爆款视频的脚本结构通常遵循什么模型？',
+        opts: ['AIDA模型（注意-兴趣-欲望-行动）', 'SCQA模型（情境-冲突-问题-答案）', 'PDCA模型（计划-执行-检查-改进）', 'SWOT模型（优势-劣势-机会-威胁）'],
+        ans: 1,
+        explain: 'SCQA是短视频脚本黄金结构：情境（"你有没有遇到过..."）→ 冲突（"但是..."）→ 问题（"为什么会这样？"）→ 答案（"其实只需要..."）。这个结构天然制造悬念，拉高完播率。你在渍无踪视频里用的"污渍洗不掉（情境）→ 普通产品无效（冲突）→ 怎么办（问题）→ 渍无踪一涂就掉（答案）"就是SCQA。'
+      },
+      {
+        q: '内容金字塔模型中，三类内容的比例应该是？',
+        opts: ['全部做爆款引流内容', '60%专业价值 + 30%人设塑造 + 10%爆款引流', '各三分之一平均分配', '90%带货 + 10%其他'],
+        ans: 1,
+        explain: '60%专业价值内容（建立信任，让用户觉得你有用）→ 30%人设塑造内容（建立亲近感，让用户喜欢你）→ 10%爆款引流内容（拉新，让更多陌生人看到你）。大部分人只做爆款引流，结果是有流量没转化——用户看了就划走，不关注不信任不购买。'
+      },
+      {
+        q: '前3秒"钩子"最有效的是哪种类型？',
+        opts: ['"大家好我是XXX"自我介绍', '痛点提问 + 视觉冲击 + 悬念设置', '先展示产品再介绍功能', '直接开始讲干货不浪费时间'],
+        ans: 1,
+        explain: '"大家好我是XXX"在前3秒是自杀式开头——用户0.5秒就划走了。有效的钩子= 痛点提问（"羽绒服沾了油渍你是不是直接扔洗衣机？"）+ 视觉冲击（特写污渍对比）+ 悬念（"但这个方法90%的人不知道"）。'
+      },
+      {
+        q: '选题的三个最靠谱来源是什么？',
+        opts: ['自己想 + 同事讨论 + 老板要求', '巨量算数热点 + 竞品TOP100内容库 + 用户评论高频需求', '随机刷抖音看到什么拍什么', '只跟竞品爆款翻拍'],
+        ans: 1,
+        explain: '数据驱动选题的三个来源：①巨量算数看趋势热词（知道大家在搜什么）②竞品TOP100拆框架（知道什么结构能跑量）③用户评论挖掘痛点（知道什么需求没被满足）。翻拍竞品爆款只是第二步——你得先知道它为什么爆。'
+      },
+      {
+        q: '发布的最佳时段和频次是什么？',
+        opts: ['越多越好，每小时发一条', '固定时段每天1-2条，18:00-21:00最佳', '凌晨发布避开竞争', '周末不发布，工作日集中发布'],
+        ans: 1,
+        explain: '每天1-2条固定时段（让算法形成预期），18:00-21:00是流量高峰。但不要扎堆整点发（所有人都在这个时间发，竞争激烈），18:17、20:43这种非整点反而更容易冲出来。超过3条/天会被判定为低质量灌水。'
+      }
+    ]
+  },
+  3: { // 千川投放
+    title: '千川投放',
+    qs: [
+      {
+        q: '新手千川投放的正确起步顺序是什么？',
+        opts: ['直接开全域推广，一步到位', '先DOU+小额测试 → 随心推建模 → 千川标准计划放量 → 全域推广', '直接大预算砸出一个爆款', '只做标准计划，全域不划算'],
+        ans: 1,
+        explain: '新手不能一上来就全域——全域是通投，人群不精准会烧冤枉钱。正确路径：DOU+（500元测内容质量）→ 随心推（测转化率）→ 千川标准计划（精准人群放量）→ 全域推广（系统已学会你的成交模型，可以通投了）。你之前的渍无踪就是先标准投放验证方向，再切全域放量的典型案例。'
+      },
+      {
+        q: '千川投放"建模期"的核心目标是什么？',
+        opts: ['尽快花完预算', '通过20-50单成交给系统画出人群画像', '追求最高ROI', '测试所有可能的人群定向'],
+        ans: 1,
+        explain: '建模期（也叫冷启动期）的核心不是ROI，是让系统通过20-50单成交学习"什么样的人会买这个产品"。这个时候不要太在意单笔ROI，关键是成交人群的共性标签要准确。建模错了，后面放量全部跑偏。'
+      },
+      {
+        q: '素材过审率太低，最有可能是触犯了什么？',
+        opts: ['视频画质不够高清', '功效宣称用语违规（如"最有效""100%去除"）', '发布时间不对', '视频时长太短'],
+        ans: 1,
+        explain: '千川审核最核心的红线是功效宣称。禁用词包括：绝对化用语（"最好""第一""100%"）、医疗效果承诺（"治疗""根除"）、虚假对比（恶意贬低竞品）。你之前处理立白卫仕卡审问题的经验就是这个——"多菌种"表述被卡，改成单一"除菌"就过了。'
+      },
+      {
+        q: '一条信息流视频5秒完播率的健康值是多少？',
+        opts: ['≥20%', '≥45%', '≥70%', '≥90%'],
+        ans: 1,
+        explain: '5秒完播率≥45%才算健康。低于这个数，说明你的前3秒钩子失效了——用户连5秒都没看完就划走了。低于35%需要立即优化开头：换一种钩子类型（从提问式改为视觉冲击式）、换一个痛点角度、或者缩短开头节奏。'
+      },
+      {
+        q: '全域推广相比标准投放，最大的优势是什么？',
+        opts: ['出价更低', '系统自动在全平台流量池找精准人群，覆盖面更大', '不需要素材也能跑', '保证ROI高于3'],
+        ans: 1,
+        explain: '全域推广的核心优势是打破了标准投放的"人工定向天花板"——系统在你已有的成交模型基础上，自动在全平台（信息流、搜索、直播广场、商品卡）寻找相似人群。你之前渍无踪从标准投放到全域投放的切换，就是发现标准投放的量级已经到顶了，需要更广的流量池。'
+      }
+    ]
+  },
+  4: { // 数据复盘
+    title: '数据复盘与优化',
+    qs: [
+      {
+        q: '素材跑量衰减时，第一件事应该做什么？',
+        opts: ['立即放弃这条素材', '用巨量云图分析素材衰减原因，判断是素材疲劳还是人群饱和', '加倍预算强行续命', '翻拍一条一模一样的'],
+        ans: 1,
+        explain: '素材衰减不等于素材废了。先用巨量云图拆解：如果是人群饱和（该人群已经被洗过一遍了），就换人群定向；如果是素材疲劳（用户看腻了），就换开头/换BGM/换前3秒。只有两者都试过了还不跑量，才放弃。你之前渍无踪的单条素材跑了150万，就是持续微调而非放弃的结果。'
+      },
+      {
+        q: '复盘最核心的三问是什么？',
+        opts: ['赚了多少钱、花了多少钱、省了多少钱', '指标变了多少 → 为什么变 → 下一步做什么', '哪个视频点赞最多、评论最多、转发最多', '竞品做了什么、我们做了什么、差距是什么'],
+        ans: 1,
+        explain: '复盘不是报数据，是找原因。三问：①指标变了多少（只关注±10%以上的显著变化）②为什么变（归因到策略调整/执行优化/外部因素三类之一）③下一步做什么（一个变化对应一个具体动作）。你之前在静组做的月度复盘就是这个逻辑——每个问题都有"发现→方案→落地"闭环。'
+      },
+      {
+        q: '素材迭代周期的行业平均水平是多少？你之前压缩到了几天？',
+        opts: ['行业14天，你压缩到7天', '行业7天，你压缩到3天', '行业3天，你压缩到1天', '行业30天，你压缩到15天'],
+        ans: 1,
+        explain: '行业平均7天迭代一轮素材（从上线到判断是否放弃）。你通过建立视频效果追踪表和A/B测试流程，把周期压缩到了3天——这意味着别人试1轮的时间你试了2-3轮，找到爆款的概率翻倍。这是实打实的竞争优势。'
+      },
+      {
+        q: '搜索占比的健康值是多少？这个指标说明什么？',
+        opts: ['≥5%，说明内容有自然搜索流量', '≥15%，说明品牌/品类心智建立', '≥30%，说明已经出圈', '不重要，只要投流有消耗就行'],
+        ans: 1,
+        explain: '搜索占比≥15%意味着：用户在主动搜你的品牌或品类词时能看到你的内容——这是"免费流量"的核心来源，也是品牌心智建立的标志。如果搜索占比低于5%，说明你完全依赖投放，一旦停了投放就没有流量。你合诚时期品牌搜索率提升15%就是这个指标。'
+      },
+      {
+        q: '复盘中最容易犯的错误是什么？',
+        opts: ['数据太多看不完', '只报数据不报原因，或者原因归到"运气不好"', '复盘写太长', '没时间做复盘'],
+        ans: 1,
+        explain: '最大的错误是"报流水账"——列出所有指标变化但不做归因。举例：❌"本周消耗下降15%，GMV下降12%"（报数据）；✅"本周消耗下降15%，主因是墨水渍素材因差评被平台限制（外部因素），下周计划转向果渍方向测试，预计3天内恢复跑量"（归因+动作）。你是后者，你的月度复盘记录就是最好的证明。'
+      }
+    ]
+  },
+  5: { // 综合实战
+    title: '综合实战',
+    qs: [
+      {
+        q: '一个产品3个月没起量，你接手后第一件事应该做什么？',
+        opts: ['直接翻拍竞品爆款', '分析历史数据诊断问题——是人群不准、素材不行、还是投放策略有问题', '加大预算试错', '换一个品类做'],
+        ans: 1,
+        explain: '先诊断再开药。3个月没起量可能是三个不同的问题：①人群定向错误（投给了不会买的人）②素材没有打中痛点（用户看了不想买）③投放策略保守（只在标准投放没开全域）。你的渍无踪案例就是——先诊断发现是②+③，然后研发墨水渍素材（解决②）+ 切全域投放（解决③）。'
+      },
+      {
+        q: '新品牌0到1起量，第一周最关键的决策是什么？',
+        opts: ['拍很多条视频碰运气', '对标竞品爆款框架 + 快速产出5-8条不同框架的测试素材', '直接找达人带货', '等品牌方给更多的素材预算'],
+        ans: 1,
+        explain: '0到1的核心是"快速找到起量方向"而不是"快速起量"。第一周要做的是：拆3-5个竞品爆款的框架（不是抄袭内容，是提取结构），用同样的框架套你的产品拍5-8条不同方向，每条500元DOU+测试，72小时内看数据决定主攻方向。你的小白白案例——首周5条即起量，就是这个方法论。'
+      },
+      {
+        q: '如果全品类视频卡审，最好的应对策略是什么？',
+        opts: ['多提交几次，换个审核员可能就过了', '研究审核规则，找到触发违规的具体表述并替换', '放弃这个品类', '用别人的账号发'],
+        ans: 1,
+        explain: '卡审不是运气问题，是表述问题。审核是机器+人工，机器扫关键词，人工看内容。你要做的是：①找到触发机器的关键词（比如"多菌种""杀死""根除"）②替换为不触发但意思接近的表述（改为"除菌""去除""清洁"）③如果人工审核也卡，研究同品类过审的素材，看他们怎么说的。你的立白卫仕案例就是教科书级的卡审突破。'
+      },
+      {
+        q: '作为内容团队负责人，最重要的不是"自己做爆款"而是什么？',
+        opts: ['把每个人都培养到能独立产出爆款', '自己多干活给团队做榜样', '严格管理，每天检查每个人的产出', '只要结果，不管过程'],
+        ans: 1,
+        explain: '管理者的价值不是"自己多出活"，而是"让团队离开你也能出活"。你做对了三件事：①建SOP（剪辑模板、拍摄标准）让流程不依赖个人经验②建知识库（污渍分类、拍摄问题库）让知识可复用③写培训白皮书让新人能快速上手。结果是组员晋升组长——证明你的管理方法论可以复制。'
+      },
+      {
+        q: '面试时面试官让你深挖一个项目，最好的讲述结构是什么？',
+        opts: ['按时间顺序从头讲到尾', '背景 → 诊断 → 决策 → 数据 → 复盘，30分钟内讲透一个案例', '只讲最漂亮的数据，不提过程', '把每个项目都简单提一下显示经验丰富'],
+        ans: 1,
+        explain: '面试官要的不是流水账，是看到你的决策逻辑。30分钟深挖一个项目：5分钟背景（什么产品、什么困境）→ 10分钟诊断（你看到了什么别人没看到的）→ 10分钟决策+数据（你做了什么、为什么这个顺序、数据变化）→ 5分钟复盘（如果重来一次你会怎么优化、追问预判）。你在作品集里渍无踪案例就是按这个结构讲的。'
+      }
+    ]
+  }
+};
+
+const totalLevels = 5;
+let state = {
+  currentLevel: 1,
+  currentQ: 0, // 0-indexed within level
+  score: 0, // stars earned
+  totalCorrect: 0,
+  answered: false,
+  selector: '', // 'correct' or 'wrong'
+  correctIdx: -1,
+  levelStars: [0,0,0,0,0], // stars per level (0-5)
+  unlockedLevels: [true, false, false, false, false]
+};
+
+function render() {
+  const g = document.getElementById('game');
+  const lv = state.currentLevel;
+  const qi = state.currentQ;
+  const qData = questions[lv].qs[qi];
+
+  const allDone = state.levelStars.every(s => s >= 4); // all levels passed with at least 4/5
+
+  if (allDone) {
+    g.innerHTML = `
+      <div class="win">
+        <div class="trophy">🏆</div>
+        <h2>恭喜通关！</h2>
+        <p>你已掌握抖音运营的核心知识体系<br><br>
+        总得分：${state.totalCorrect}/25 题<br>
+        获得星星：${state.levelStars.reduce((a,b)=>a+b,0)}/25 ⭐<br><br>
+        <span style="color:#64748b;font-size:12px;">建议：每天刷一遍保持手感<br>实际的千川后台才是最好的老师</span></p>
+        <div class="btn-row" style="margin-top:20px;">
+          <button class="btn btn-retry" onclick="resetGame()">重新挑战</button>
+        </div>
+      </div>`;
+    return;
+  }
+
+  let html = '';
+
+  // Header
+  html += '<div class="header"><h1>抖音运营 · 知识闯关</h1><div class="sub">第' + lv + '关：' + questions[lv].title + '</div></div>';
+
+  // Level indicators
+  html += '<div class="levels">';
+  for (let i = 1; i <= totalLevels; i++) {
+    let cls = 'lv';
+    if (state.unlockedLevels[i-1] && state.levelStars[i-1] >= 4) cls += ' done';
+    else if (i === lv) cls += ' active';
+    else if (!state.unlockedLevels[i-1]) cls += ' locked';
+    const icon = state.levelStars[i-1] >= 4 ? '✓' : (state.unlockedLevels[i-1] ? '⭐' : '🔒');
+    html += `<div class="${cls}" title="${questions[i].title}">${icon}</div>`;
+  }
+  html += '</div>';
+
+  // Score
+  html += '<div class="score-bar">';
+  html += `<span>总得分：${state.totalCorrect}/25</span>`;
+  html += `<span class="stars">${'★'.repeat(state.levelStars.reduce((a,b)=>a+b,0))}${'☆'.repeat(25-state.levelStars.reduce((a,b)=>a+b,0))}</span>`;
+  html += `<span>当前关：${state.levelStars[lv-1]}/5 ⭐</span>`;
+  html += '</div>';
+
+  // Question
+  html += `<div class="q-counter">第 ${qi+1}/5 题</div>`;
+  html += `<div class="q-title">${qData.q}</div>`;
+
+  // Options
+  html += '<div class="options">';
+  const letters = ['A', 'B', 'C', 'D'];
+  qData.opts.forEach((opt, idx) => {
+    let cls = 'opt';
+    if (state.answered) {
+      cls += ' disabled';
+      if (idx === qData.ans) cls += ' correct';
+      if (idx === state.correctIdx && idx !== qData.ans) cls += ' wrong';
+    }
+    html += `<div class="${cls}" onclick="selectAnswer(${idx})">
+      <div class="letter">${letters[idx]}</div>
+      <span>${opt}</span>
+    </div>`;
+  });
+  html += '</div>';
+
+  // Explanation
+  if (state.answered) {
+    const isCorrect = state.selector === 'correct';
+    html += `<div class="explain ${isCorrect ? 'correct-explain' : 'wrong-explain'}">`;
+    html += `<strong>${isCorrect ? '✅ 回答正确！' : '❌ 回答错误'}</strong><br><br>`;
+    html += qData.explain;
+    html += '</div>';
+
+    html += '<div class="btn-row">';
+    if (qi < 4) {
+      html += `<button class="btn btn-next" onclick="nextQuestion()">下一题 →</button>`;
+    } else {
+      // End of level
+      const passedLevel = state.levelStars[lv-1] >= 4;
+      html += `<button class="btn btn-next" onclick="finishLevel()">${passedLevel ? '🎉 闯关成功，下一关！' : '查看结果'}</button>`;
+    }
+    if (!isCorrect) {
+      html += `<button class="btn btn-retry" onclick="retryLevel()">重玩本关</button>`;
+    }
+    html += '</div>';
+  }
+
+  g.innerHTML = html;
+}
+
+function selectAnswer(idx) {
+  if (state.answered) return;
+  state.answered = true;
+  state.correctIdx = idx;
+
+  const qData = questions[state.currentLevel].qs[state.currentQ];
+  const isCorrect = idx === qData.ans;
+  state.selector = isCorrect ? 'correct' : 'wrong';
+
+  if (isCorrect) {
+    state.totalCorrect++;
+    state.levelStars[state.currentLevel-1]++;
+  }
+
+  render();
+}
+
+function nextQuestion() {
+  state.currentQ++;
+  state.answered = false;
+  state.selector = '';
+  state.correctIdx = -1;
+  render();
+}
+
+function finishLevel() {
+  const lv = state.currentLevel;
+  if (state.levelStars[lv-1] >= 4) {
+    // Unlock next level
+    if (lv < totalLevels) {
+      state.unlockedLevels[lv] = true;
+      state.currentLevel = lv + 1;
+      state.currentQ = 0;
+      state.answered = false;
+      state.selector = '';
+      state.correctIdx = -1;
+    }
+  } else {
+    // Didn't pass, retry
+    state.currentQ = 0;
+    state.answered = false;
+    state.selector = '';
+    state.correctIdx = -1;
+    state.levelStars[lv-1] = 0;
+    state.totalCorrect = state.levelStars.reduce((a,b)=>a+b,0);
+  }
+  render();
+}
+
+function retryLevel() {
+  const lv = state.currentLevel;
+  // Deduct stars from this level
+  state.totalCorrect -= state.levelStars[lv-1];
+  state.levelStars[lv-1] = 0;
+  state.currentQ = 0;
+  state.answered = false;
+  state.selector = '';
+  state.correctIdx = -1;
+  render();
+}
+
+function resetGame() {
+  state = {
+    currentLevel: 1,
+    currentQ: 0,
+    score: 0,
+    totalCorrect: 0,
+    answered: false,
+    selector: '',
+    correctIdx: -1,
+    levelStars: [0,0,0,0,0],
+    unlockedLevels: [true, false, false, false, false]
+  };
+  render();
+}
+
+// Init
+render();
+</script>
+</body>
+</html>
