@@ -168,43 +168,45 @@ let chatHistory = [];
 
 // =========== INIT ===========
 function init() {
-  // Persona buttons
   document.getElementById('personas').innerHTML = Object.entries(personas).map(([k,v]) =>
-    `<button class="persona${k===currentPersona?' active':''}" onclick="selectPersona('${k}')">
+    `<button class="persona${k===currentPersona?' active':''}" onclick="selectPersona(event,'${k}')">
       <span class="p-emoji">${v.emoji}</span>${v.name}
     </button>`
   ).join('');
-
   renderScenarios();
   startChat();
 }
 
-function selectPersona(key) {
+function selectPersona(ev, key) {
   currentPersona = key;
-  const p = personas[key];
+  var p = personas[key];
   currentScenario = p.scenarios[0].id;
   round = 0;
   chatHistory = [];
-  document.querySelectorAll('.persona').forEach(el => el.classList.remove('active'));
-  event.target.closest('.persona').classList.add('active');
+  document.querySelectorAll('.persona').forEach(function(el){ el.classList.remove('active'); });
+  if (ev && ev.target) {
+    var btn = ev.target.closest('.persona');
+    if (btn) btn.classList.add('active');
+    else document.querySelector('.persona').classList.add('active');
+  }
   renderScenarios();
   startChat();
 }
 
-function selectScenario(id) {
+function selectScenario(ev, id) {
   currentScenario = id;
   round = 0;
   chatHistory = [];
-  document.querySelectorAll('.scen').forEach(el => el.classList.remove('active'));
-  event.target.classList.add('active');
+  document.querySelectorAll('.scen').forEach(function(el){ el.classList.remove('active'); });
+  if (ev && ev.target) ev.target.classList.add('active');
   startChat();
 }
 
 function renderScenarios() {
-  const p = personas[currentPersona];
-  document.getElementById('scenarios').innerHTML = p.scenarios.map(s =>
-    `<button class="scen${s.id===currentScenario?' active':''}" onclick="selectScenario('${s.id}')">${s.name}</button>`
-  ).join('');
+  var p = personas[currentPersona];
+  document.getElementById('scenarios').innerHTML = p.scenarios.map(function(s){
+    return `<button class="scen${s.id===currentScenario?' active':''}" onclick="selectScenario(event,'${s.id}')">${s.name}</button>`;
+  }).join('');
 }
 
 // =========== CHAT ENGINE ===========
