@@ -104,7 +104,7 @@
 </head>
 <body>
 <div class="container">
-<div class="header"><h1>🎤 话术健身房</h1><p>写下你的版本 → 对照三级优化 → 练到脱口而出</p></div>
+<div class="header"><h1>🎤 话术健身房 <span id="sd" style="font-size:12px;"></span></h1><p>写下你的版本 → 对照三级优化 → 练到脱口而出</p></div>
 
 <div class="tabs">
   <a class="tab" href="#q1">1.最大项目</a>
@@ -120,7 +120,7 @@
   <div class="q-title">"你最大的项目是什么？"</div>
   <div class="q-context">面试官让你用1分钟讲渍无踪项目。试着写下来你会怎么说——不要在心里默念，写出来才能看到差距。</div>
   <div class="input-label">✍️ 写下你的回答</div>
-  <textarea placeholder="比如：我做过最大的项目是渍无踪去渍啫喱，接手时3个月没起量，我做了三件事..."></textarea>
+  <textarea id="ta1" oninput="sv(1)" placeholder="比如：我做过最大的项目是渍无踪去渍啫喱，接手时3个月没起量，我做了三件事..."></textarea>
   <button class="btn-show" onclick="toggle('r1')">📊 对比优化版本</button>
   <div class="results" id="r1">
     <div class="ver v1"><span class="v-tag">V1 · 基础版</span><br>我做过最大的项目是渍无踪去渍啫喱。这个产品在我接手时已经3个月没起量了。我做了三件事：第一，把投放从标准切换到了全域，拓展了流量来源；第二，研发了墨水渍系列视频，找到了爆点；第三，拓展了多种内容形式。最终峰值月消耗突破300万，月销售额突破千万。这个产品稳定了半年，然后我把组员提拔为组长，去带了新品。</div>
@@ -137,7 +137,7 @@
   <div class="q-title">"你管理经验才1年多，凭什么？"</div>
   <div class="q-context">面试官质疑你的管理资历。这是一个压力测试——他不是真的觉得你不行，他想看你怎么回应被质疑。</div>
   <div class="input-label">✍️ 写下你的回答</div>
-  <textarea placeholder="比如：虽然我只管了一年多，但我走完了从0建组的完整周期..."></textarea>
+  <textarea id="ta2" oninput="sv(2)" placeholder="比如：虽然我只管了一年多，但我走完了从0建组的完整周期..."></textarea>
   <button class="btn-show" onclick="toggle('r2')">📊 对比优化版本</button>
   <div class="results" id="r2">
     <div class="ver v1"><span class="v-tag">V1 · 防御式</span><br>确实我管理经验只有一年多，但我带组的这段时间产出还不错——剪辑效率提升了62.5%，组员也被提拔了。我觉得结果可以证明我的管理能力。</div>
@@ -154,7 +154,7 @@
   <div class="q-title">"你做的都是家清，到我们这能做吗？"</div>
   <div class="q-context">面试官质疑你的品类经验。这是最常见的跨品类质疑——每个转品类的人都会被问。</div>
   <div class="input-label">✍️ 写下你的回答</div>
-  <textarea placeholder="比如：虽然我之前主要做家清，但我横跨过三个品类..."></textarea>
+  <textarea id="ta3" oninput="sv(3)" placeholder="比如：虽然我之前主要做家清，但我横跨过三个品类..."></textarea>
   <button class="btn-show" onclick="toggle('r3')">📊 对比优化版本</button>
   <div class="results" id="r3">
     <div class="ver v1"><span class="v-tag">V1 · 套话式</span><br>虽然我之前主要做家清，但我学习能力很强，之前从大健康转到女装再转到家清，每次新品类都能快速上手并交出成果。所以我有信心在新品类也能做好。</div>
@@ -171,7 +171,7 @@
   <div class="q-title">"说说最近一次数据分析的案例"</div>
   <div class="q-context">面试官想看你的数据思维——不是报数字，是会从数字里得出判断。</div>
   <div class="input-label">✍️ 写下你的回答</div>
-  <textarea placeholder="比如：最近一周消耗从42万降到28万，我发现5秒完播率从48%跌到32%..."></textarea>
+  <textarea id="ta4" oninput="sv(4)" placeholder="比如：最近一周消耗从42万降到28万，我发现5秒完播率从48%跌到32%..."></textarea>
   <button class="btn-show" onclick="toggle('r4')">📊 对比优化版本</button>
   <div class="results" id="r4">
     <div class="ver v1"><span class="v-tag">V1 · 数据列举式</span><br>我每周都会看数据。最近一周消耗从42万降到28万，GMV从72万降到46万，ROI从1.70降到1.63。我发现5秒完播率从48%降到32%，但转化率没变。所以判断是素材疲劳，需要换新方向。</div>
@@ -188,7 +188,7 @@
   <div class="q-title">自我介绍："介绍一下你自己"</div>
   <div class="q-context">面试第一个问题，也是最需要练到脱稿的问题。不要复读简历，要让人记住你。</div>
   <div class="input-label">✍️ 写下你的回答</div>
-  <textarea placeholder="比如：我叫范思静，4年内从设计师助理做到信息流项目主管..."></textarea>
+  <textarea id="ta5" oninput="sv(5)" placeholder="比如：我叫范思静，4年内从设计师助理做到信息流项目主管..."></textarea>
   <button class="btn-show" onclick="toggle('r5')">📊 对比优化版本</button>
   <div class="results" id="r5">
     <div class="ver v1"><span class="v-tag">V1 · 简历复读式</span><br>我叫范思静，26岁，在广州。做过三份工作：合诚做了3年短视频策划、远巨做了4个月内容负责人、故事传媒做了1年多编导组长。策划过1500多条短视频，爆款率35%，做过月销千万的产品。</div>
@@ -202,15 +202,12 @@
 </div>
 
 <script>
-function toggle(id) {
-  var el = document.getElementById(id);
-  if (el.classList.contains('on')) {
-    el.classList.remove('on');
-  } else {
-    el.classList.add('on');
-    el.scrollIntoView({ behavior: 'smooth', block: 'center' });
-  }
-}
+var SK='talkgym_v1';
+function ld(){try{var d=JSON.parse(localStorage.getItem(SK)||'{}');for(var i=1;i<=5;i++){var t=document.getElementById('ta'+i);if(t&&d['q'+i])t.value=d['q'+i];}}catch(e){}}
+function sv(n){try{var d=JSON.parse(localStorage.getItem(SK)||'{}');var t=document.getElementById('ta'+n);d['q'+n]=t?t.value:'';localStorage.setItem(SK,JSON.stringify(d));var s=document.getElementById('sd');if(s){s.textContent='●';s.style.color='#16a34a';setTimeout(function(){s.textContent=''},1500);}}catch(e){}}
+function clr(){if(confirm('清除所有已保存的回答？')){localStorage.removeItem(SK);for(var i=1;i<=5;i++){var t=document.getElementById('ta'+i);if(t)t.value='';}}}
+function toggle(id){var el=document.getElementById(id);if(el.classList.contains('on'))el.classList.remove('on');else{el.classList.add('on');el.scrollIntoView({behavior:'smooth',block:'center'});}}
+window.addEventListener('DOMContentLoaded',ld);
 </script>
 </body>
 </html>
