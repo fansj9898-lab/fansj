@@ -8,65 +8,65 @@
   * { margin: 0; padding: 0; box-sizing: border-box; }
   body {
     font-family: -apple-system, "PingFang SC", "Microsoft YaHei", sans-serif;
-    background: #0f172a; color: #e2e8f0; min-height: 100vh;
+    background: #f5f1e8; color: #2c2416; min-height: 100vh;
     padding: 24px;
   }
   .container { max-width: 800px; margin: 0 auto; }
 
   .header { text-align: center; margin-bottom: 28px; }
   .header h1 { font-size: 22px; font-weight: 800; }
-  .header p { font-size: 13px; color: #64748b; margin-top: 4px; }
+  .header p { font-size: 13px; color: #8c8272; margin-top: 4px; }
 
   /* Scenario selector */
   .scene-nav { display: flex; gap: 8px; margin-bottom: 24px; flex-wrap: wrap; }
   .scene-btn {
-    padding: 8px 16px; border-radius: 8px; border: 1px solid #334155;
-    background: #1e293b; color: #94a3b8; font-size: 13px; cursor: pointer;
+    padding: 8px 16px; border-radius: 8px; border: 1px solid #d9d3c7;
+    background: #fdfcf8; color: #8c8272; font-size: 13px; cursor: pointer;
     transition: 0.15s; white-space: nowrap;
   }
-  .scene-btn:hover { border-color: #475569; color: #e2e8f0; }
-  .scene-btn.active { background: #2563eb; color: #fff; border-color: #2563eb; }
-  .scene-btn.done { background: #14532d; border-color: #16a34a; color: #86efac; }
+  .scene-btn:hover { border-color: #5b4c3a; color: #2c2416; }
+  .scene-btn.active { background: #5b4c3a; color: #fdfdfc; border-color: #5b4c3a; }
+  .scene-btn.done { background: #d9d3c7; border-color: #16a34a; color: #6b7f5e; }
 
   /* Card */
   .card {
-    background: #1e293b; border-radius: 12px; padding: 24px;
-    margin-bottom: 16px; border: 1px solid #334155;
+    background: #fdfcf8; border-radius: 12px; padding: 24px;
+    margin-bottom: 16px; border: 1px solid #d9d3c7;
   }
-  .card h3 { font-size: 16px; margin-bottom: 4px; color: #f1f5f9; }
-  .card .meta { font-size: 11px; color: #64748b; margin-bottom: 16px; }
+  .card h3 { font-size: 16px; margin-bottom: 4px; color: #f7f5f0; }
+  .card .meta { font-size: 11px; color: #8c8272; margin-bottom: 16px; }
 
   /* Data table */
   table.data {
     width: 100%; border-collapse: collapse; font-size: 12px; margin-bottom: 16px;
   }
   table.data th {
-    background: #0f172a; color: #94a3b8; padding: 8px 10px; text-align: left;
+    background: #f5f1e8; color: #8c8272; padding: 8px 10px; text-align: left;
     font-weight: 500; font-size: 11px;
   }
   table.data td {
-    padding: 8px 10px; border-bottom: 1px solid #1e293b;
+    padding: 8px 10px; border-bottom: 1px solid #fafaf7;
     font-variant-numeric: tabular-nums; font-family: "SF Mono", "Menlo", monospace;
   }
   table.data tr:nth-child(even) td { background: rgba(255,255,255,0.02); }
   .up { color: #16a34a; font-weight: 600; }
   .down { color: #dc2626; font-weight: 600; }
-  .flat { color: #94a3b8; }
+  .flat { color: #8c8272; }
 
   /* Step sections */
   .step { margin-top: 20px; }
   .step-label {
-    font-size: 12px; font-weight: 700; color: #2563eb; margin-bottom: 8px;
+    font-size: 12px; font-weight: 700; color: #5b4c3a; margin-bottom: 8px;
     text-transform: uppercase; letter-spacing: 1px;
   }
 
   /* Textarea */
   textarea {
-    width: 100%; background: #0f172a; border: 1px solid #334155; border-radius: 8px;
-    color: #e2e8f0; padding: 12px; font-size: 13px; line-height: 1.6;
+    width: 100%; background: #f5f1e8; border: 1px solid #d9d3c7; border-radius: 8px;
+    color: #2c2416; padding: 12px; font-size: 13px; line-height: 1.6;
     resize: vertical; min-height: 80px; font-family: inherit;
   }
-  textarea:focus { outline: none; border-color: #2563eb; }
+  textarea:focus { outline: none; border-color: #5b4c3a; }
 
   /* Buttons */
   .btn-row { display: flex; gap: 10px; margin-top: 12px; }
@@ -74,26 +74,26 @@
     padding: 10px 22px; border-radius: 8px; font-size: 13px; font-weight: 700;
     border: none; cursor: pointer; transition: 0.15s;
   }
-  .btn-primary { background: #2563eb; color: #fff; }
-  .btn-primary:hover { background: #1d4ed8; }
-  .btn-ghost { background: #334155; color: #cbd5e1; }
-  .btn-ghost:hover { background: #475569; }
+  .btn-primary { background: #5b4c3a; color: #fdfdfc; }
+  .btn-primary:hover { background: #4a3c2c; }
+  .btn-ghost { background: #d9d3c7; color: #d9d3c7; }
+  .btn-ghost:hover { background: #5b4c3a; }
 
   /* Reveal */
   .reveal {
-    background: #0f172a; border: 1px solid #334155; border-radius: 8px;
+    background: #f5f1e8; border: 1px solid #d9d3c7; border-radius: 8px;
     padding: 16px; margin-top: 12px; display: none; line-height: 1.7; font-size: 13px;
   }
   .reveal.show { display: block; }
   .reveal .expert-label {
-    color: #f59e0b; font-weight: 700; font-size: 12px; margin-bottom: 8px;
+    color: #8c6b4a; font-weight: 700; font-size: 12px; margin-bottom: 8px;
   }
   .reveal .compare {
-    margin-top: 12px; padding-top: 12px; border-top: 1px solid #1e293b;
-    font-size: 12px; color: #64748b;
+    margin-top: 12px; padding-top: 12px; border-top: 1px solid #fafaf7;
+    font-size: 12px; color: #8c8272;
   }
 
-  .progress { font-size: 12px; color: #64748b; text-align: center; margin-top: 24px; }
+  .progress { font-size: 12px; color: #8c8272; text-align: center; margin-top: 24px; }
 </style>
 </head>
 <body>
@@ -302,7 +302,7 @@ function renderScene() {
 
   // Context
   html += `<div class="card"><h3>场景${s.id}：${s.title}</h3><div class="meta">难度：${s.level}</div>`;
-  html += `<p style="font-size:13px;color:#cbd5e1;line-height:1.7;margin-bottom:16px;">${s.context}</p>`;
+  html += `<p style="font-size:13px;color:#d9d3c7;line-height:1.7;margin-bottom:16px;">${s.context}</p>`;
 
   // Data table
   html += '<table class="data"><tr>';
@@ -326,7 +326,7 @@ function renderScene() {
     const hasAnswer = saved[i] && saved[i].trim();
     const revealId = `reveal-${s.id}-${i}`;
     html += `<div class="card"><div class="step-label">${step.label}</div>`;
-    html += `<p style="font-size:11px;color:#64748b;margin-bottom:8px;">💡 ${step.hint}</p>`;
+    html += `<p style="font-size:11px;color:#8c8272;margin-bottom:8px;">💡 ${step.hint}</p>`;
     html += `<textarea id="a-${s.id}-${i}" placeholder="写下你的分析...">${saved[i] || ''}</textarea>`;
     html += `<div class="btn-row">`;
     html += `<button class="btn btn-primary" onclick="saveAndReveal(${s.id}, ${i})">保存 & 对照专业解读</button>`;
@@ -336,7 +336,7 @@ function renderScene() {
   });
 
   // Did you know
-  html += `<div class="card" style="border-color:#2563eb;"><div class="step-label">💡 核心认知</div><p style="font-size:13px;color:#cbd5e1;line-height:1.7;">${s.didYouKnow}</p></div>`;
+  html += `<div class="card" style="border-color:#5b4c3a;"><div class="step-label">💡 核心认知</div><p style="font-size:13px;color:#d9d3c7;line-height:1.7;">${s.didYouKnow}</p></div>`;
 
   main.innerHTML = html;
 }
