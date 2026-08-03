@@ -10,8 +10,10 @@
   :root { --bg: #f5f1e8; --card: #fdfcf8; --border: #d4cbb8; --text: #2c2416; --muted: #8c8272; --accent: #5b4c3a; }
   body { font-family: -apple-system, "PingFang SC", "Microsoft YaHei", sans-serif; background: #e8e4dc; color: var(--text); line-height: 1.5; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
   .page { width: 210mm; min-height: 297mm; margin: 8mm auto; background: #fff; box-shadow: 0 2px 16px rgba(44,36,22,0.08); padding: 9mm 12mm 7mm; }
-  .r-header { margin-bottom: 2.5mm; }
-  .r-header h1 { font-family: "Times New Roman", "Songti SC", "Noto Serif SC", Georgia, serif; font-size: 22px; font-weight: 400; letter-spacing: 2px; color: var(--text); display: inline-block; }
+  .r-header { margin-bottom: 2.5mm; display: flex; align-items: center; gap: 5mm; }
+  .r-header .r-avatar { width: 22mm; height: 28mm; object-fit: cover; border-radius: 4px; flex-shrink: 0; }
+  .r-header .r-info { flex: 1; }
+  .r-header h1 { font-family: "Times New Roman", "Songti SC", "Noto Serif SC", Georgia, serif; font-size: 22px; font-weight: 400; letter-spacing: 2px; color: var(--text); }
   .r-header .r-title { font-size: 11.5px; color: var(--accent); font-weight: 600; margin: 0.8mm 0; }
   .r-header .r-intent { font-size: 9px; color: var(--muted); margin-bottom: 1.5mm; }
   .r-contact-strip { display: flex; flex-wrap: wrap; gap: 3mm; font-size: 8.5px; color: var(--muted); padding: 2mm 0; margin-bottom: 3mm; border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); }
@@ -50,9 +52,12 @@
 <div class="page">
 
   <div class="r-header">
-    <h1>范思静</h1>
-    <div class="r-title">信息流视频项目主管 / 内容操盘手</div>
-    <div class="r-intent">求职意向：信息流内容负责人 / 短视频项目主管 · 广州（品牌方 / 代理均可）</div>
+    <img class="r-avatar" src="证件照.jpg" alt="范思静">
+    <div class="r-info">
+      <h1>范思静</h1>
+      <div class="r-title">信息流视频项目主管 / 短视频内容操盘手</div>
+      <div class="r-intent">求职意向：信息流内容负责人 / 短视频项目主管 · 广州（品牌方 / 代理均可）</div>
+    </div>
   </div>
 
   <div class="r-contact-strip">
@@ -79,17 +84,17 @@
   <div class="r-section">
     <h3>工作经历</h3>
     <div class="r-exp">
-      <div class="r-exp-hd"><span class="r-exp-role">编导组长 / 项目负责人</span><span class="r-exp-date">2025.03 — 2026.07（1年5个月）</span></div>
-      <div class="r-exp-co">故事传媒（广州）· 家清品类（渍无踪、滴露、立白、椰放）</div>
+      <div class="r-exp-hd"><span class="r-exp-role">编导组长 ➡ 项目负责人</span><span class="r-exp-date">2025.03 — 2026.07（1年半）</span></div>
+      <div class="r-exp-co">故事传媒（广州）· 家清品类（渍无踪、滴露、立白）</div>
       <ul>
         <li><b>【旧品复活：3个月未起量 → 月销千万】</b>主导渍无踪全链路操盘。团队已放弃该品，通过<strong>推动千川转全域投放、率先研发墨水渍系列抢占内容蓝海、拓展6种以上打法</strong>，逆转至峰值月耗<strong>300万+、月销千万</strong>，半年稳定200万/月</li>
         <li><b>【0→1起量：新品牌首周即起量】</b>独立操盘立白小白白羽绒服干洗剂，对标爆款首批素材即起量，月耗保持<strong>百万级</strong>，撬动立白集团后续深度合作</li>
-        <li><b>【卡审突破 + 团队建设】</b>接手立白卫仕全品类因审核卡死，主动研究规则调整表述，过审率恢复至正常。同步建立静组SOP体系——每月复盘落地50+优化项、编写培训白皮书——效率提升<strong>62.5%</strong>，组员晋升组长</li>
+        <li><b>【卡审突破 + 团队建设】</b>接手立白卫仕全品类因审核卡死，主动研究规则调整表述，过审率恢复至正常。同步建立团队SOP体系——每月复盘落地50+优化项、编写培训白皮书——效率提升<strong>62.5%</strong>，组员晋升组长</li>
       </ul>
     </div>
     <div class="r-exp">
-      <div class="r-exp-hd"><span class="r-exp-role">短视频内容负责人（项目制合作）</span><span class="r-exp-date">2024.09 — 2024.12（4个月）</span></div>
-      <div class="r-exp-co">远巨传媒（广州）· 女装品类（雅鹿羽绒服/羽绒裤）</div>
+      <div class="r-exp-hd"><span class="r-exp-role">短视频内容负责人（项目制合作）</span><span class="r-exp-date">2024.09 — 2024.12（近半年）</span></div>
+      <div class="r-exp-co">远巨传媒（广州）· 女装品类（雅鹿羽绒系列）</div>
       <ul>
         <li><b>【新品类快速起量：爆款率20% → 35%+】</b>以项目制形式加入，<strong>首次接触女装品类</strong>即在4个月内搭建完整内容体系。主导建立脚本分层测试机制，将爆款率从20%提升至<strong>35%+</strong>，策划500+条短视频</li>
         <li><b>【效率标准化：人效+60%，GMV+15%】</b>主动制定剪辑标准化模板并推动复用至3个新账号，建立数据日复盘机制快速淘汰低效素材，<strong>人效提升60%</strong>，直播GMV增长15%，单条视频GMV突破<strong>30万</strong></li>
@@ -97,10 +102,10 @@
     </div>
     <div class="r-exp">
       <div class="r-exp-hd"><span class="r-exp-role">短视频策划与运营</span><span class="r-exp-date">2021.11 — 2024.09（近3年）</span></div>
-      <div class="r-exp-co">合诚实业（广州）· 大健康品类（胶原蛋白/益生菌）· <span style="color:var(--muted);">从设计师助理起步，3年内薪资3.5K→6.7K，独立负责品牌内容全链路</span></div>
+      <div class="r-exp-co">合诚实业（广州）· 大健康品类（胶原蛋白系列、益生菌）· <span style="color:var(--muted);">从设计师助理起步，3年内薪资3.5K→6.7K，独立负责品牌内容全链路</span></div>
       <ul>
-        <li><b>【0→1搭建：从设计助理到独立操盘】</b>作为品牌<strong>第一个内容岗</strong>加入，从设计师助理起步，3年内从零搭建抖音+小红书等多平台体系，产出600+条内容（8种形式），粉丝从0做到1.5万。主动搭建追踪表建立A/B测试，迭代周期压缩至<strong>3天</strong>（超行业均值），搜索率提升15%</li>
-        <li><b>【外部资源管理：合作400+条】</b>制定品牌剪辑细化表和需求标准化规范，管理第三方视频公司累计合作<strong>400+条</strong>，推动平台更新频率达到每周两更</li>
+        <li><b>【0→1搭建：从设计助理到独立操盘】</b>作为品牌<strong>第一个内容岗</strong>加入，从设计师助理起步，3年内从零搭建抖音+小红书+公众号等多平台体系，产出600+条内容（8种形式），粉丝从0做到1.5万。主动搭建追踪表建立A/B测试，迭代周期压缩至<strong>3天</strong>（超行业均值），搜索率提升15%</li>
+        <li><b>【外部资源管理：合作800+条】</b>制定品牌剪辑细化表和需求标准化规范，管理第三方视频公司累计合作<strong>800+条</strong>内容，推动平台更新频率达到日更两条</li>
       </ul>
     </div>
   </div>
