@@ -1,0 +1,366 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=yes">
+<title>简历模板库 · 一键切换</title>
+<style id="template-css"></style>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:-apple-system,"PingFang SC","Microsoft YaHei",sans-serif;background:#e8e4dc;min-height:100vh}
+
+/* Top bar */
+.toolbar{position:sticky;top:0;z-index:10;background:#1e293b;padding:8px 16px;display:flex;gap:8px;align-items:center;overflow-x:auto;-webkit-overflow-scrolling:touch;box-shadow:0 2px 12px rgba(0,0,0,0.3)}
+.toolbar .brand{font-size:13px;font-weight:700;color:#fff;white-space:nowrap;margin-right:8px}
+.toolbar .sep{color:#475569;margin:0 4px}
+.tpl-btn{padding:7px 14px;border-radius:8px;font-size:11px;font-weight:600;border:1.5px solid #334155;background:transparent;color:#94a3b8;cursor:pointer;white-space:nowrap;transition:.15s}
+.tpl-btn:hover{border-color:#6366f1;color:#cbd5e1}
+.tpl-btn.active{background:#6366f1;color:#fff;border-color:#6366f1}
+.btn-export{padding:7px 18px;border-radius:8px;font-size:11px;font-weight:700;border:none;cursor:pointer;background:#10b981;color:#fff;white-space:nowrap;margin-left:auto}
+
+/* Preview area */
+.preview{display:flex;justify-content:center;padding:16px}
+.page-preview{width:210mm;min-height:297mm;background:#fff;box-shadow:0 4px 24px rgba(0,0,0,0.15);padding:12mm 14mm;transition:all .3s;overflow:hidden}
+@media(max-width:800px){.page-preview{width:100%;min-height:auto;padding:16px 12px}}
+</style>
+</head>
+<body>
+
+<div class="toolbar">
+  <span class="brand">📋 简历模板库</span>
+  <span class="sep">|</span>
+  <button class="tpl-btn active" onclick="switchTpl(0)">极简专业</button>
+  <button class="tpl-btn" onclick="switchTpl(1)">经典传统</button>
+  <button class="tpl-btn" onclick="switchTpl(2)">双栏精英</button>
+  <button class="tpl-btn" onclick="switchTpl(3)">现代科技</button>
+  <button class="tpl-btn" onclick="switchTpl(4)">北欧简约</button>
+  <button class="tpl-btn" onclick="switchTpl(5)">沉稳大气</button>
+  <button class="btn-export" onclick="window.print()">🖨 打印/导出PDF</button>
+</div>
+
+<div class="preview">
+  <div class="page-preview" id="page"></div>
+</div>
+
+<script>
+// ===== RESUME CONTENT (your actual data) =====
+var resumeHTML = `
+<div class="r-header">
+  <h1>范思静</h1>
+  <div class="r-title">信息流视频项目主管 / 短视频内容操盘手</div>
+  <div class="r-intent">求职意向：信息流内容负责人 / 短视频项目主管 · 广州（品牌方 / 代理均可）</div>
+</div>
+
+<div class="r-contact">
+  <span>📱 15218129898</span>
+  <span>✉️ fansijing@outlook.com</span>
+  <span>📍 广州</span>
+  <span>🎂 26岁</span>
+  <span>🎬 作品集：面试时展示</span>
+</div>
+
+<div class="r-summary">
+  <strong>核心价值：</strong>4年内容操盘经验（2021至今），3年内完成从设计师助理到信息流项目主管的三级跃升（3.5K→15K）。从0→1，横跨大健康、女装、家清三大品类均交出可量化成果；能下场拍剪、能带团队出活、能对品牌方结果负责。
+</div>
+
+<div class="r-kpis">
+  <div class="kpi"><span class="kpi-num">3次</span><span class="kpi-label">0→1 品类起量</span></div>
+  <div class="kpi"><span class="kpi-num">千万+</span><span class="kpi-label">月销售额峰值</span></div>
+  <div class="kpi"><span class="kpi-num">300万+</span><span class="kpi-label">峰值月消耗</span></div>
+  <div class="kpi"><span class="kpi-num">1,500+</span><span class="kpi-label">策划短视频</span></div>
+  <div class="kpi"><span class="kpi-num">35%</span><span class="kpi-label">爆款率（行业~15%）</span></div>
+  <div class="kpi"><span class="kpi-num">3天</span><span class="kpi-label">素材迭代（行业7天）</span></div>
+</div>
+
+<div class="r-section">
+  <h3>工作经历</h3>
+  <div class="r-exp">
+    <div class="exp-hd"><span class="exp-role">编导组长 ➡ 项目负责人</span><span class="exp-date">2025.03 — 2026.07（1年半）</span></div>
+    <div class="exp-co">故事传媒（广州）· 家清品类（渍无踪、滴露、立白）</div>
+    <ul>
+      <li><b>【旧品复活：3个月未起量 → 月销千万】</b>主导渍无踪全链路操盘。团队已放弃该品，通过<strong>推动千川转全域投放、率先研发墨水渍系列抢占内容蓝海、拓展6种以上打法</strong>，逆转至峰值月耗<strong>300万+、月销千万</strong>，半年稳定200万/月</li>
+      <li><b>【0→1起量：新品牌首周即起量】</b>独立操盘立白小白白羽绒服干洗剂，对标爆款首批素材即起量，月耗保持<strong>百万级</strong>，撬动立白集团后续深度合作</li>
+      <li><b>【卡审突破 + 团队建设】</b>接手立白卫仕全品类因审核卡死，主动研究规则调整表述，过审率恢复至正常。同步建立团队SOP体系——每月复盘落地50+优化项、编写培训白皮书——效率提升<strong>62.5%</strong>，组员晋升组长</li>
+    </ul>
+  </div>
+  <div class="r-exp">
+    <div class="exp-hd"><span class="exp-role">短视频内容负责人（项目制合作）</span><span class="exp-date">2024.09 — 2024.12（近半年）</span></div>
+    <div class="exp-co">远巨传媒（广州）· 女装品类（雅鹿羽绒系列）</div>
+    <ul>
+      <li><b>【新品类快速起量：爆款率20% → 35%+】</b>以项目制形式加入，<strong>首次接触女装品类</strong>即在4个月内搭建完整内容体系。主导建立脚本分层测试机制，将爆款率从20%提升至<strong>35%+</strong>，策划500+条短视频</li>
+      <li><b>【效率标准化：人效+60%，GMV+15%】</b>主动制定剪辑标准化模板并推动复用至3个新账号，建立数据日复盘机制，<strong>人效提升60%</strong>，直播GMV增长15%，单条视频GMV突破<strong>30万</strong></li>
+    </ul>
+  </div>
+  <div class="r-exp">
+    <div class="exp-hd"><span class="exp-role">短视频策划与运营</span><span class="exp-date">2021.11 — 2024.09（近3年）</span></div>
+    <div class="exp-co">合诚实业（广州）· 大健康品类（胶原蛋白系列、益生菌）· 从设计师助理起步，3年内薪资3.5K→6.7K，独立负责品牌内容全链路</div>
+    <ul>
+      <li><b>【0→1搭建：从设计助理到独立操盘】</b>作为品牌<strong>第一个内容岗</strong>加入，从设计师助理起步，3年内从零搭建抖音+小红书+公众号等多平台体系，产出600+条内容（8种形式），粉丝从0做到1.5万。主动搭建追踪表建立A/B测试，迭代周期压缩至<strong>3天</strong>（超行业均值），搜索率提升15%</li>
+      <li><b>【外部资源管理：合作800+条】</b>制定品牌剪辑细化表和需求标准化规范，管理第三方视频公司累计合作<strong>800+条</strong>内容，推动平台更新频率达到日更两条</li>
+    </ul>
+  </div>
+</div>
+
+<div class="r-section">
+  <h3>自我评价</h3>
+  <div class="r-eval">
+    <p><b>【为什么是我】</b>4年完成从<strong>执行到管理的完整闭环</strong>。前期扎根内容全链路——拍摄、剪辑、投放、策略独立承接，打下实操基础。后期转向团队建设——搭建SOP体系、建立月度复盘机制、编写培训白皮书与组长流程规范。将濒死产品拉至月销千万后，培养组员独立晋升组长，验证了管理方法论的可复制性。</p>
+    <p><b>【全链路操盘】</b>覆盖选品→脚本→拍摄→剪辑→投放→数据复盘全流程，爆款率30-35%（行业均值约15%）。精通千川/巨量引擎/全域推广，熟悉抖音+小红书双平台。</p>
+    <p><b>【管理可复制】</b>从0搭建SOP体系，编写的培训白皮书和组长流程规范已被团队复用，所带组员已独立晋升组长——方法论可迁移至新团队。</p>
+  </div>
+</div>
+
+<div class="r-section">
+  <h3>项目速览</h3>
+  <table class="r-tbl">
+    <tr><th>项目</th><th>品类</th><th>角色</th><th>核心成果</th></tr>
+    <tr><td>渍无踪去渍啫喱</td><td>家清</td><td>编导组长</td><td>旧品复活 · 月销千万 · 峰值月耗300万+</td></tr>
+    <tr><td>小白白羽绒服干洗剂</td><td>家清</td><td>项目负责人</td><td>0→1起量 · 首周起量 · 月耗百万级</td></tr>
+    <tr><td>立白卫仕洗衣液</td><td>家清</td><td>编导组长</td><td>卡审突破 · 方案可复制</td></tr>
+    <tr><td>雅鹿羽绒服</td><td>女装</td><td>内容负责人</td><td>爆款率35%+ · 单条GMV 30万</td></tr>
+    <tr><td>益品达健大健康</td><td>保健</td><td>策划运营</td><td>0→1搭建 · 搜索率+15%</td></tr>
+  </table>
+</div>
+
+<div class="r-bottom">
+  <div class="r-skills">
+    <span class="sk-cat">投放&数据</span><span class="sk-tags">千川 · 巨量引擎 · 全域推广 · Excel透视表</span>
+    <span class="sk-cat">内容&设计</span><span class="sk-tags">剪映 · Premiere · AE · Photoshop · Illustrator · Figma</span>
+    <span class="sk-cat">管理&品类</span><span class="sk-tags">SOP搭建 · 团队带教 · 跨部门协调 | 家清 · 女装 · 大健康</span>
+  </div>
+  <div class="r-edu">
+    <strong>广东南华工商职业学院</strong> · 数字媒体应用技术 · 2019.09—2022.06 | GPA 3.6 · 优秀毕业生 · 国家奖学金
+  </div>
+</div>
+`;
+
+// ===== 6 TEMPLATES =====
+var templates = [
+  { // 0: 极简专业 (warm cream, current style)
+    name:'极简专业',
+    css:`
+      .page-preview{font-family:-apple-system,"PingFang SC","Microsoft YaHei",sans-serif;color:#2c2416;line-height:1.5}
+      .r-header{margin-bottom:2mm}
+      .r-header h1{font-family:"Times New Roman","Songti SC","Noto Serif SC",Georgia,serif;font-size:22px;font-weight:400;letter-spacing:2px;color:#2c2416}
+      .r-title{font-size:11px;color:#5b4c3a;font-weight:600;margin:1mm 0}
+      .r-intent{font-size:9px;color:#8c8272;margin-bottom:1.5mm}
+      .r-contact{display:flex;flex-wrap:wrap;gap:3mm;font-size:8.5px;color:#8c8272;padding:2mm 0;margin-bottom:3mm;border-top:1px solid #d4cbb8;border-bottom:1px solid #d4cbb8}
+      .r-summary{font-size:9.5px;color:#2c2416;line-height:1.55;margin-bottom:3mm}
+      .r-summary strong{color:#5b4c3a}
+      .r-kpis{display:flex;gap:2.5mm;margin-bottom:4mm}
+      .kpi{flex:1;text-align:center;background:#f5efe5;border-radius:3px;padding:2.5mm 2mm}
+      .kpi-num{display:block;font-size:13px;font-weight:800;color:#5b4c3a}
+      .kpi-label{display:block;font-size:7px;color:#8c8272;margin-top:.3mm}
+      .r-section{margin-bottom:3mm}
+      .r-section h3{font-size:11px;font-weight:700;color:#2c2416;padding-bottom:1mm;border-bottom:2px solid #5b4c3a;margin-bottom:2mm}
+      .r-exp{margin-bottom:2.5mm}
+      .exp-hd{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:.5mm}
+      .exp-role{font-size:10.5px;font-weight:700;color:#2c2416}
+      .exp-date{font-size:8.5px;color:#8c8272;white-space:nowrap}
+      .exp-co{font-size:9px;color:#5b4c3a;font-weight:500;margin-bottom:1mm}
+      .r-exp ul{padding-left:3.5mm}
+      .r-exp li{font-size:8.5px;margin-bottom:.6mm;line-height:1.4}
+      .r-eval p{font-size:9px;margin-bottom:1.5mm;line-height:1.6}
+      .r-tbl{width:100%;font-size:7.5px;border-collapse:collapse;margin-top:1mm}
+      .r-tbl th{background:#5b4c3a;color:#fdfcf8;padding:1.5mm 2mm;text-align:left;font-weight:500}
+      .r-tbl td{padding:1.5mm 2mm;border-bottom:1px solid #d4cbb8}
+      .r-tbl tr:nth-child(even) td{background:rgba(240,232,216,.3)}
+      .r-bottom{margin-top:2mm}
+      .r-skills{font-size:8px;color:#8c8272;line-height:1.8}
+      .sk-cat{font-weight:700;color:#2c2416;margin-right:2mm}
+      .sk-tags{margin-right:6mm}
+      .r-edu{font-size:8px;color:#8c8272;padding-top:1.5mm;border-top:1px solid #d4cbb8;margin-top:1.5mm}
+      .r-edu strong{color:#2c2416}
+    `
+  },
+  { // 1: 经典传统 (black/white, serif, formal)
+    name:'经典传统',
+    css:`
+      .page-preview{font-family:"Times New Roman","Songti SC","Noto Serif SC",Georgia,serif;color:#1a1a1a;line-height:1.6}
+      .r-header{text-align:center;margin-bottom:4mm;padding-bottom:3mm;border-bottom:2px solid #1a1a1a}
+      .r-header h1{font-size:24px;font-weight:700;letter-spacing:3px;text-transform:uppercase;color:#000}
+      .r-title{font-size:12px;color:#444;margin:2mm 0;letter-spacing:1px}
+      .r-intent{font-size:10px;color:#666;margin-bottom:2mm;font-style:italic}
+      .r-contact{text-align:center;font-size:9px;color:#555;padding:2mm 0;margin-bottom:4mm;border-bottom:1px solid #ccc}
+      .r-contact span{margin:0 4mm}
+      .r-summary{font-size:10px;color:#333;line-height:1.6;margin-bottom:4mm;text-align:justify}
+      .r-kpis{display:flex;gap:3mm;margin-bottom:5mm;justify-content:center}
+      .kpi{text-align:center;padding:2mm 4mm;border:1px solid #ddd}
+      .kpi-num{display:block;font-size:16px;font-weight:700;color:#000}
+      .kpi-label{display:block;font-size:8px;color:#666;margin-top:.5mm}
+      .r-section{margin-bottom:4mm}
+      .r-section h3{font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:2px;color:#000;border-bottom:1px solid #000;padding-bottom:1mm;margin-bottom:2mm}
+      .r-exp{margin-bottom:3mm}
+      .exp-hd{display:flex;justify-content:space-between;align-items:baseline}
+      .exp-role{font-size:11px;font-weight:700;color:#000}
+      .exp-date{font-size:9px;color:#666;white-space:nowrap}
+      .exp-co{font-size:9px;color:#444;font-style:italic;margin-bottom:1mm}
+      .r-exp ul{padding-left:4mm}
+      .r-exp li{font-size:9px;margin-bottom:.8mm;line-height:1.5}
+      .r-eval p{font-size:9.5px;margin-bottom:2mm;line-height:1.6}
+      .r-tbl{width:100%;font-size:8px;border-collapse:collapse;margin-top:1mm;border-top:2px solid #000;border-bottom:1px solid #000}
+      .r-tbl th{background:#f5f5f5;color:#000;padding:2mm 2.5mm;text-align:left;font-weight:700;border-bottom:1px solid #000}
+      .r-tbl td{padding:2mm 2.5mm;border-bottom:1px solid #eee}
+      .r-bottom{margin-top:3mm;font-size:9px;color:#555;line-height:1.8}
+      .sk-cat{font-weight:700;color:#000;margin-right:2mm}
+      .sk-tags{margin-right:5mm}
+      .r-edu{padding-top:2mm;border-top:1px solid #ccc;margin-top:2mm;color:#555}
+      .r-edu strong{color:#000}
+    `
+  },
+  { // 2: 双栏精英 (dark sidebar + white main)
+    name:'双栏精英',
+    css:`
+      .page-preview{font-family:-apple-system,"PingFang SC","Microsoft YaHei",sans-serif;color:#1e293b;line-height:1.5;display:grid;grid-template-columns:58mm 1fr;gap:0;padding:0!important;min-height:297mm}
+      .r-header{background:#0f172a;color:#fff;padding:10mm 5mm;text-align:center}
+      .r-header h1{font-size:20px;font-weight:700;color:#fff;letter-spacing:1px}
+      .r-title{font-size:10px;color:#94a3b8;margin:1mm 0}
+      .r-intent{font-size:8px;color:#64748b}
+      .r-contact{background:#0f172a;color:#cbd5e1;font-size:8px;padding:3mm 5mm 8mm;text-align:center;line-height:2.2}
+      .r-contact span{display:block}
+      .r-summary{font-size:10px;color:#334155;line-height:1.55;margin-bottom:4mm}
+      .r-summary strong{color:#2563eb}
+      .r-kpis{display:flex;gap:2mm;margin-bottom:4mm;flex-wrap:wrap}
+      .kpi{flex:1;min-width:22mm;text-align:center;background:#eff6ff;padding:2.5mm 1.5mm;border-radius:3px}
+      .kpi-num{display:block;font-size:13px;font-weight:800;color:#2563eb}
+      .kpi-label{display:block;font-size:7px;color:#64748b}
+      .r-section{margin-bottom:3mm}
+      .r-section h3{font-size:10px;font-weight:700;color:#0f172a;padding-bottom:1mm;border-bottom:2px solid #2563eb;margin-bottom:2mm;text-transform:uppercase;letter-spacing:1px}
+      .r-exp{margin-bottom:2.5mm}
+      .exp-hd{display:flex;justify-content:space-between;align-items:baseline}
+      .exp-role{font-size:10.5px;font-weight:700;color:#0f172a}
+      .exp-date{font-size:8.5px;color:#64748b;white-space:nowrap}
+      .exp-co{font-size:8.5px;color:#2563eb;margin-bottom:1mm}
+      .r-exp ul{padding-left:3.5mm}
+      .r-exp li{font-size:8.5px;margin-bottom:.5mm;line-height:1.4}
+      .r-eval p{font-size:9px;margin-bottom:1.5mm;line-height:1.6}
+      .r-tbl{width:100%;font-size:7.5px;border-collapse:collapse}
+      .r-tbl th{background:#0f172a;color:#fff;padding:1.5mm 2mm;text-align:left}
+      .r-tbl td{padding:1.5mm 2mm;border-bottom:1px solid #e2e8f0}
+      .r-tbl tr:nth-child(even) td{background:#f8fafc}
+      .r-bottom{font-size:8px;color:#64748b;line-height:2}
+      .sk-cat{font-weight:700;color:#0f172a}
+      .sk-tags{margin-right:5mm}
+      .r-edu{padding-top:1.5mm;border-top:1px solid #e2e8f0;margin-top:1.5mm}
+      .r-edu strong{color:#0f172a}
+    `
+  },
+  { // 3: 现代科技 (bold, blue accents, clean)
+    name:'现代科技',
+    css:`
+      .page-preview{font-family:-apple-system,"PingFang SC","Microsoft YaHei",sans-serif;color:#1a1a2e;line-height:1.5}
+      .r-header{margin-bottom:3mm;display:flex;justify-content:space-between;align-items:flex-end}
+      .r-header h1{font-size:26px;font-weight:800;color:#1a1a2e;letter-spacing:-.5px}
+      .r-title{font-size:12px;color:#4361ee;font-weight:600}
+      .r-intent{font-size:9px;color:#6c757d}
+      .r-contact{display:flex;flex-wrap:wrap;gap:3mm;font-size:8.5px;color:#495057;padding:2.5mm 0;margin-bottom:3mm;border-top:2px solid #4361ee;border-bottom:1px solid #dee2e6}
+      .r-summary{font-size:10px;color:#212529;line-height:1.6;margin-bottom:4mm;background:#f8f9fa;padding:3mm;border-radius:4px;border-left:3px solid #4361ee}
+      .r-kpis{display:flex;gap:3mm;margin-bottom:4mm}
+      .kpi{flex:1;text-align:center;padding:3mm 2mm;background:#fff;border:1px solid #e9ecef;border-radius:6px}
+      .kpi-num{display:block;font-size:16px;font-weight:800;color:#4361ee}
+      .kpi-label{display:block;font-size:7.5px;color:#6c757d;margin-top:.5mm}
+      .r-section{margin-bottom:3.5mm}
+      .r-section h3{font-size:12px;font-weight:700;color:#1a1a2e;padding-bottom:1mm;border-bottom:3px solid #4361ee;margin-bottom:2mm;letter-spacing:-.3px}
+      .r-exp{margin-bottom:3mm}
+      .exp-hd{display:flex;justify-content:space-between;align-items:baseline}
+      .exp-role{font-size:11px;font-weight:700;color:#1a1a2e}
+      .exp-date{font-size:8.5px;color:#6c757d;white-space:nowrap}
+      .exp-co{font-size:9px;color:#4361ee;font-weight:500;margin-bottom:1mm}
+      .r-exp ul{padding-left:3.5mm}
+      .r-exp li{font-size:9px;margin-bottom:.6mm;line-height:1.45}
+      .r-eval p{font-size:9.5px;margin-bottom:1.5mm;line-height:1.6}
+      .r-tbl{width:100%;font-size:8px;border-collapse:collapse}
+      .r-tbl th{background:#1a1a2e;color:#fff;padding:2mm 2.5mm;text-align:left;font-weight:600}
+      .r-tbl td{padding:2mm 2.5mm;border-bottom:1px solid #e9ecef}
+      .r-tbl tr:nth-child(even) td{background:#f8f9fa}
+      .r-bottom{font-size:8.5px;color:#495057;line-height:2}
+      .sk-cat{font-weight:700;color:#1a1a2e}
+      .sk-tags{margin-right:5mm}
+      .r-edu{padding-top:2mm;border-top:1px solid #dee2e6;margin-top:2mm;color:#6c757d}
+      .r-edu strong{color:#1a1a2e}
+    `
+  },
+  { // 4: 北欧简约 (scandinavian, lots of whitespace, muted)
+    name:'北欧简约',
+    css:`
+      .page-preview{font-family:-apple-system,"PingFang SC","Microsoft YaHei",sans-serif;color:#3d3d3d;line-height:1.7}
+      .r-header{margin-bottom:6mm}
+      .r-header h1{font-size:28px;font-weight:300;letter-spacing:4px;color:#2d2d2d}
+      .r-title{font-size:11px;color:#8c8c8c;font-weight:400;margin:2mm 0;letter-spacing:2px}
+      .r-intent{font-size:9px;color:#b0b0b0;letter-spacing:1px}
+      .r-contact{display:flex;flex-wrap:wrap;gap:5mm;font-size:9px;color:#999;margin-bottom:6mm;padding-bottom:4mm;border-bottom:1px solid #e8e8e8}
+      .r-summary{font-size:10.5px;color:#555;line-height:1.8;margin-bottom:6mm;max-width:80%}
+      .r-kpis{display:flex;gap:4mm;margin-bottom:6mm}
+      .kpi{flex:1;text-align:center;padding:3mm}
+      .kpi-num{display:block;font-size:18px;font-weight:300;color:#2d2d2d;letter-spacing:1px}
+      .kpi-label{display:block;font-size:8px;color:#b0b0b0;margin-top:1mm;letter-spacing:1px;text-transform:uppercase}
+      .r-section{margin-bottom:5mm}
+      .r-section h3{font-size:10px;font-weight:400;letter-spacing:3px;text-transform:uppercase;color:#b0b0b0;margin-bottom:3mm}
+      .r-exp{margin-bottom:4mm}
+      .exp-hd{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:1mm}
+      .exp-role{font-size:11px;font-weight:600;color:#2d2d2d}
+      .exp-date{font-size:9px;color:#ccc;white-space:nowrap}
+      .exp-co{font-size:9px;color:#999;margin-bottom:1.5mm}
+      .r-exp ul{padding-left:4mm}
+      .r-exp li{font-size:9.5px;margin-bottom:1mm;line-height:1.6;color:#666}
+      .r-eval p{font-size:9.5px;margin-bottom:2mm;line-height:1.7;color:#555}
+      .r-tbl{width:100%;font-size:8px;border-collapse:collapse;margin-top:2mm}
+      .r-tbl th{color:#b0b0b0;padding:2mm 3mm;text-align:left;font-weight:400;letter-spacing:1px;text-transform:uppercase;border-bottom:1px solid #e8e8e8}
+      .r-tbl td{padding:2mm 3mm;border-bottom:1px solid #f0f0f0;color:#666}
+      .r-bottom{font-size:8.5px;color:#999;line-height:2.2}
+      .sk-cat{font-weight:600;color:#555;margin-right:3mm}
+      .sk-tags{margin-right:8mm}
+      .r-edu{padding-top:3mm;margin-top:3mm;border-top:1px solid #e8e8e8;color:#b0b0b0}
+      .r-edu strong{color:#555;font-weight:500}
+    `
+  },
+  { // 5: 沉稳大气 (deep navy/gold, executive)
+    name:'沉稳大气',
+    css:`
+      .page-preview{font-family:"Times New Roman","Songti SC","Noto Serif SC",Georgia,serif;color:#1a1a1a;line-height:1.6}
+      .r-header{text-align:center;margin-bottom:4mm;padding-bottom:4mm;border-bottom:3px double #1a1a1a}
+      .r-header h1{font-size:24px;font-weight:700;letter-spacing:3px;color:#0a0a0a;text-transform:uppercase}
+      .r-title{font-size:11px;color:#555;letter-spacing:2px;margin:2mm 0}
+      .r-intent{font-size:9px;color:#777}
+      .r-contact{display:flex;justify-content:center;gap:6mm;font-size:9px;color:#555;padding:3mm 0;margin-bottom:4mm;border-bottom:1px solid #ddd}
+      .r-summary{font-size:10px;color:#333;line-height:1.7;margin-bottom:5mm;text-align:center;max-width:85%;margin-left:auto;margin-right:auto}
+      .r-kpis{display:flex;gap:3mm;margin-bottom:5mm;justify-content:center}
+      .kpi{text-align:center;padding:3mm 4mm;border:1px solid #ddd;min-width:22mm}
+      .kpi-num{display:block;font-size:17px;font-weight:700;color:#0a0a0a}
+      .kpi-label{display:block;font-size:7.5px;color:#777;margin-top:.5mm;text-transform:uppercase;letter-spacing:.5px}
+      .r-section{margin-bottom:4mm}
+      .r-section h3{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:3px;color:#0a0a0a;text-align:center;border-top:1px solid #ddd;border-bottom:1px solid #ddd;padding:2mm 0;margin-bottom:3mm}
+      .r-exp{margin-bottom:3.5mm}
+      .exp-hd{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:.5mm}
+      .exp-role{font-size:11px;font-weight:700;color:#0a0a0a}
+      .exp-date{font-size:9px;color:#777;white-space:nowrap}
+      .exp-co{font-size:9px;color:#555;font-style:italic;margin-bottom:1mm}
+      .r-exp ul{padding-left:4mm}
+      .r-exp li{font-size:9px;margin-bottom:.8mm;line-height:1.5}
+      .r-eval p{font-size:9.5px;margin-bottom:2mm;line-height:1.6}
+      .r-tbl{width:100%;font-size:8px;border-collapse:collapse;margin:2mm 0}
+      .r-tbl th{background:#0a0a0a;color:#fff;padding:2mm 2.5mm;text-align:left;font-weight:500;letter-spacing:.5px}
+      .r-tbl td{padding:2mm 2.5mm;border-bottom:1px solid #e8e8e8}
+      .r-tbl tr:nth-child(even) td{background:#fafafa}
+      .r-bottom{font-size:8.5px;color:#555;line-height:2;text-align:center}
+      .sk-cat{font-weight:700;color:#0a0a0a}
+      .sk-tags{margin-right:5mm}
+      .r-edu{padding-top:2mm;border-top:1px solid #ddd;margin-top:2mm;text-align:center;color:#777}
+      .r-edu strong{color:#0a0a0a}
+    `
+  }
+];
+
+function switchTpl(idx){
+  document.querySelectorAll('.tpl-btn').forEach(function(b,i){b.classList.toggle('active',i===idx)});
+  document.getElementById('template-css').textContent = templates[idx].css;
+  localStorage.setItem('resume_tpl', idx);
+}
+
+// Init
+var saved = parseInt(localStorage.getItem('resume_tpl')||'0');
+document.getElementById('page').innerHTML = resumeHTML;
+switchTpl(saved);
+</script>
+</body>
+</html>
