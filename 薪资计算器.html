@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=yes">
+<title>薪资计算器</title>
+<style>
+:root{--bg:#f5f1e8;--card:#fdfcf8;--border:#d4cbb8;--text:#2c2416;--muted:#8c8272;--accent:#5b4c3a;--green:#6b7f5e}
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:-apple-system,"PingFang SC","Microsoft YaHei",sans-serif;background:var(--bg);color:var(--text);min-height:100vh;padding:16px;-webkit-tap-highlight-color:transparent}
+.c{max-width:480px;margin:0 auto}
+h1{font-family:"Times New Roman","Songti SC","Noto Serif SC",Georgia,serif;font-size:22px;font-weight:400;letter-spacing:2px;text-align:center;margin:16px 0 4px}
+.sub{text-align:center;font-size:12px;color:var(--muted);margin-bottom:20px}
+
+.card{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:20px;margin-bottom:12px}
+.row{display:flex;justify-content:space-between;align-items:center;margin-bottom:10px}
+.row label{font-size:13px}
+.row input,.row select{padding:8px 12px;border:1.5px solid var(--border);border-radius:8px;font-size:14px;width:120px;text-align:right;font-family:inherit;background:#fff;color:var(--text);-webkit-appearance:none}
+.row input:focus,.row select:focus{outline:none;border-color:var(--accent)}
+
+.result{background:var(--card);border:2px solid var(--accent);border-radius:12px;padding:20px;text-align:center}
+.result .big{font-size:32px;font-weight:800;color:var(--accent)}
+.result .label{font-size:11px;color:var(--muted);margin-top:2px}
+.result .breakdown{display:flex;gap:8px;margin-top:12px;text-align:center}
+.result .breakdown div{flex:1;font-size:11px;color:var(--muted)}
+.result .breakdown div strong{display:block;font-size:15px;color:var(--text)}
+
+.compare{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:8px}
+.compare .col{background:var(--card);border:1px solid var(--border);border-radius:10px;padding:14px;text-align:center}
+.compare .col .sal{font-size:20px;font-weight:700;color:var(--accent)}
+.compare .col .lbl{font-size:10px;color:var(--muted)}
+
+.note{font-size:10px;color:var(--muted);text-align:center;margin-top:8px}
+</style>
+</head>
+<body>
+<div class="c">
+<h1>薪资计算器</h1>
+<div class="sub">广州 · 默认社保公积金标准</div>
+
+<div class="card">
+  <div class="row"><label>税前月薪</label><input id="salary" type="number" value="15000" oninput="calc()"> 元</div>
+  <div class="row"><label>社保基数</label><input id="base" type="number" value="15000" oninput="calc()"> 元</div>
+  <div class="row"><label>公积金比例</label><select id="fund" onchange="calc()"><option>5%</option><option>7%</option><option>8%</option><option selected>12%</option></select></div>
+  <div class="row"><label>年终奖（月数）</label><input id="bonus" type="number" value="1" oninput="calc()"> 个月</div>
+</div>
+
+<div class="result">
+  <div class="big" id="netSalary">12,195</div>
+  <div class="label">税后月薪（到手）</div>
+  <div class="breakdown">
+    <div><strong id="socialVal">1,575</strong>社保个人</div>
+    <div><strong id="fundVal">1,800</strong>公积金个人</div>
+    <div><strong id="taxVal">0</strong>个税</div>
+  </div>
+</div>
+
+<div class="compare">
+  <div class="col"><div class="sal" id="annualNet">146,340</div><div class="lbl">年税后收入（不含公积金）</div></div>
+  <div class="col"><div class="sal" id="annualTotal">189,540</div><div class="lbl">年总收入（含公积金+年终）</div></div>
+</div>
+
+<div class="note">广州社保个人约10.5% · 公积金计入个人账户可提取 · 个税按累进税率估算</div>
+</div>
+
+<script>
+function calc(){
+  var sal=parseInt(document.getElementById('salary').value)||0;
+  var base=parseInt(document.getElementById('base').value)||sal;
+  var fundRate=parseFloat(document.getElementById('fund').value)/100;
+  var bonusMonths=parseInt(document.getElementById('bonus').value)||0;
+
+  var social=Math.round(base*0.105);
+  var fund=Math.round(base*fundRate);
+  var taxableBase=sal-social-fund-5000;
+  var tax=0;
+  if(taxableBase>0){
+    if(taxableBase<=3000)tax=Math.round(taxableBase*0.03);
+    else if(taxableBase<=12000)tax=Math.round(taxableBase*0.1-210);
+    else if(taxableBase<=25000)tax=Math.round(taxableBase*0.2-1410);
+    else tax=Math.round(taxableBase*0.25-2660);
+  }
+  var net=sal-social-fund-tax;
+  var annualNet=net*12;
+  var annualTotal=annualNet+fund*2*12+(bonusMonths>0?sal*bonusMonths:0);
+
+  document.getElementById('netSalary').textContent=net.toLocaleString();
+  document.getElementById('socialVal').textContent=social.toLocaleString();
+  document.getElementById('fundVal').textContent=fund.toLocaleString();
+  document.getElementById('taxVal').textContent=tax.toLocaleString();
+  document.getElementById('annualNet').textContent=annualNet.toLocaleString();
+  document.getElementById('annualTotal').textContent=annualTotal.toLocaleString();
+}
+calc();
+</script>
+</body>
+</html>
