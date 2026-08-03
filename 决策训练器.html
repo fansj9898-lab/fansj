@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=yes">
+<title>决策训练器 · 从执行到策略</title>
+<style>
+:root{--bg:#f5f1e8;--card:#fdfcf8;--border:#d4cbb8;--text:#2c2416;--muted:#8c8272;--accent:#5b4c3a;--blue:#2563eb;--green:#6b7f5e}
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:-apple-system,"PingFang SC","Microsoft YaHei",sans-serif;background:var(--bg);color:var(--text);min-height:100vh;line-height:1.7;padding:16px;-webkit-tap-highlight-color:transparent}
+.c{max-width:720px;margin:0 auto}
+h1{font-family:"Times New Roman","Songti SC","Noto Serif SC",Georgia,serif;font-size:22px;font-weight:400;letter-spacing:2px;text-align:center;margin:20px 0 4px}
+.sub{text-align:center;font-size:12px;color:var(--muted);margin-bottom:24px}
+
+/* scene selector */
+.scenes{display:flex;gap:6px;margin-bottom:20px;overflow-x:auto;-webkit-overflow-scrolling:touch;padding-bottom:4px}
+.sbtn{flex-shrink:0;padding:10px 16px;border-radius:10px;font-size:12px;font-weight:600;border:2px solid var(--border);background:var(--card);color:var(--muted);cursor:pointer;white-space:nowrap;transition:.15s}
+.sbtn:hover{border-color:var(--accent)}
+.sbtn.on{background:var(--accent);color:#fdfcf8;border-color:var(--accent)}
+.sbtn.done{background:var(--green);color:#fff;border-color:var(--green)}
+
+.card{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:24px 20px;margin-bottom:14px}
+.card h3{font-size:16px;color:var(--text);margin-bottom:6px}
+.card .ctx{font-size:13px;color:var(--muted);margin-bottom:16px;line-height:1.7;background:#f8f6f0;padding:12px 16px;border-radius:8px;border-left:3px solid var(--accent)}
+
+/* the decision framework */
+.framework{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:14px 0}
+.fw-box{background:#fff;border:1px solid var(--border);border-radius:10px;padding:14px;font-size:12px}
+.fw-box .fw-label{font-size:10px;font-weight:700;letter-spacing:1px;color:var(--accent);margin-bottom:4px;text-transform:uppercase}
+.fw-box ul{padding-left:16px;font-size:11px;color:var(--muted)}
+.fw-box li{margin-bottom:3px}
+
+/* decision cards */
+.decisions{margin-top:14px}
+.d-item{background:#fff;border:1px solid var(--border);border-radius:10px;padding:14px 16px;margin-bottom:10px;cursor:pointer;transition:.2s}
+.d-item:hover{border-color:var(--accent)}
+.d-item .d-num{display:inline-block;width:22px;height:22px;border-radius:50%;background:var(--accent);color:#fdfcf8;font-size:11px;font-weight:700;text-align:center;line-height:22px;margin-right:8px}
+.d-item .d-q{font-size:13px;font-weight:700;color:var(--text);display:inline}
+
+textarea{width:100%;min-height:80px;background:#fff;border:2px solid var(--border);border-radius:10px;padding:12px;font-size:13px;font-family:inherit;resize:vertical;-webkit-appearance:none;color:var(--text);margin-top:8px}
+textarea:focus{outline:none;border-color:var(--accent)}
+textarea::placeholder{color:var(--muted)}
+
+.btn{display:inline-block;padding:10px 22px;border-radius:8px;font-size:13px;font-weight:700;border:none;cursor:pointer;-webkit-appearance:none;transition:.15s}
+.btn-primary{background:var(--accent);color:#fdfcf8}
+.btn-ghost{background:transparent;border:1px solid var(--border);color:var(--muted)}
+
+.reveal{display:none;margin-top:12px;padding:16px;background:#f8f6f0;border-radius:10px;font-size:12px;line-height:1.7;color:var(--text)}
+.reveal.show{display:block}
+.reveal .rl{font-size:10px;font-weight:700;color:var(--accent);letter-spacing:1px;margin-bottom:6px}
+
+/* strategy ladder */
+.ladder{display:flex;flex-direction:column;gap:6px;margin:14px 0}
+.rung{display:flex;align-items:center;gap:10px;padding:10px 14px;border-radius:8px;font-size:12px}
+.rung.l0{background:#fef2f2;color:#b06050}
+.rung.l1{background:#fff7ed;color:#c2780a}
+.rung.l2{background:#f0fdf4;color:var(--green)}
+.rung .lvl{font-weight:800;font-size:11px;min-width:50px}
+
+.progress{text-align:center;font-size:11px;color:var(--muted);margin-top:20px}
+
+@media(max-width:500px){.framework{grid-template-columns:1fr}.card{padding:16px 12px}}
+</style>
+</head>
+<body>
+<div class="c">
+<h1>决策训练器</h1>
+<div class="sub">不是"我做了什么" → 而是"我为什么这样做"</div>
+
+<div class="scenes" id="sceneNav"></div>
+<div id="main"></div>
+<div class="progress" id="progress"></div>
+</div>
+
+<script>
+var scenes = [
+  {
+    id:1, title:'渍无踪 · 投放策略决策',
+    ctx:'你接手渍无踪时，产品3个月没起量。月消耗不到20万，团队无信心，品牌方缩减预算。你面临第一个重大决策：先做什么？',
+    before:'产品已经连续3个月低消耗，品牌方在催。你有几个选项：①加大现有素材的投放预算 ②切换投放模式（标准→全域） ③先找新的内容方向 ④向品牌方申请更多时间。每个选项都有风险，你必须选一个，而且顺序很重要。',
+    decisions:[
+      {q:'你的第一个动作是什么？为什么是这个而不是其他的？',hint:'不是"我做了什么"，是"我排除了哪几个选项，为什么"。'},
+      {q:'你的第二个动作是什么？为什么排在第二个？',hint:'为什么不是先做另外两件事？顺序背后的逻辑是什么？'},
+      {q:'如果你当时选错了顺序，最坏的结果是什么？',hint:'这个思考让你看到"决策"和"执行"的区别——决策是选方向，执行是走对路。'}
+    ],
+    expert:'猎头想听的"策略层思维"在这里：<br><br><strong>决策1：先切换投放模式（标准→全域）</strong><br>排除了"加大旧素材预算"（因为5秒完播率已经从42%跌到28%，加大预算等于加速衰减）。排除了"先找新方向"（因为找方向需要2-3周测试验证，品牌方等不了）。所以先切全域——这个动作一周内能看到效果，同时给新方向争取时间。<br><br><strong>决策2：再研发墨水渍系列</strong><br>全域投放带来新流量池后，旧素材的完播率低的问题被放大了——新流量看到旧素材不想点。所以必须快速找到新方向来承接全域带来的流量。墨水渍是竞品验证过的爆点，试错成本最低。<br><br><strong>这个顺序如果反了会怎样？</strong>如果先找新方向再切全域——新方向做出素材后，标准投放的精准人群已经被洗过一轮了，新素材的ROI会低于预期，品牌方可能在中途就砍预算了。',
+    insight:'决策的核心不是"做了什么"，是"排除了什么"。你说服别人的方式不是"我做了A和B"，而是"我没有选C和D，因为……"。当你开始用排除法讲你的决策，你就从执行者变成了策略者。'
+  },
+  {
+    id:2, title:'小白白 · 0→1方向选择',
+    ctx:'立白集团新品牌，零历史数据。品牌方只给了你最基本的预算，两周内要看到起量信号。你面对一个陌生品类和有限资源。',
+    before:'你是第一次做羽绒服清洁品类。竞品已经在这个品类跑了几个月，他们有几个爆款方向。你的预算是他们的三分之一。你要在两周内找到这个产品的起量方向。',
+    decisions:[
+      {q:'你选了哪个方向作为第一个测试？为什么没选其他方向？',hint:'手里有5个可能的方向，预算是有限的。选哪个先测，决定了后面所有的节奏。'},
+      {q:'你用了多少预算测第一个方向？如果失败了你的B计划是什么？',hint:'不是"我花了多少钱"，是"我预留了多少给B计划"。有B计划说明你想过失败的可能。'},
+      {q:'测试结果出来之后，你是怎么判断"这个方向对了"的？',hint:'不是"数据好"，是"哪个数据指标让我觉得这个方向可以放量"。'}
+    ],
+    expert:'猎头想听的策略思维：<br><br><strong>方向选择的逻辑：</strong>不是凭感觉选"口播+去渍对比"——是因为这个方向在竞品中验证了高转化（说明用户对这个内容形式有购买冲动），同时制作成本适中（适合你的有限预算快速试错）。你排除了"剧情+痛点"（制作周期长，两周来不及）和"专家人设"（需要信任积累，0→1阶段用户不认识你，转化率必然低）。<br><br><strong>预算分配的逻辑：</strong>你拿了60%预算验证主力方向，20%做两个备用方向的快速测试，20%保留——如果主力方向数据不达预期，备用方向已经跑了几天有初步数据可以马上接上。这不是省钱，是在有限试错次数下最大化成功率。<br><br><strong>判断"方向对了"的标准：</strong>不是"消耗跑起来了"——是三高：5秒完播率>45%（内容吸引力）+ 点击率>3%（封面有效）+ 转化率>10%（产品力够）。三个都达标，才敢放量。',
+    insight:'资源越少，决策越重要。你的预算只是竞品的三分之一，所以你每一个选择必须比他们更精准。别人可以靠量砸出来，你必须靠判断力和排序能力。这恰好是"策略思维"的核心——在有限资源下选择最优路径。'
+  },
+  {
+    id:3, title:'立白卫仕 · 危机决策',
+    ctx:'全品类卡审，过审率从98%跌到15%。后天618大促，品牌方在催。消耗在断崖式下跌。你必须在24小时内做出反应。',
+    before:'审核政策突然收紧。你的团队提交了16条素材，过了4条。驳回理由全是"功效宣称违规"。品牌方在催，大促在倒计时，每过一天消耗跌三分之一。',
+    decisions:[
+      {q:'你在得知卡审后第一个小时做了什么？为什么不是先通知品牌方？',hint:'先处理问题还是先汇报问题——这是一个策略选择。'},
+      {q:'你用了什么方法在24小时内找到"不被卡的表述"？',hint:'不是"研究规则"这么笼统——具体怎么研究的？用了什么方法能这么快定位到问题词？'},
+      {q:'如果72小时内没恢复投放，你的替代方案是什么？',hint:'有个B计划说明你不是在"赌"审核会松——你是在"管理风险"。'}
+    ],
+    expert:'猎头最看重的"危机策略思维"：<br><br><strong>第一小时的决策：先分析，再汇报。</strong>你没有先打电话给品牌方说"出事了"——品牌方听到这句话只会恐慌，然后给你施加压力，然后你被迫承诺"今天一定恢复"，然后在压力下做出错误判断。你选择先花30分钟分析被驳回的12条素材，找到共同的违规表述——发现是"多菌种""强效去除""深层清洁"这三个词组。然后带着"问题和方案"通知品牌方，而不是"只带着问题"。<br><br><strong>24小时内找到解决方案的方法：</strong>你不是"猜"哪个词不卡——你做了一个交叉测试表。同一条视频，做三个版本：版本A保留原文案、版本B把功效词换成中性词、版本C把功效词全部去掉。三个版本同时提交。版本B过审了，版本A和C被驳回。你立刻就知道——红线在"功效词"，不在"除菌"这个品类本身。这种"用实验定位问题"的思维，就是策略思维。',
+    insight:'危机中的决策最能暴露一个人的水平。低水平的人先通知、再焦虑、然后乱试。高水平的人先分析、做实验、定位问题、带着方案去汇报。区别不在"做得好不好"，在于"有没有一套面对未知问题的分析方法"。你的卡审突破，恰好证明了你有这套方法——你只是以前没把它叫成"策略思维"。'
+  },
+  {
+    id:4, title:'团队管理 · 培养vs替代',
+    ctx:'渍无踪稳定后，品牌方和产品都跑顺了。老板说：这个产品你可以交出去了，去带新品。你那个组员跟了你半年——交给她还是招新人？',
+    before:'组员独立能力还行，但没有独当一面的经验。交给她有风险——前两个月数据可能掉。但招新人要花时间，而且新人也要适应品牌方。你有一个月时间做选择。',
+    decisions:[
+      {q:'你没有招新人而是培养组员接替——这个决策是怎么做出来的？',hint:'交给她有风险，招新人也有风险。你比较了两种风险之后为什么选了前者？'},
+      {q:'你怎么设计交接流程来降低"她接管后数据掉"的风险？',hint:'不是"我相信她能做到"，是"我做了什么来确保她能做到"。'},
+      {q:'如果她接不住，你的止损线是什么？',hint:'预先想好最坏情况+应对方案——管理者的基本素养。'}
+    ],
+    expert:'猎头评估管理能力时看这个：<br><br><strong>选择培养而非替代的决策逻辑：</strong>你比较了两个选项的风险：①招新人——需要2-3个月磨合期，期间品牌方感受不好，而且新人可能没有家清品类经验②培养组员——她有品类经验，知道品牌方的沟通方式，只需要补齐"独立判断"的能力。后者的风险更可控——因为你可以设计交接流程来对冲风险，而新人的磨合期你无法加速。<br><br><strong>交接流程的设计思路：</strong>四周渐进法——第一周看（你做她看）、第二周带（她做你在旁边）、第三周放（她独立做你每天查）、第四周抽（你只做抽查）。这个设计背后是一个管理认知：人的能力增长需要时间，但可以在每个阶段设置"不会造成大损失的小失败"来加速学习。<br><br><strong>这才是猎头想听到的"管理思维"：</strong>不是"我带了一个人半年然后她成长了"——这是运气。是"我预判了两种路径的风险、选择了更可控的一条、设计了渐进流程来对冲剩余风险、设置了止损线"。',
+    insight:'管理不是"你对人很好所以别人成长了"——那是运气。管理是"你预判风险、设计流程、设置止损"。当你开始用这个框架讲你的团队经验时，猎头不会觉得你"只做过一年管理"——他会觉得你已经理解了管理的本质。'
+  },
+  {
+    id:5, title:'面试实战 · 现场做决策',
+    ctx:'模拟面试场景：面试官给你一个你从没做过的品类的数据，让你当场判断问题并给出策略。',
+    before:'这是压力测试。面试官想知道：你没有品类经验的时候，靠什么做判断？你怎么在信息不足的情况下给出有逻辑的方向？',
+    decisions:[
+      {q:'你看到一组数据：消耗连续3个月下降（68→41→19万），ROI从1.55降到1.32，过审率95%，转化率没怎么跌。你觉得问题出在哪？',hint:'先排除不是问题的部分，锁定真正的问题——用排除法。'},
+      {q:'你给出的第一个动作是什么？为什么这个动作优先于其他动作？',hint:'不是"应该做什么"，是"为什么先做这个而不是那个"。'},
+      {q:'如果做了第一个动作两周后数据还没变化，你怎么判断是动作不对还是需要更多时间？',hint:'预先设置判断标准——不等到"已经证明失败了"才知道失败。'}
+    ],
+    expert:'这就是你上次面试时被问过的问题。标准答案不是"素材产能下降了"——标准答案是：<br><br><strong>先用排除法缩小范围：</strong>过审率95%→排除审核问题。转化率稳定→排除产品力和人群精准度问题。剩下的是什么？是素材的产能和新鲜度。再查素材成片数：从320条降到85条（-73%），同时5秒完播率从42%降到28%。锁定：素材产能腰斩+已有素材在衰减。<br><br><strong>为什么第一个动作是重建素材产能而不是找新方向？</strong>因为产能是0到1的问题——没有足够的素材量，你连测试新方向都做不了（每条新方向需要至少5个版本去测试）。先恢复产能（让系统有东西跑），然后在恢复后的素材里做A/B测试找方向。<br><br><strong>两周后的判断标准：</strong>产能恢复到200+条/月是前提。如果恢复了但消耗还是没涨→说明方向有问题，开始测试新方向。如果产能都没恢复→说明管理/团队有问题，先解决人的问题。每个阶段有明确的"成功标准"和"如果失败下一步是什么"——这叫策略。',
+    insight:'面试官问"你怎么判断"时，他不是要你报答案。他要的是：你的思考框架。先排除什么、再验证什么、最后锁定什么。你不是在回答问题——你是在展示你的诊断系统。有系统的人值20K，只能回答的人值12K。这是你简历上"数据驱动决策"这六个字的真正含义。'
+  }
+];
+
+var current=0;
+var answers={};
+
+function init(){
+  document.getElementById('sceneNav').innerHTML=scenes.map(function(s,i){
+    var cls='sbtn';
+    if(i===current)cls+=' on';
+    if(answers[s.id]&&Object.keys(answers[s.id]).length>=s.decisions.length)cls+=' done';
+    return '<button class="'+cls+'" onclick="switchScene('+i+')">'+s.id+'. '+s.title+'</button>';
+  }).join('');
+  updateProgress();
+  render();
+}
+
+function switchScene(i){current=i;render();document.querySelectorAll('.sbtn').forEach(function(b,j){b.classList.toggle('on',j===i)});}
+
+function updateProgress(){
+  var done=scenes.filter(function(s){return answers[s.id]&&Object.keys(answers[s.id]).length>=s.decisions.length}).length;
+  document.getElementById('progress').textContent='完成：'+done+'/'+scenes.length+' 个场景 · 猎头想听的就是这些';
+}
+
+function render(){
+  var s=scenes[current];
+  var saved=answers[s.id]||{};
+  var html='<div class="card"><h3>场景'+s.id+'：'+s.title+'</h3><div class="ctx">'+s.ctx+'</div>';
+  html+='<p style="font-size:13px;color:var(--text);line-height:1.7;margin-bottom:14px">'+s.before+'</p>';
+
+  html+='<div class="framework"><div class="fw-box"><div class="fw-label">执行者思维</div><ul><li>我做了什么</li><li>我取得了什么结果</li><li>按时间顺序讲述</li></ul></div><div class="fw-box"><div class="fw-label">策略者思维（猎头想听的）</div><ul><li>我排除了哪些选项</li><li>为什么选这个顺序</li><li>如果错了我的B计划是什么</li></ul></div></div>';
+
+  s.decisions.forEach(function(d,i){
+    var aid='a_'+s.id+'_'+i;
+    var rid='r_'+s.id+'_'+i;
+    html+='<div class="d-item" onclick="document.getElementById(\''+aid+'\').focus()"><span class="d-num">'+(i+1)+'</span><span class="d-q">'+d.q+'</span>';
+    html+='<p style="font-size:10px;color:var(--muted);margin:4px 0 0 30px">💡 '+d.hint+'</p>';
+    html+='<textarea id="'+aid+'" placeholder="写下你的回答...">'+(saved[i]||'')+'</textarea>';
+    html+='<button class="btn btn-primary" style="margin-top:8px" onclick="event.stopPropagation();saveAndShow(\''+s.id+'\','+i+',\''+rid+'\')">保存 & 对照专业解读</button>';
+    html+='<div class="reveal" id="'+rid+'"><div class="rl">🎯 专业解读</div></div>';
+    html+='</div>';
+  });
+
+  html+='<div class="reveal show" style="margin-top:20px"><div class="rl">📖 完整策略解读</div>'+s.expert+'</div>';
+  if(s.insight) html+='<div class="reveal show" style="margin-top:10px;border-left:3px solid var(--accent)"><div class="rl">💡 核心认知</div>'+s.insight+'</div>';
+
+  html+='</div>';
+  document.getElementById('main').innerHTML=html;
+}
+
+function saveAndShow(sid,i,rid){
+  var ta=document.getElementById('a_'+sid+'_'+i);
+  if(!answers[sid])answers[sid]={};
+  answers[sid][i]=ta.value;
+  var r=document.getElementById(rid);
+  r.classList.toggle('show');
+  document.querySelectorAll('.sbtn').forEach(function(b,j){
+    if(answers[scenes[j].id]&&Object.keys(answers[scenes[j].id]).length>=scenes[j].decisions.length)b.classList.add('done');
+  });
+  updateProgress();
+}
+
+init();
+</script>
+</body>
+</html>
