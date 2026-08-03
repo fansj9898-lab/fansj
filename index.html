@@ -5,186 +5,382 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 <title>范思静 · 工作台</title>
 <style>
-*{margin:0;padding:0;box-sizing:border-box}
-body{font-family:-apple-system,"PingFang SC","Microsoft YaHei",sans-serif;background:#0f172a;color:#e2e8f0;min-height:100vh;-webkit-tap-highlight-color:transparent}
-.app{max-width:900px;margin:0 auto;padding:16px}
+:root {
+  --bg: #f5f1e8;
+  --card: #fafaf5;
+  --border: #d4cbb8;
+  --text: #3a3026;
+  --muted: #8c7d6b;
+  --accent: #6b5c47;
+  --ink: #2c2216;
+  --clay: #c4a882;
+  --clay-light: #f0e8d8;
+  --sage: #6b7f5e;
+}
 
-/* top */
-.top{display:flex;align-items:center;gap:14px;margin-bottom:20px;padding:14px 18px;background:#1e293b;border-radius:14px;border:1px solid #334155}
-.top img{width:52px;height:52px;border-radius:50%;object-fit:cover;border:2px solid #2563eb}
-.top h1{font-size:18px;font-weight:800;color:#f1f5f9}
-.top p{font-size:12px;color:#64748b;margin-top:2px}
+* { margin: 0; padding: 0; box-sizing: border-box; }
 
-/* tabs */
-.tabs{display:flex;gap:6px;margin-bottom:16px;overflow-x:auto;padding-bottom:4px;-webkit-overflow-scrolling:touch}
-.tab{flex-shrink:0;padding:10px 16px;border-radius:10px;font-size:12px;font-weight:600;border:1.5px solid #334155;background:#1e293b;color:#94a3b8;cursor:pointer;white-space:nowrap;min-height:42px;display:flex;align-items:center;gap:6px;transition:.15s}
-.tab:hover{border-color:#475569;color:#e2e8f0}
-.tab.on{background:#2563eb;color:#fff;border-color:#2563eb}
+body {
+  font-family: -apple-system, "PingFang SC", "Microsoft YaHei", sans-serif;
+  background-color: #f5f1e8;
+  color: var(--text);
+  min-height: 100vh;
+  -webkit-tap-highlight-color: transparent;
+  -webkit-font-smoothing: antialiased;
+  background-image:
+    radial-gradient(ellipse at 30% 10%, rgba(196,168,130,0.06) 0%, transparent 50%),
+    radial-gradient(ellipse at 70% 90%, rgba(160,140,110,0.05) 0%, transparent 50%);
+}
 
-/* grid */
-.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:10px}
-.card{background:#1e293b;border:1px solid #334155;border-radius:12px;padding:18px 16px;cursor:pointer;transition:.15s;text-decoration:none;color:inherit;display:block}
-.card:hover{border-color:#2563eb;background:#1e2d47}
-.card .emoji{font-size:28px;margin-bottom:8px}
-.card .name{font-size:14px;font-weight:700;color:#f1f5f9;margin-bottom:3px}
-.card .desc{font-size:11px;color:#64748b;line-height:1.4}
-.card .badge{display:inline-block;font-size:10px;padding:2px 8px;border-radius:4px;margin-top:8px;font-weight:600}
-.bd-learn{background:#1e3a5f;color:#93c5fd}
-.bd-work{background:#451a1a;color:#fca5a5}
-.bd-tool{background:#1a3a1a;color:#86efac}
+.app { max-width: 920px; margin: 0 auto; padding: 48px 24px 80px; }
 
-/* divider */
-.divider{font-size:11px;font-weight:700;color:#475569;letter-spacing:1px;margin:20px 0 10px;padding-bottom:6px;border-bottom:1px solid #1e293b}
+/* ── Hero ── */
+.hero {
+  display: flex; align-items: center; gap: 24px;
+  padding: 0 0 48px; margin-bottom: 44px;
+  border-bottom: 1px solid rgba(107,92,71,0.15);
+}
+.hero-avatar {
+  width: 76px; height: 76px; border-radius: 50%; object-fit: cover;
+  filter: brightness(0.9) sepia(15%) contrast(1.05);
+  border: 2px solid rgba(107,92,71,0.2);
+  box-shadow: 0 4px 20px rgba(44,36,22,0.1);
+}
+.hero-text h1 {
+  font-family: "Times New Roman", "Songti SC", "Noto Serif SC", Georgia, serif;
+  font-size: 28px; font-weight: 400; letter-spacing: 2.5px; color: var(--ink);
+  margin-bottom: 4px;
+}
+.hero-text .tagline {
+  font-size: 14px; color: var(--muted); letter-spacing: 1px; font-style: italic;
+}
 
-/* built-in tool area */
-.tool-area{background:#1e293b;border:1px solid #334155;border-radius:14px;padding:20px;margin-top:6px}
-.tool-area textarea{width:100%;min-height:120px;background:#0f172a;border:2px solid #334155;border-radius:10px;color:#e2e8f0;padding:14px;font-size:14px;line-height:1.6;font-family:inherit;resize:vertical;-webkit-appearance:none;margin-bottom:10px}
-.tool-area textarea:focus{outline:none;border-color:#2563eb}
-.tool-area textarea::placeholder{color:#475569}
-.tool-area button{width:100%;padding:12px;border-radius:10px;font-size:14px;font-weight:700;border:none;cursor:pointer;background:#2563eb;color:#fff;min-height:48px;-webkit-appearance:none}
-.result-box{display:none;margin-top:12px;padding:14px;background:#0f172a;border-radius:10px;font-size:12px;line-height:1.7;color:#94a3b8}
-.result-box.show{display:block}
-.result-box h4{color:#e2e8f0;margin-bottom:6px}
-.result-box .tag-row{display:flex;gap:4px;flex-wrap:wrap;margin:6px 0}
-.result-box .tag{font-size:10px;padding:3px 8px;border-radius:4px;background:#1e3a5f;color:#93c5fd}
-.quick-row{display:flex;gap:6px;margin-top:8px;flex-wrap:wrap}
-.quick{flex:1;min-width:80px;padding:8px 10px;border-radius:6px;font-size:11px;font-weight:600;border:1px solid #334155;background:transparent;color:#94a3b8;cursor:pointer;text-align:center}
-.quick:hover{border-color:#2563eb;color:#2563eb}
+/* ── Navigation ── */
+.nav {
+  display: flex; gap: 0; margin-bottom: 44px;
+  border-bottom: 1px solid rgba(107,92,71,0.12); padding-bottom: 0;
+  overflow-x: auto; -webkit-overflow-scrolling: touch;
+}
+.nav a {
+  font-size: 12px; letter-spacing: 2.5px; text-transform: uppercase;
+  color: var(--muted); text-decoration: none; white-space: nowrap;
+  padding: 12px 28px; cursor: pointer;
+  transition: all .35s; position: relative;
+  border-bottom: 2px solid transparent; margin-bottom: -1px;
+}
+.nav a::after {
+  content: ''; position: absolute; bottom: 6px; left: 28px; right: 28px;
+  height: 1px; background: var(--accent); transform: scaleX(0);
+  transition: transform .35s ease;
+}
+.nav a:hover { color: var(--accent); }
+.nav a.on { color: var(--ink); border-bottom-color: var(--accent); }
+.nav a.on::after { transform: scaleX(1); }
 
-.footer{text-align:center;margin-top:24px;font-size:11px;color:#475569}
-.footer a{color:#64748b}
-@media(max-width:500px){.app{padding:10px}.grid{grid-template-columns:repeat(2,1fr);gap:8px}.card{padding:14px 12px}}
+/* ── Section label ── */
+.section-label {
+  font-size: 9.5px; letter-spacing: 5px; text-transform: uppercase;
+  color: var(--muted); margin: 44px 0 18px; opacity: .6;
+}
+
+/* ── Card grid ── */
+.tool-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(270px, 1fr)); gap: 14px; }
+
+.tool-card {
+  background: var(--card);
+  border: 1px solid rgba(107,92,71,0.1);
+  border-radius: 16px;
+  cursor: pointer; transition: all .45s cubic-bezier(.25,.1,.25,1);
+  position: relative; overflow: hidden;
+}
+.tool-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 12px 32px rgba(44,36,22,0.1), 0 2px 6px rgba(44,36,22,0.04);
+  border-color: rgba(107,92,71,0.25);
+}
+
+/* ── Card image area ── */
+.tool-card .card-visual {
+  height: 120px; position: relative; overflow: hidden;
+  background: linear-gradient(160deg,
+    rgba(196,168,130,0.2) 0%,
+    rgba(160,140,110,0.1) 40%,
+    rgba(107,127,94,0.15) 70%,
+    rgba(196,168,130,0.25) 100%
+  );
+}
+.tool-card .card-visual .visual-icon {
+  position: absolute; top: 50%; left: 50%; transform: translate(-50%,-50%);
+  opacity: .35; transition: all .45s cubic-bezier(.25,.1,.25,1);
+  color: var(--accent);
+}
+.tool-card:hover .card-visual .visual-icon { opacity: .6; transform: translate(-50%,-50%) scale(1.1); }
+
+/* Visual variation per card type */
+.visual-a { background: linear-gradient(160deg, rgba(196,168,130,0.2), rgba(160,140,110,0.08), rgba(196,168,130,0.2)); }
+.visual-b { background: linear-gradient(200deg, rgba(107,127,94,0.15), rgba(180,160,130,0.1), rgba(140,120,90,0.15)); }
+.visual-c { background: linear-gradient(140deg, rgba(160,130,100,0.15), rgba(190,170,140,0.1), rgba(150,120,90,0.2)); }
+
+/* ── Card body ── */
+.tool-card .card-body { padding: 24px 26px 22px; }
+.tool-card .card-body .name {
+  font-family: "Times New Roman", "Songti SC", "Noto Serif SC", Georgia, serif;
+  font-size: 18px; letter-spacing: 1px; color: var(--ink); margin-bottom: 8px;
+  font-weight: 400; transition: color .3s;
+}
+.tool-card:hover .card-body .name { color: #1a1008; }
+.tool-card .card-body .desc { font-size: 12.5px; color: var(--muted); line-height: 1.7; }
+
+/* ── Expand toggle indicator ── */
+.tool-card .card-body .toggle-hint {
+  display: flex; align-items: center; gap: 8px; margin-top: 14px;
+  font-size: 10.5px; color: var(--muted); letter-spacing: 1.5px;
+  opacity: 0; transition: opacity .35s;
+}
+.tool-card:hover .card-body .toggle-hint { opacity: .6; }
+.tool-card .card-body .toggle-hint .dot {
+  width: 5px; height: 5px; border-radius: 50%; background: var(--accent);
+  transition: transform .35s;
+}
+.tool-card.open .card-body .toggle-hint .dot { transform: rotate(90deg); }
+
+/* ── Card expand panel ── */
+.tool-card .card-detail {
+  max-height: 0; overflow: hidden; transition: max-height .5s ease, padding .5s ease;
+  background: #fdfcf8; border-top: 1px solid rgba(107,92,71,0.08);
+  padding: 0 26px;
+}
+.tool-card.open .card-detail { max-height: 240px; padding: 20px 26px; }
+.tool-card.open .card-body .toggle-hint { opacity: .8; }
+.tool-card .card-detail p {
+  font-size: 12.5px; color: var(--muted); line-height: 1.8; margin-bottom: 12px;
+}
+.tool-card .card-detail .open-link {
+  display: inline-block; font-size: 11.5px; color: var(--accent); text-decoration: none;
+  letter-spacing: 2px; border-bottom: 1px solid rgba(107,92,71,0.2); padding-bottom: 4px;
+  transition: all .3s;
+}
+.tool-card .card-detail .open-link:hover { border-bottom-color: var(--accent); padding-bottom: 6px; }
+
+/* ── Doc area ── */
+.doc-area {
+  background: var(--card); border: 1px solid rgba(107,92,71,0.1);
+  border-radius: 16px;
+  padding: 48px 40px;
+}
+.doc-area h3 {
+  font-family: "Times New Roman", "Songti SC", "Noto Serif SC", Georgia, serif;
+  font-size: 20px; font-weight: 400; letter-spacing: 1.5px; margin-bottom: 8px;
+}
+.doc-area .hint { font-size: 13px; color: var(--muted); margin-bottom: 28px; }
+.doc-area textarea {
+  width: 100%; min-height: 170px; background: #fdfcf8; border: 1px solid var(--border);
+  color: var(--text); padding: 20px; font-size: 14px; line-height: 1.8;
+  font-family: inherit; resize: vertical; -webkit-appearance: none; outline: none;
+  transition: border-color .3s;
+}
+.doc-area textarea:focus { border-color: var(--accent); }
+.doc-area textarea::placeholder { color: #c4b99f; }
+.doc-area .btn-row { display: flex; gap: 10px; margin-top: 20px; flex-wrap: wrap; }
+.doc-area .btn-o {
+  padding: 12px 24px; border: 1px solid var(--border); background: transparent;
+  color: var(--accent); font-size: 11.5px; letter-spacing: 1.5px; cursor: pointer;
+  transition: all .3s;
+}
+.doc-area .btn-o:hover { border-color: var(--accent); background: var(--clay-light); }
+.doc-area .btn-f {
+  padding: 13px 30px; border: none; background: var(--accent);
+  color: #fdfcf8; font-size: 11.5px; letter-spacing: 1.5px; cursor: pointer;
+  transition: all .3s;
+}
+.doc-area .btn-f:hover { background: #5a4c38; }
+.result-box {
+  display: none; margin-top: 24px; padding: 24px; background: #fdfcf8;
+  border: 1px solid var(--border); font-size: 13px; line-height: 1.8; color: var(--text);
+}
+.result-box.show { display: block; }
+.result-box h4 {
+  font-family: "Times New Roman", "Songti SC", "Noto Serif SC", Georgia, serif;
+  font-size: 16px; font-weight: 400; letter-spacing: 1px; margin-bottom: 10px;
+}
+.result-box .tags { display: flex; gap: 6px; flex-wrap: wrap; margin: 10px 0; }
+.result-box .tags span {
+  font-size: 10.5px; padding: 3px 10px; background: var(--clay-light); color: var(--accent);
+}
+
+/* ── Footer ── */
+.footer {
+  margin-top: 72px; padding-top: 28px; border-top: 1px solid rgba(107,92,71,0.12);
+  font-size: 12px; color: var(--muted); display: flex; justify-content: space-between;
+  letter-spacing: .5px;
+}
+.footer a { color: var(--muted); text-decoration: none; }
+.footer a:hover { color: var(--accent); }
+
+@media (max-width: 500px) {
+  .app { padding: 28px 14px 60px; }
+  .hero { gap: 14px; padding-bottom: 32px; margin-bottom: 28px; }
+  .hero-avatar { width: 56px; height: 56px; }
+  .hero-text h1 { font-size: 20px; }
+  .nav a { padding: 10px 18px; font-size: 11px; letter-spacing: 1.5px; }
+  .tool-grid { grid-template-columns: 1fr; gap: 10px; }
+  .tool-card .card-visual { height: 80px; }
+  .doc-area { padding: 28px 18px; }
+}
 </style>
 </head>
 <body>
 <div class="app">
-<div class="top">
-  <img src="avatar.jpg" alt="">
-  <div><h1>范思静 · 工作台</h1><p>学习 · 实战 · 求职 · 文档分析 · 一个链接全搞定</p></div>
-</div>
 
-<div class="tabs" id="tabBar">
-  <button class="tab on" onclick="showSection('home')">🏠 全部</button>
-  <button class="tab" onclick="showSection('learn')">📚 学习</button>
-  <button class="tab" onclick="showSection('practice')">🎯 实战</button>
-  <button class="tab" onclick="showSection('tools')">🛠 求职</button>
-  <button class="tab" onclick="showSection('doc')">🗂️ 文档</button>
-</div>
-
-<!-- HOME: everything -->
-<div id="sec-home">
-  <div class="divider">📚 学习训练</div>
-  <div class="grid">
-    <a class="card" href="抖音运营-知识闯关.html"><div class="emoji">🧩</div><div class="name">知识闯关</div><div class="desc">5关×5题刷知识点</div><span class="badge bd-learn">刷题</span></a>
-    <a class="card" href="抖音运营-指标翻译器.html"><div class="emoji">📊</div><div class="name">指标翻译器</div><div class="desc">10个指标详情卡片</div><span class="badge bd-learn">词典</span></a>
-    <a class="card" href="抖音运营-算法模拟器.html"><div class="emoji">🧠</div><div class="name">算法模拟器</div><div class="desc">7步拆解抖音算法</div><span class="badge bd-learn">原理</span></a>
-    <a class="card" href="抖音运营-商业语言转化器.html"><div class="emoji">🗣️</div><div class="name">商业语言转化器</div><div class="desc">数据×3种语言</div><span class="badge bd-learn">表达</span></a>
-  </div>
-
-  <div class="divider">🎯 实战模拟</div>
-  <div class="grid">
-    <a class="card" href="抖音运营-数据诊断训练.html"><div class="emoji">🔍</div><div class="name">数据诊断训练</div><div class="desc">看数据写分析</div><span class="badge bd-work">分析</span></a>
-    <a class="card" href="抖音运营-虚拟操盘模拟.html"><div class="emoji">🎮</div><div class="name">虚拟操盘模拟</div><div class="desc">6阶段完整项目</div><span class="badge bd-work">实战</span></a>
-    <a class="card" href="抖音运营-话术健身房.html"><div class="emoji">🎤</div><div class="name">话术健身房</div><div class="desc">5题×3版优化</div><span class="badge bd-work">表达</span></a>
-    <a class="card" href="AI对话模拟器.html"><div class="emoji">🤖</div><div class="name">AI对话模拟器</div><div class="desc">5身份×16场景</div><span class="badge bd-work">对话</span></a>
-  </div>
-
-  <div class="divider">🛠 求职 & 文档</div>
-  <div class="grid">
-    <a class="card" href="范思静-面试资料-2026.html"><div class="emoji">📄</div><div class="name">简历+作品集</div><div class="desc">精确版/脱敏版一键切</div><span class="badge bd-tool">求职</span></a>
-    <a class="card" href="文档工作台.html"><div class="emoji">🗂️</div><div class="name">文档工作台</div><div class="desc">分析+流程+提取数据</div><span class="badge bd-tool">分析</span></a>
+<div class="hero">
+  <img class="hero-avatar" src="avatar.jpg" alt="">
+  <div class="hero-text">
+    <h1>范思静 · 工作台</h1>
+    <div class="tagline">内容操盘手工具箱</div>
   </div>
 </div>
 
-<!-- other sections hidden by default -->
-<div id="sec-learn" style="display:none">
-  <div class="grid">
-    <a class="card" href="抖音运营-知识闯关.html"><div class="emoji">🧩</div><div class="name">知识闯关</div><div class="desc">5关×5题刷知识点</div><span class="badge bd-learn">刷题</span></a>
-    <a class="card" href="抖音运营-指标翻译器.html"><div class="emoji">📊</div><div class="name">指标翻译器</div><div class="desc">10个指标详情卡片</div><span class="badge bd-learn">词典</span></a>
-    <a class="card" href="抖音运营-算法模拟器.html"><div class="emoji">🧠</div><div class="name">算法模拟器</div><div class="desc">7步拆解抖音算法</div><span class="badge bd-learn">原理</span></a>
-    <a class="card" href="抖音运营-商业语言转化器.html"><div class="emoji">🗣️</div><div class="name">商业语言转化器</div><div class="desc">数据×3种语言</div><span class="badge bd-learn">表达</span></a>
-  </div>
-</div>
-<div id="sec-practice" style="display:none">
-  <div class="grid">
-    <a class="card" href="抖音运营-数据诊断训练.html"><div class="emoji">🔍</div><div class="name">数据诊断训练</div><div class="desc">看数据写分析</div><span class="badge bd-work">分析</span></a>
-    <a class="card" href="抖音运营-虚拟操盘模拟.html"><div class="emoji">🎮</div><div class="name">虚拟操盘模拟</div><div class="desc">6阶段完整项目</div><span class="badge bd-work">实战</span></a>
-    <a class="card" href="抖音运营-话术健身房.html"><div class="emoji">🎤</div><div class="name">话术健身房</div><div class="desc">5题×3版优化</div><span class="badge bd-work">表达</span></a>
-    <a class="card" href="AI对话模拟器.html"><div class="emoji">🤖</div><div class="name">AI对话模拟器</div><div class="desc">5身份×16场景</div><span class="badge bd-work">对话</span></a>
-  </div>
-</div>
-<div id="sec-tools" style="display:none">
-  <div class="grid">
-    <a class="card" href="范思静-面试资料-2026.html"><div class="emoji">📄</div><div class="name">简历+作品集</div><div class="desc">精确版/脱敏版一键切</div><span class="badge bd-tool">求职</span></a>
-    <a class="card" href="文档工作台.html"><div class="emoji">🗂️</div><div class="name">文档工作台</div><div class="desc">分析+流程+提取数据</div><span class="badge bd-tool">分析</span></a>
-    <a class="card" href="范思静-工作台.html"><div class="emoji">⚡</div><div class="name">Claude工作台</div><div class="desc">触发词+快捷命令</div><span class="badge bd-tool">总控</span></a>
-  </div>
+<div class="nav">
+  <a class="on" onclick="switchTab('all')">全部</a>
+  <a onclick="switchTab('learn')">学习</a>
+  <a onclick="switchTab('practice')">实战</a>
+  <a onclick="switchTab('tools')">求职</a>
+  <a onclick="switchTab('doc')">文档</a>
 </div>
 
-<!-- BUILT-IN: Quick doc analyzer -->
+<!-- ===== SVG ICONS ===== -->
+<svg style="display:none"><defs>
+  <g id="i1"><circle cx="22" cy="22" r="12" fill="none" stroke="currentColor" stroke-width="1.5"/><circle cx="22" cy="22" r="7" fill="none" stroke="currentColor" stroke-width=".8"/><circle cx="22" cy="22" r="3" fill="none" stroke="currentColor" stroke-width=".8"/><line x1="22" y1="10" x2="22" y2="4" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/></g>
+  <g id="i2"><path d="M10 28V12a2 2 0 012-2h12a2 2 0 012 2v12" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/><path d="M14 20l4 4 4-4" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/><line x1="10" y1="28" x2="34" y2="28" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></g>
+  <g id="i3"><path d="M22 4v12M16 10h12" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/><circle cx="22" cy="22" r="7" fill="none" stroke="currentColor" stroke-width="1.5"/><circle cx="22" cy="22" r="2" fill="currentColor"/></g>
+  <g id="i4"><circle cx="16" cy="14" r="4" fill="none" stroke="currentColor" stroke-width="1.5"/><circle cx="28" cy="14" r="4" fill="none" stroke="currentColor" stroke-width="1.5"/><path d="M16 18c2 6 10 6 12 0" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/></g>
+  <g id="i5"><rect x="10" y="6" width="16" height="24" rx="2" fill="none" stroke="currentColor" stroke-width="1.5"/><line x1="14" y1="12" x2="22" y2="12" stroke="currentColor" stroke-width="1"/><line x1="14" y1="16" x2="22" y2="16" stroke="currentColor" stroke-width="1"/><line x1="14" y1="20" x2="20" y2="20" stroke="currentColor" stroke-width="1"/></g>
+  <g id="i6"><path d="M22 6l-10 8 4 12h12l4-12-10-8z" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/><circle cx="22" cy="18" r="3" fill="none" stroke="currentColor" stroke-width="1"/></g>
+  <g id="i7"><path d="M18 28c-4-5-6-12-6-18C12 6 16 4 22 4s10 2 10 6c0 6-2 13-6 18" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/><line x1="14" y1="28" x2="30" y2="28" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></g>
+  <g id="i8"><path d="M14 6h-4a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V14" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/><path d="M14 6v8h8" fill="none" stroke="currentColor" stroke-width="1.2"/><line x1="10" y1="18" x2="18" y2="18" stroke="currentColor" stroke-width="1"/><line x1="10" y1="22" x2="15" y2="22" stroke="currentColor" stroke-width="1"/></g>
+  <g id="i9"><circle cx="22" cy="22" r="12" fill="none" stroke="currentColor" stroke-width="1.5"/><path d="M22 10v12l-6 6" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/><circle cx="22" cy="10" r="2" fill="currentColor"/></g>
+  <g id="i10"><path d="M22 6l-8 8 4 10h8l4-10-8-8z" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/><line x1="22" y1="14" x2="22" y2="20" stroke="currentColor" stroke-width="1" stroke-linecap="round"/></g>
+</defs></svg>
+
+<!-- Helper to render a tool card -->
+<script>
+function makeCard(iconId, visualClass, name, desc, detail, href) {
+  return '<div class="tool-card" onclick="location.href=\''+href+'\'" ondblclick="this.classList.toggle(\'open\');event.stopPropagation()">'+
+    '<div class="card-visual '+visualClass+'"><svg class="visual-icon" width="48" height="48" viewBox="0 0 44 36"><use href="#'+iconId+'"/></svg></div>'+
+    '<div class="card-body"><div class="name">'+name+'</div><div class="desc">'+desc+'</div>'+
+    '<div class="toggle-hint"><span class="dot"></span>双击展开详情</div></div>'+
+    '<div class="card-detail"><p>'+detail+'</p></div></div>';
+}
+</script>
+
+<div id="sec-all">
+
+<div class="section-label">学习训练</div>
+<div class="tool-grid" id="g1"></div>
+
+<div class="section-label">实战模拟</div>
+<div class="tool-grid" id="g2"></div>
+
+<div class="section-label">求职与工具</div>
+<div class="tool-grid" id="g3"></div>
+
+</div>
+
+<div id="sec-learn" style="display:none"><div class="tool-grid" style="margin-top:0" id="g1b"></div></div>
+<div id="sec-practice" style="display:none"><div class="tool-grid" style="margin-top:0" id="g2b"></div></div>
+<div id="sec-tools" style="display:none"><div class="tool-grid" style="margin-top:0" id="g3b"></div></div>
+
 <div id="sec-doc" style="display:none">
-  <div class="tool-area">
-    <h3 style="font-size:15px;margin-bottom:8px;">📄 快速文档分析</h3>
-    <p style="font-size:11px;color:#64748b;margin-bottom:10px;">粘贴任意文档 → 识别类型 → 拆结构 → 生成下一步</p>
-    <textarea id="quickDoc" placeholder="粘贴JD、周报、复盘、会议记录..."></textarea>
-    <div class="quick-row">
-      <button class="quick" onclick="pasteQuick('jd')">试用·JD</button>
-      <button class="quick" onclick="pasteQuick('report')">试用·周报</button>
-      <button class="quick" onclick="pasteQuick('review')">试用·复盘</button>
+  <div class="doc-area">
+    <h3>文档分析</h3>
+    <div class="hint">粘贴 JD、周报、复盘或会议记录 — 自动识别类型，拆解结构，给出下一步建议</div>
+    <textarea id="quickDoc" placeholder="将文档内容粘贴至此…"></textarea>
+    <div class="btn-row">
+      <button class="btn-o" onclick="pasteQuick('jd')">试用 · 岗位 JD</button>
+      <button class="btn-o" onclick="pasteQuick('report')">试用 · 周报数据</button>
+      <button class="btn-o" onclick="pasteQuick('review')">试用 · 项目复盘</button>
+      <button class="btn-f" onclick="analyzeQuick()">分析文档</button>
     </div>
-    <button onclick="analyzeQuick()">🔍 分析文档</button>
     <div class="result-box" id="quickResult"></div>
   </div>
 </div>
 
-<div class="footer">将本页添加到手机主屏幕 → 像App一样使用 &nbsp;|&nbsp; <a href="https://github.com/fansj9898-lab/fansj">GitHub</a></div>
+<div class="footer">
+  <span>添加至手机主屏幕，如同使用原生应用</span>
+  <a href="https://github.com/fansj9898-lab/fansj">GitHub</a>
+</div>
+
 </div>
 
 <script>
-function showSection(s) {
-  document.querySelectorAll('.tab').forEach(function(t){t.classList.remove('on')});
-  var tabMap = {home:0,learn:1,practice:2,tools:3,doc:4};
-  document.querySelectorAll('.tab')[tabMap[s]].classList.add('on');
-  ['home','learn','practice','tools','doc'].forEach(function(sec){
-    var el = document.getElementById('sec-'+sec);
-    if (el) el.style.display = (sec===s?'':'none');
-  });
+// Card data
+var learnCards = [
+  ['i1','visual-a','知识闯关','五关二十五题，系统掌握抖音运营核心知识','选择题形式，每关五题，答对四题解锁下一关。涵盖账号定位、内容策略、千川投放、数据复盘、综合实战。','抖音运营-知识闯关.html'],
+  ['i2','visual-b','指标翻译器','十个核心指标，展开即看涨跌含义与联动关系','每个指标包含计算方式、健康值范围、涨跌分析、联动指标。五个实操场景教你判断素材衰减与人群饱和。','抖音运营-指标翻译器.html'],
+  ['i3','visual-c','算法模拟器','七步拆解抖音算法，从冷启动到流量池跃迁','从视频发布到打标签到逐轮赛马到付费撬动自然流量。每一步都清楚算法在做什么判断。','抖音运营-算法模拟器.html'],
+  ['i4','visual-a','商业语言转化器','同一组数据，投手、品牌方、老板三种语言表达','六个真实场景：月度汇报、申请预算、素材卡审、ROI质疑、产品不起量、面试展示。','抖音运营-商业语言转化器.html'],
+];
+var practiceCards = [
+  ['i5','visual-b','数据诊断训练','五个真实场景，看数据写分析，对照专家解读','每个场景给出真实数据表格，自己写分析再对照专业解读。场景数据来自你的渍无踪业务。','抖音运营-数据诊断训练.html'],
+  ['i6','visual-c','虚拟操盘模拟','六阶段完整操盘，从接手濒死产品到团队管理','接手诊断→素材测试→预算分配→卡审危机→月度复盘→带人交接。每个决策影响后续数据。','抖音运营-虚拟操盘模拟.html'],
+  ['i7','visual-a','话术健身房','五个面试高频题，每道三个版本逐级优化，自动保存','最大项目、管理质疑、跨品类、数据案例、自我介绍。先写再看V1→V2→V3优化版。','抖音运营-话术健身房.html'],
+  ['i8','visual-b','AI 对话模拟器','五种身份十六个场景，真实对话练习，自动保存','面试官、品牌方、老板、下属、HR——每轮对话后获得教练反馈。对话记录自动保存。','AI对话模拟器.html'],
+];
+var toolCards = [
+  ['i9','visual-c','简历与作品集','单栏简历及七页作品集，精确版与脱敏版一键切换','渍无踪案例深挖、小白白起量、卡审突破、合诚从0到1、方法论体系。','范思静-面试资料-2026.html'],
+  ['i10','visual-a','文档工作台','粘贴任意文档，自动识别类型、拆结构、生成流程','四个模式：分析文档、生成流程、提取数据、格式转换。一键生成下一步建议和AI提示词。','文档工作台.html'],
+  ['i1','visual-b','Claude 命令台','触发词速查、核心文件路径、快捷入口','十个触发词对应不同工作流：/投递 /简历 /面试 /深挖 /复盘 /润色 /PDF /提交 /回退。','范思静-工作台.html'],
+  ['i6','visual-c','年度规划','12个月职业+学习+健康+财务，分三阶段执行','空窗期→试用期→稳定期，涵盖求职、认证、阅读、运动、睡眠、饮食、存款全维度。','年度规划.html'],
+  ['i5','visual-a','对话全记录','性格分析+财务+学习+书单+健康+塑形，全部问答与建议','完整的问答记录与分析报告。忘记细节时来这里回顾状态和决策依据。','范思静-完整对话记录.html'],
+  ['i4','visual-b','快速对话','手机电脑同一个网址，打字即存，关掉回来还在','跨设备共享的对话本。想到什么立刻写下来，回头打开还在。电脑写完手机上继续看。','对话.html'],
+];
+
+function renderCards(elId, cards) {
+  var el = document.getElementById(elId);
+  if (!el) return;
+  el.innerHTML = cards.map(function(c){ return makeCard(c[0],c[1],c[2],c[3],c[4],c[5]); }).join('');
 }
 
-// Quick analyzer
+// Render all
+['g1','g2','g3','g1b','g2b','g3b'].forEach(function(id){
+  if (id.startsWith('g1')) renderCards(id, learnCards);
+  if (id.startsWith('g2')) renderCards(id, practiceCards);
+  if (id.startsWith('g3')) renderCards(id, toolCards);
+});
+
+function switchTab(t) {
+  document.querySelectorAll('.nav a').forEach(function(a, i){
+    var keys = ['all','learn','practice','tools','doc'];
+    a.classList.toggle('on', keys[i]===t);
+  });
+  ['all','learn','practice','tools','doc'].forEach(function(s){
+    var el = document.getElementById('sec-'+s);
+    if (el) el.style.display = (s===t ? '' : 'none');
+  });
+}
 function analyzeQuick() {
   var text = document.getElementById('quickDoc').value.trim();
   if (!text) return;
   var type = '通用文档';
-  if (text.includes('岗位')||text.includes('JD')||text.includes('任职')) type = '岗位JD';
-  else if (text.includes('消耗')||text.includes('ROI')||text.includes('GMV')) type = '投放数据/周报';
+  if (text.includes('岗位')||text.includes('JD')||text.includes('任职')) type = '岗位 JD';
+  else if (text.includes('消耗')||text.includes('ROI')||text.includes('GMV')) type = '投放数据 / 周报';
   else if (text.includes('复盘')||text.includes('总结')) type = '项目复盘';
-
-  var nums = []; var m;
-  var pats = [/(\d+\.?\d*)\s*万/g, /(\d+\.?\d*)\s*%/g, /ROI\s*[：:]\s*(\d+\.?\d*)/gi];
-  pats.forEach(function(p){while((m=p.exec(text))!==null) nums.push(m[0])});
-
-  var r = document.getElementById('quickResult');
-  r.className = 'result-box show';
-  r.innerHTML = '<h4>📌 识别为：'+type+'</h4>';
-  if (nums.length>0) {
-    r.innerHTML += '<div class="tag-row">'+nums.slice(0,12).map(function(n){return '<span class="tag">'+n+'</span>'}).join('')+'</div>';
-  }
-  r.innerHTML += '<p style="margin-top:6px;font-size:11px;">💡 建议：复制原文到Claude Code → 输入 <b>/复盘</b> 或 <b>/润色</b> 获取深度分析</p>';
+  var nums=[],m;
+  [/(\d+\.?\d*)\s*万/g,/(\d+\.?\d*)\s*%/g,/ROI\s*[：:]\s*(\d+\.?\d*)/gi].forEach(function(p){while((m=p.exec(text))!==null)nums.push(m[0])});
+  var r=document.getElementById('quickResult');
+  r.className='result-box show';
+  r.innerHTML='<h4>识别为：'+type+'</h4>';
+  if (nums.length>0) r.innerHTML+='<div class="tags">'+nums.slice(0,12).map(function(n){return'<span>'+n+'</span>'}).join('')+'</div>';
+  r.innerHTML+='<p style="margin-top:12px;font-size:13px;">复制此文档到 Claude Code，输入 <em>/复盘</em> 或 <em>/润色</em> 获取深度分析。</p>';
   r.scrollIntoView({behavior:'smooth'});
 }
-
 function pasteQuick(type) {
-  var ta = document.getElementById('quickDoc');
-  var d = {
-    jd: '【岗位JD】信息流视频项目主管\n\n负责品牌在抖音/千川平台的信息流视频内容策划与投放，带领3-5人团队，对投放ROI和消耗目标负责。要求3年以上短视频电商经验，精通千川投放和数据分析。',
-    report: '本周消耗148.3万（+60%），GMV 261.2万（+67%），ROI 1.76（+4%），素材成片680条（+66%），过审率96%。',
-    review: '渍无踪接手时3个月没起量、月耗不到20万。诊断发现素材产能从320降到85是根因。重建SOP+测试墨水渍方向+切全域投放→月耗300万+、月销千万。'
-  };
-  ta.value = d[type] || '';
+  document.getElementById('quickDoc').value = {
+    jd:'【岗位JD】信息流视频项目主管\n\n负责品牌在抖音与千川平台的信息流视频内容策划与投放，带领三至五人团队，对投放 ROI 与消耗目标负责。要求三年以上短视频电商经验，精通千川投放与数据分析。',
+    report:'本周消耗 148.3 万（+60%），GMV 261.2 万（+67%），ROI 1.76（+4%），素材成片 680 条（+66%），过审率 96%。',
+    review:'渍无踪接手时三个月未起量，月耗不足二十万。诊断发现素材产能从三百二十降至八十五是根本原因。重建 SOP，测试墨水渍方向，切换全域投放后，月耗突破三百万，月销过千万。'
+  }[type] || '';
 }
-
-showSection('home');
 </script>
 </body>
 </html>
