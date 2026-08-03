@@ -8,7 +8,7 @@
   * { margin: 0; padding: 0; box-sizing: border-box; }
   body {
     font-family: -apple-system, "PingFang SC", "Microsoft YaHei", sans-serif;
-    background: #0a0e17; color: #d1d5db; min-height: 100vh;
+    background: #f5f1e8; color: #2c2416; min-height: 100vh;
     padding: 20px; line-height: 1.6;
   }
   .sim { max-width: 860px; margin: 0 auto; }
@@ -17,32 +17,32 @@
   .topbar {
     display: flex; justify-content: space-between; align-items: center;
     margin-bottom: 20px; padding: 12px 18px;
-    background: #111827; border-radius: 10px; border: 1px solid #1f2937;
+    background: #fdfcf8; border-radius: 10px; border: 1px solid #d9d3c7;
   }
   .topbar .title { font-weight: 800; font-size: 16px; }
-  .topbar .stage-indicator { font-size: 12px; color: #6b7280; }
+  .topbar .stage-indicator { font-size: 12px; color: #8c8272; }
   .progress-bar {
-    height: 4px; background: #1f2937; border-radius: 2px; margin-bottom: 24px;
+    height: 4px; background: #d9d3c7; border-radius: 2px; margin-bottom: 24px;
   }
   .progress-bar .fill {
-    height: 100%; background: linear-gradient(90deg, #2563eb, #8b5cf6);
+    height: 100%; background: linear-gradient(90deg, #5b4c3a, #8b5cf6);
     border-radius: 2px; transition: 0.5s;
   }
 
   /* Stage card */
   .stage-card {
-    background: #111827; border: 1px solid #1f2937; border-radius: 12px;
+    background: #fdfcf8; border: 1px solid #d9d3c7; border-radius: 12px;
     padding: 28px; margin-bottom: 16px;
   }
   .stage-card h2 {
-    font-size: 18px; color: #f9fafb; margin-bottom: 6px;
+    font-size: 18px; color: #2c2416; margin-bottom: 6px;
   }
   .stage-card .stage-num {
-    font-size: 11px; color: #2563eb; font-weight: 700; letter-spacing: 1px;
+    font-size: 11px; color: #5b4c3a; font-weight: 700; letter-spacing: 1px;
     text-transform: uppercase; margin-bottom: 8px;
   }
   .stage-card .context {
-    font-size: 13px; color: #9ca3af; margin-bottom: 20px; line-height: 1.7;
+    font-size: 13px; color: #8c8272; margin-bottom: 20px; line-height: 1.7;
   }
 
   /* Data tables */
@@ -50,7 +50,7 @@
     width: 100%; border-collapse: collapse; font-size: 12px; margin: 16px 0;
   }
   .datatable th {
-    background: #0a0e17; color: #6b7280; padding: 8px 10px; text-align: left;
+    background: #f5f1e8; color: #8c8272; padding: 8px 10px; text-align: left;
     font-weight: 500; font-size: 11px; text-transform: uppercase; letter-spacing: 0.5px;
   }
   .datatable td {
@@ -59,48 +59,48 @@
   }
   .datatable tr:nth-child(even) td { background: rgba(255,255,255,0.015); }
   .red { color: #ef4444; font-weight: 600; }
-  .green { color: #22c55e; font-weight: 600; }
-  .amber { color: #f59e0b; font-weight: 600; }
-  .muted { color: #6b7280; }
+  .green { color: #6b7f5e; font-weight: 600; }
+  .amber { color: #8c6b4a; font-weight: 600; }
+  .muted { color: #8c8272; }
 
   /* Decision area */
   .decision-label {
-    font-size: 13px; font-weight: 700; color: #f9fafb; margin: 20px 0 10px;
+    font-size: 13px; font-weight: 700; color: #2c2416; margin: 20px 0 10px;
   }
   .choices { display: flex; flex-direction: column; gap: 8px; }
   .choice {
-    background: #1a1f2e; border: 2px solid #1f2937; border-radius: 8px;
+    background: #f5efe5; border: 2px solid #d9d3c7; border-radius: 8px;
     padding: 14px 18px; cursor: pointer; transition: 0.15s;
     display: flex; gap: 12px; align-items: flex-start;
   }
-  .choice:hover { border-color: #374151; background: #1e2435; }
-  .choice.selected { border-color: #2563eb; background: #1a2240; }
+  .choice:hover { border-color: #d9d3c7; background: #f5efe5; }
+  .choice.selected { border-color: #5b4c3a; background: #1a2240; }
   .choice .radio {
-    width: 20px; height: 20px; border-radius: 50%; border: 2px solid #374151;
+    width: 20px; height: 20px; border-radius: 50%; border: 2px solid #d9d3c7;
     flex-shrink: 0; margin-top: 1px; transition: 0.15s;
   }
-  .choice.selected .radio { border-color: #2563eb; background: #2563eb; box-shadow: 0 0 0 4px rgba(37,99,235,0.2); }
+  .choice.selected .radio { border-color: #5b4c3a; background: #5b4c3a; box-shadow: 0 0 0 4px rgba(37,99,235,0.2); }
   .choice .ctext { font-size: 13px; line-height: 1.5; }
-  .choice .ctext strong { color: #f9fafb; }
+  .choice .ctext strong { color: #2c2416; }
 
   /* Writing answer */
   textarea.answer {
-    width: 100%; background: #0a0e17; border: 1px solid #1f2937; border-radius: 8px;
-    color: #d1d5db; padding: 12px; font-size: 13px; line-height: 1.6;
+    width: 100%; background: #f5f1e8; border: 1px solid #d9d3c7; border-radius: 8px;
+    color: #2c2416; padding: 12px; font-size: 13px; line-height: 1.6;
     resize: vertical; min-height: 80px; font-family: inherit;
   }
-  textarea.answer:focus { outline: none; border-color: #2563eb; }
+  textarea.answer:focus { outline: none; border-color: #5b4c3a; }
 
   /* Buttons */
   .btn {
     padding: 10px 24px; border-radius: 8px; font-size: 13px; font-weight: 700;
     border: none; cursor: pointer; transition: 0.15s;
   }
-  .btn-primary { background: #2563eb; color: #fff; }
-  .btn-primary:hover { background: #1d4ed8; }
-  .btn-primary:disabled { background: #374151; color: #6b7280; cursor: not-allowed; }
-  .btn-ghost { background: transparent; color: #9ca3af; border: 1px solid #374151; }
-  .btn-ghost:hover { background: #1a1f2e; }
+  .btn-primary { background: #5b4c3a; color: #fdfdfc; }
+  .btn-primary:hover { background: #4a3c2c; }
+  .btn-primary:disabled { background: #d9d3c7; color: #8c8272; cursor: not-allowed; }
+  .btn-ghost { background: transparent; color: #8c8272; border: 1px solid #d9d3c7; }
+  .btn-ghost:hover { background: #f5efe5; }
 
   /* Consequence */
   .consequence {
@@ -108,9 +108,9 @@
     font-size: 13px; line-height: 1.7; display: none;
   }
   .consequence.show { display: block; }
-  .consequence.good { background: #052e16; border: 1px solid #166534; color: #86efac; }
-  .consequence.ok { background: #1a1a0a; border: 1px solid #713f12; color: #fde68a; }
-  .consequence.bad { background: #2e0505; border: 1px solid #991b1b; color: #fca5a5; }
+  .consequence.good { background: #052e16; border: 1px solid #166534; color: #6b7f5e; }
+  .consequence.ok { background: #1a1a0a; border: 1px solid #713f12; color: #8c6b4a; }
+  .consequence.bad { background: #2e0505; border: 1px solid #991b1b; color: #8c6b4a; }
   .consequence .data-update {
     margin-top: 12px; padding-top: 12px; border-top: 1px solid rgba(255,255,255,0.1);
   }
@@ -120,23 +120,23 @@
   /* Score overlay */
   .score-popup {
     position: fixed; top: 50%; left: 50%; transform: translate(-50%,-50%);
-    background: #111827; border: 2px solid #2563eb; border-radius: 16px;
+    background: #fdfcf8; border: 2px solid #5b4c3a; border-radius: 16px;
     padding: 32px; text-align: center; z-index: 10; display: none;
     box-shadow: 0 16px 64px rgba(0,0,0,0.6);
   }
   .score-popup.show { display: block; }
-  .score-popup h3 { font-size: 22px; color: #f59e0b; margin-bottom: 8px; }
-  .score-popup .big-score { font-size: 56px; font-weight: 800; color: #f9fafb; }
+  .score-popup h3 { font-size: 22px; color: #8c6b4a; margin-bottom: 8px; }
+  .score-popup .big-score { font-size: 56px; font-weight: 800; color: #2c2416; }
   .overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.6); z-index: 9; display: none; }
   .overlay.show { display: block; }
 
   /* Knowledge cards */
   .insight-box {
-    background: #0a1628; border: 1px solid #1e3a5f; border-radius: 8px;
-    padding: 14px 18px; margin-top: 12px; font-size: 12px; color: #93c5fd;
+    background: #f5efe5; border: 1px solid #d9d3c7; border-radius: 8px;
+    padding: 14px 18px; margin-top: 12px; font-size: 12px; color: #5b4c3a;
     line-height: 1.7;
   }
-  .insight-box strong { color: #60a5fa; }
+  .insight-box strong { color: #5b4c3a; }
 
   @media (max-width: 600px) {
     .stage-card { padding: 18px; }
@@ -528,7 +528,7 @@ function showFinalScore() {
     <div class="stage-card" style="text-align:center;">
       <div style="font-size:64px;margin-bottom:12px;">${grade.emoji}</div>
       <h2 style="color:${grade.color};">模拟完成</h2>
-      <div style="font-size:48px;font-weight:800;color:#f9fafb;margin:12px 0;">${score}/${maxScore}</div>
+      <div style="font-size:48px;font-weight:800;color:#2c2416;margin:12px 0;">${score}/${maxScore}</div>
       <p style="color:#9ca3af;font-size:13px;max-width:500px;margin:0 auto 20px;">${grade.text}</p>
       <div style="display:flex;gap:10px;justify-content:center;flex-wrap:wrap;">
         <button class="btn btn-primary" onclick="retrySim()">重新挑战</button>
