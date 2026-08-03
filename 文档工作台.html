@@ -6,46 +6,46 @@
 <title>文档工作台 · 分析+流程</title>
 <style>
 *{margin:0;padding:0;box-sizing:border-box}
-body{font-family:-apple-system,"PingFang SC","Microsoft YaHei",sans-serif;background:#f1f5f9;color:#1e293b;min-height:100vh;line-height:1.6;padding:14px;-webkit-tap-highlight-color:transparent}
+body{font-family:-apple-system,"PingFang SC","Microsoft YaHei",sans-serif;background:#f5f1e8;color:#fafaf7;min-height:100vh;line-height:1.6;padding:14px;-webkit-tap-highlight-color:transparent}
 .container{max-width:780px;margin:0 auto}
 
 .header{text-align:center;margin-bottom:20px}
-.header h1{font-size:22px;font-weight:800;color:#0f172a}
-.header p{font-size:13px;color:#64748b;margin-top:2px}
+.header h1{font-size:22px;font-weight:800;color:#f7f5f0}
+.header p{font-size:13px;color:#8c8272;margin-top:2px}
 
 /* tab bar */
 .tabs{display:flex;gap:6px;margin-bottom:16px;overflow-x:auto;-webkit-overflow-scrolling:touch}
-.tab{padding:10px 16px;border-radius:10px;font-size:13px;font-weight:600;border:2px solid #e2e8f0;background:#fff;color:#64748b;cursor:pointer;white-space:nowrap;min-height:44px;display:flex;align-items:center;gap:6px}
+.tab{padding:10px 16px;border-radius:10px;font-size:13px;font-weight:600;border:2px solid #2c2416;background:#fff;color:#8c8272;cursor:pointer;white-space:nowrap;min-height:44px;display:flex;align-items:center;gap:6px}
 .tab:hover{border-color:#93c5fd}
-.tab.on{background:#2563eb;color:#fff;border-color:#2563eb}
+.tab.on{background:#5b4c3a;color:#fff;border-color:#5b4c3a}
 
-.card{background:#fff;border-radius:14px;padding:22px 18px;margin-bottom:14px;box-shadow:0 1px 2px rgba(0,0,0,0.03);border:1px solid #e2e8f0}
+.card{background:#fff;border-radius:14px;padding:22px 18px;margin-bottom:14px;box-shadow:0 1px 2px rgba(0,0,0,0.03);border:1px solid #2c2416}
 
 /* input */
-textarea.doch{width:100%;min-height:200px;background:#fff;border:3px solid #cbd5e1;border-radius:10px;color:#1e293b;padding:14px;font-size:14px;line-height:1.7;font-family:inherit;resize:vertical;-webkit-appearance:none;margin-bottom:12px}
-textarea.doch:focus{outline:none;border-color:#2563eb;box-shadow:0 0 0 3px rgba(37,99,235,0.1)}
-textarea.doch::placeholder{color:#94a3b8}
+textarea.doch{width:100%;min-height:200px;background:#fff;border:3px solid #d9d3c7;border-radius:10px;color:#fafaf7;padding:14px;font-size:14px;line-height:1.7;font-family:inherit;resize:vertical;-webkit-appearance:none;margin-bottom:12px}
+textarea.doch:focus{outline:none;border-color:#5b4c3a;box-shadow:0 0 0 3px rgba(37,99,235,0.1)}
+textarea.doch::placeholder{color:#8c8272}
 
 .btn{display:inline-flex;align-items:center;justify-content:center;gap:6px;padding:12px 24px;border-radius:10px;font-size:14px;font-weight:700;border:none;cursor:pointer;min-height:48px;-webkit-appearance:none;transition:.15s}
 .btn:active{transform:scale(.97)}
-.btn-main{background:#2563eb;color:#fff;width:100%;margin-bottom:8px}
-.btn-out{background:#fff;color:#2563eb;border:2px solid #2563eb;width:100%}
-.btn-ghost{background:#f1f5f9;color:#475569;border:1px solid #e2e8f0;font-size:12px;padding:8px 16px;min-height:40px;margin:4px}
+.btn-main{background:#5b4c3a;color:#fff;width:100%;margin-bottom:8px}
+.btn-out{background:#fff;color:#5b4c3a;border:2px solid #5b4c3a;width:100%}
+.btn-ghost{background:#f5f1e8;color:#5b4c3a;border:1px solid #2c2416;font-size:12px;padding:8px 16px;min-height:40px;margin:4px}
 
 /* result */
 .result{display:none}
 .result.show{display:block}
-.result-block{background:#f8fafc;border-radius:10px;padding:16px;margin-bottom:10px;font-size:13px;line-height:1.7;border-left:3px solid #2563eb}
-.result-block h4{font-size:14px;color:#0f172a;margin-bottom:8px}
+.result-block{background:#f5f1e8;border-radius:10px;padding:16px;margin-bottom:10px;font-size:13px;line-height:1.7;border-left:3px solid #5b4c3a}
+.result-block h4{font-size:14px;color:#f7f5f0;margin-bottom:8px}
 .result-block ul{padding-left:18px}
-.result-block li{margin-bottom:4px;color:#475569}
+.result-block li{margin-bottom:4px;color:#5b4c3a}
 .tag-row{display:flex;gap:4px;flex-wrap:wrap;margin-bottom:6px}
-.tag-sm{font-size:10px;padding:3px 8px;border-radius:4px;background:#eff6ff;color:#2563eb;font-weight:600}
+.tag-sm{font-size:10px;padding:3px 8px;border-radius:4px;background:#eff6ff;color:#5b4c3a;font-weight:600}
 
 /* quick actions */
 .quick-row{display:flex;gap:8px;flex-wrap:wrap;margin-top:8px}
-.quick{flex:1;min-width:100px;padding:10px;border-radius:8px;font-size:12px;font-weight:600;border:1.5px solid #e2e8f0;background:#fff;color:#475569;cursor:pointer;text-align:center;transition:.15s;-webkit-appearance:none}
-.quick:hover{border-color:#2563eb;color:#2563eb}
+.quick{flex:1;min-width:100px;padding:10px;border-radius:8px;font-size:12px;font-weight:600;border:1.5px solid #2c2416;background:#fff;color:#5b4c3a;cursor:pointer;text-align:center;transition:.15s;-webkit-appearance:none}
+.quick:hover{border-color:#5b4c3a;color:#5b4c3a}
 
 .copy-hint{font-size:11px;color:#16a34a;margin-top:6px;display:none}
 .copy-hint.show{display:block}
@@ -86,7 +86,7 @@ function render() {
     html = `
       <div class="card">
         <h3 style="font-size:16px;margin-bottom:4px;">📄 粘贴你要分析的文档</h3>
-        <p style="font-size:12px;color:#64748b;margin-bottom:12px;">可以粘贴：周报、JD、项目复盘、会议记录、竞品分析、任何你拿到手的文档</p>
+        <p style="font-size:12px;color:#8c8272;margin-bottom:12px;">可以粘贴：周报、JD、项目复盘、会议记录、竞品分析、任何你拿到手的文档</p>
         <textarea class="doch" id="docInput" placeholder="把文档内容粘贴到这里...&#10;&#10;比如：粘贴一份JD、一份周报、一段会议记录、或者你写的任何东西"></textarea>
         <button class="btn btn-main" onclick="analyzeDoc()">🔍 分析这份文档</button>
         <div class="quick-row">
@@ -99,7 +99,7 @@ function render() {
     html = `
       <div class="card">
         <h3 style="font-size:16px;margin-bottom:4px;">📋 从文档生成工作流程</h3>
-        <p style="font-size:12px;color:#64748b;margin-bottom:12px;">粘贴文档，我帮你拆成一步一步的操作流程</p>
+        <p style="font-size:12px;color:#8c8272;margin-bottom:12px;">粘贴文档，我帮你拆成一步一步的操作流程</p>
         <textarea class="doch" id="docInput2" placeholder="粘贴你要拆成流程的文档..."></textarea>
         <button class="btn btn-main" onclick="genWorkflow()">📋 生成操作流程</button>
       </div>`;
@@ -107,7 +107,7 @@ function render() {
     html = `
       <div class="card">
         <h3 style="font-size:16px;margin-bottom:4px;">📊 从文档中提取关键数据</h3>
-        <p style="font-size:12px;color:#64748b;margin-bottom:12px;">粘贴数据密集的文档，自动提取数字、指标、对比</p>
+        <p style="font-size:12px;color:#8c8272;margin-bottom:12px;">粘贴数据密集的文档，自动提取数字、指标、对比</p>
         <textarea class="doch" id="docInput3" placeholder="粘贴包含数据的文档...&#10;&#10;比如：周报、月报、数据复盘、投放报表"></textarea>
         <button class="btn btn-main" onclick="extractData()">📊 提取关键数据</button>
       </div>`;
@@ -115,7 +115,7 @@ function render() {
     html = `
       <div class="card">
         <h3 style="font-size:16px;margin-bottom:4px;">✍️ 把文档改写成Brief/汇报/话术</h3>
-        <p style="font-size:12px;color:#64748b;margin-bottom:12px;">输入原始文档+选择目标格式，自动转换</p>
+        <p style="font-size:12px;color:#8c8272;margin-bottom:12px;">输入原始文档+选择目标格式，自动转换</p>
         <textarea class="doch" id="docInput4" placeholder="粘贴原文..."></textarea>
         <div class="quick-row" style="margin-bottom:10px;">
           <button class="quick" onclick="transformBrief('boss')">→ 老板汇报版</button>
@@ -173,7 +173,7 @@ function analyzeDoc() {
     html += '</div></div>';
   }
 
-  html += '<div class="result-block"><h4>📝 内容结构</h4><ol style="padding-left:18px;color:#475569">';
+  html += '<div class="result-block"><h4>📝 内容结构</h4><ol style="padding-left:18px;color:#5b4c3a">';
   var sections = splitSections(text);
   sections.forEach(function(s){ html += '<li style="margin-bottom:2px;">'+s+'</li>'; });
   html += '</ol></div>';
@@ -231,7 +231,7 @@ function genWorkflow() {
 
   var html = '<div class="result show">';
   html += '<div class="result-block"><h4>📋 操作流程 · '+docType+'</h4><ol style="padding-left:18px;">';
-  steps.forEach(function(s){ html += '<li style="margin-bottom:6px;color:#475569">'+s+'</li>'; });
+  steps.forEach(function(s){ html += '<li style="margin-bottom:6px;color:#5b4c3a">'+s+'</li>'; });
   html += '</ol></div>';
   html += '<button class="btn btn-out" onclick="copyPrompt()">📋 复制流程</button><div class="copy-hint" id="copyHint">✅ 已复制</div>';
   html += '</div>';
@@ -246,7 +246,7 @@ function extractData() {
 
   var html = '<div class="result show">';
   html += '<div class="result-block"><h4>📊 提取到的关键数据</h4>';
-  if (nums.length===0) { html += '<p style="color:#64748b">未检测到明显的数据指标。请确认文档中包含数字（如消耗、ROI、百分比等）。</p>'; }
+  if (nums.length===0) { html += '<p style="color:#8c8272">未检测到明显的数据指标。请确认文档中包含数字（如消耗、ROI、百分比等）。</p>'; }
   else { html += '<div class="tag-row">'+nums.map(function(n){return '<span class="tag-sm">'+n+'</span>'}).join('')+'</div>'; }
   html += '</div>';
 
@@ -273,7 +273,7 @@ function transformBrief(mode) {
   html += '<div class="result-block"><h4>✍️ '+t.title+' 格式框架</h4><ul>';
   t.tips.forEach(function(tip){ html += '<li style="margin-bottom:4px;">'+tip+'</li>'; });
   html += '</ul></div>';
-  html += '<div class="result-block"><h4>💡 下一步</h4><p style="color:#475569">将原文+"请按'+t.title+'格式改写"复制到Claude Code，输入<b>/润色</b>即可自动转换。</p></div>';
+  html += '<div class="result-block"><h4>💡 下一步</h4><p style="color:#5b4c3a">将原文+"请按'+t.title+'格式改写"复制到Claude Code，输入<b>/润色</b>即可自动转换。</p></div>';
   html += '</div>';
   document.getElementById('resultArea').innerHTML = html;
   document.getElementById('resultArea').scrollIntoView({behavior:'smooth',block:'center'});
