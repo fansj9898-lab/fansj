@@ -55,7 +55,7 @@ textarea.doch::placeholder{color:#8c8272}
 </head>
 <body>
 <div class="container">
-<div class="header"><h1>文档工作台</h1><p>粘贴任意文档内容 → 自动识别类型 → 拆出结构、流程、行动清单</p></div>
+<div class="header"><h1>文档工作台</h1><button onclick="expAll()" style="font-size:10px;padding:4px 10px;border:1px solid #5b4c3a;background:transparent;color:#5b4c3a;border-radius:6px;cursor:pointer;-webkit-appearance:none;margin-left:8px">📤 导出</button><p>粘贴任意文档内容 → 自动识别类型 → 拆出结构、流程、行动清单</p></div>
 
 <div class="tabs">
   <button class="tab on" onclick="switchTab('analyze')">🔍 分析文档</button>
@@ -300,6 +300,10 @@ function copyPrompt() {
 }
 
 render();
+function expAll(){var r="";var ts=document.querySelectorAll("textarea");ts.forEach(function(t,i){if(t.value.trim())r+="=== Q"+(i+1)+" ===
+"+t.value+"
+
+"});if(!r){alert("no data")};var b=new Blob([r],{type:"text/plain"});var a=document.createElement("a");a.href=URL.createObjectURL(b);a.download="文档工作台.txt";a.click()}
 </script>
 </body>
 </html>
