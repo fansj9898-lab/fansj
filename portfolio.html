@@ -33,11 +33,12 @@
 
   .page {
     width: var(--page-w); min-height: var(--page-h);
-    margin: 10mm auto; background: #fff;
-    padding: 14mm 16mm;
+    margin: 8mm auto; background: #fff;
+    padding: 10mm 13mm;
     box-shadow: 0 2px 24px rgba(0,0,0,0.12);
     page-break-after: always;
     position: relative;
+    overflow: hidden;
   }
   .page:last-child { page-break-after: auto; }
 
@@ -61,7 +62,7 @@
   .bar-amber { background: #d97706; }
 
   /* ======== METRIC GRID ======== */
-  .metric-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 3mm; margin: 4mm 0; }
+  .metric-grid { page-break-inside: avoid;  display: grid; grid-template-columns: 1fr 1fr; gap: 3mm; margin: 3mm 0; }
   .metric-box { background: var(--light-blue); border-radius: 6px; padding: 4mm 5mm; text-align: center; border: 1px solid #bfdbfe; }
   .metric-box .m-num { font-size: 18px; font-weight: 800; color: var(--blue); }
   .metric-box .m-label { font-size: 9px; color: var(--gray); margin-top: 1mm; }
@@ -70,9 +71,9 @@
   .m-down { color: #dc2626; }
 
   /* ======== BEFORE/AFTER TABLE ======== */
-  .ba-table { width: 100%; border-collapse: collapse; font-size: 11px; margin: 4mm 0; }
-  .ba-table th { background: var(--navy); color: #fff; padding: 2.5mm 3mm; text-align: center; font-weight: 500; }
-  .ba-table td { padding: 2.5mm 3mm; text-align: center; border-bottom: 1px solid var(--border); }
+  .ba-table { page-break-inside: avoid;  width: 100%; border-collapse: collapse; font-size: 11px; margin: 3mm 0; }
+  .ba-table th { background: var(--navy); color: #fff; padding: 2mm 2.5mm; text-align: center; font-weight: 500; }
+  .ba-table td { padding: 2mm 2.5mm; text-align: center; border-bottom: 1px solid var(--border); }
   .ba-table .ba-before { background: #fef2f2; }
   .ba-table .ba-after { background: #f0fdf4; }
   .ba-table .ba-arrow { font-size: 14px; color: var(--blue); }
@@ -86,15 +87,15 @@
   .cover .c-badge {
     display: inline-block; border: 1px solid rgba(255,255,255,0.2);
     padding: 2mm 6mm; border-radius: 20px; font-size: 11px;
-    color: #94a3b8; letter-spacing: 3px; margin-bottom: 12mm;
+    color: #94a3b8; letter-spacing: 3px; margin-bottom: 8mm;
   }
   .cover h1 { font-size: 38px; font-weight: 800; letter-spacing: 3px; margin-bottom: 4mm; }
-  .cover .c-sub { font-size: 16px; color: #94a3b8; margin-bottom: 10mm; }
+  .cover .c-sub { font-size: 16px; color: #94a3b8; margin-bottom: 8mm; }
   .cover .c-tagline {
     font-size: 13px; color: #cbd5e1; max-width: 65%; margin: 0 auto 16mm;
     line-height: 1.8;
   }
-  .cover .c-stats { display: flex; justify-content: center; gap: 30px; margin-bottom: 16mm; }
+  .cover .c-stats { display: flex; justify-content: center; gap: 30px; margin-bottom: 12mm; }
   .cover .c-stat { text-align: center; }
   .cover .c-stat .num { font-size: 30px; font-weight: 800; color: #60a5fa; }
   .cover .c-stat .label { font-size: 11px; color: #94a3b8; margin-top: 2mm; }
@@ -102,43 +103,43 @@
 
   /* ======== SECTION HEADERS ======== */
   .sec-title {
-    font-size: 22px; font-weight: 800; color: var(--navy);
-    border-bottom: 3px solid var(--blue); padding-bottom: 3mm; margin-bottom: 5mm;
+    font-size: 20px; font-weight: 800; color: var(--navy);
+    border-bottom: 3px solid var(--blue); padding-bottom: 3mm; margin-bottom: 4mm;
   }
   .sec-subtitle {
-    font-size: 15px; font-weight: 700; color: var(--navy); margin: 5mm 0 3mm;
+    font-size: 14px; font-weight: 700; color: var(--navy); margin: 2mm 0 1.5mm;
   }
 
   /* ======== KPI CARDS ======== */
-  .kpi-row { display: flex; gap: 4mm; margin-bottom: 6mm; flex-wrap: wrap; }
+  .kpi-row { page-break-inside: avoid;  display: flex; gap: 4mm; margin-bottom: 4mm; flex-wrap: wrap; }
   .kpi-card {
     flex: 1; min-width: 28mm;
     background: var(--light-blue); border-left: 4px solid var(--blue);
-    padding: 5mm 6mm; border-radius: 4px;
+    padding: 4mm 5mm; border-radius: 4px;
   }
-  .kpi-card .num { font-size: 22px; font-weight: 800; color: #2563eb; }
-  .kpi-card .label { font-size: 11px; color: var(--gray); margin-top: 1.5mm; }
+  .kpi-card .num { font-size: 20px; font-weight: 800; color: #2563eb; }
+  .kpi-card .label { font-size: 10px; color: var(--gray); margin-top: 1.5mm; }
 
   /* ======== HIGHLIGHT BOX ======== */
-  .hl-box {
+  .hl-box { page-break-inside: avoid; 
     background: #eff6ff; border: 1px solid #bfdbfe; border-radius: 6px;
-    padding: 5mm 7mm; margin: 6mm 0;
+    padding: 4mm 6mm; margin: 3mm 0;
   }
-  .hl-box .hl-title { font-size: 13px; font-weight: 700; color: #2563eb; margin-bottom: 3mm; }
-  .hl-box ul { padding-left: 6mm; font-size: 12px; color: #1e293b; line-height: 1.7; }
-  .hl-box ul li { margin-bottom: 2mm; }
+  .hl-box .hl-title { font-size: 12px; font-weight: 700; color: #2563eb; margin-bottom: 3mm; }
+  .hl-box ul { padding-left: 5mm; font-size: 11px; color: #1e293b; line-height: 1.7; }
+  .hl-box ul li { margin-bottom: 1.5mm; }
 
   /* ======== TIMELINE ======== */
-  .tl { margin-bottom: 5mm; padding-left: 6mm; border-left: 3px solid var(--blue); }
-  .tl .tl-title { font-size: 14px; font-weight: 700; color: var(--navy); margin-bottom: 2mm; }
-  .tl .tl-desc { font-size: 12px; color: #334155; line-height: 1.65; }
+  .tl { page-break-inside: avoid;  margin-bottom: 3mm; padding-left: 5mm; border-left: 3px solid var(--blue); }
+  .tl .tl-title { font-size: 13px; font-weight: 700; color: var(--navy); margin-bottom: 1.5mm; }
+  .tl .tl-desc { font-size: 11px; color: #334155; line-height: 1.55; }
 
   /* ======== TABLES ======== */
-  .dt {
-    width: 100%; border-collapse: collapse; font-size: 11px; margin: 5mm 0;
+  .dt { page-break-inside: avoid; 
+    width: 100%; border-collapse: collapse; font-size: 10px; margin: 3mm 0;
   }
-  .dt th { background: var(--navy); color: #fff; padding: 3mm 3.5mm; text-align: left; font-weight: 500; }
-  .dt td { padding: 3mm 3.5mm; border-bottom: 1px solid var(--border); }
+  .dt th { background: var(--navy); color: #fff; padding: 2mm 3mm; text-align: left; font-weight: 500; }
+  .dt td { padding: 1.5mm 3mm; border-bottom: 1px solid var(--border); }
   .dt tr:nth-child(even) td { background: #eff6ff; }
   .dt .up { color: var(--green); }
 
@@ -149,24 +150,24 @@
   }
 
   /* ======== PROCESS FLOW ======== */
-  .process-row { display: flex; gap: 3mm; margin: 5mm 0; align-items: center; }
+  .process-row { display: flex; gap: 2mm; margin: 3mm 0; align-items: center; }
   .process-step {
     flex: 1; background: var(--light-blue); padding: 5mm; border-radius: 6px; text-align: center;
   }
-  .process-step .step-num { font-size: 20px; font-weight: 800; color: var(--blue); }
-  .process-step .step-title { font-size: 12px; font-weight: 700; color: var(--navy); margin: 1.5mm 0; }
-  .process-step .step-desc { font-size: 10px; color: var(--gray); line-height: 1.5; }
+  .process-step .step-num { font-size: 18px; font-weight: 800; color: var(--blue); }
+  .process-step .step-title { font-size: 11px; font-weight: 700; color: var(--navy); margin: 1.5mm 0; }
+  .process-step .step-desc { font-size: 9px; color: var(--gray); line-height: 1.5; }
   .process-arrow { color: var(--gray); font-size: 18px; flex-shrink: 0; }
 
   /* ======== TWO COL ======== */
-  .two-col { display: flex; gap: 5mm; }
+  .two-col { page-break-inside: avoid;  display: flex; gap: 5mm; }
   .two-col .col { flex: 1; }
   .two-col .col p { margin-bottom: 4mm; }
 
   /* ======== CAPABILITY BARS ======== */
-  .cap-item { margin-bottom: 4mm; }
-  .cap-item .cap-label { font-size: 11px; color: var(--text); margin-bottom: 1.5mm; display: flex; justify-content: space-between; }
-  .cap-item .cap-bar { height: 4mm; background: #e2e8f0; border-radius: 2px; overflow: hidden; }
+  .cap-item { margin-bottom: 3mm; }
+  .cap-item .cap-label { font-size: 10px; color: var(--text); margin-bottom: 1.5mm; display: flex; justify-content: space-between; }
+  .cap-item .cap-bar { height: 3mm; background: #e2e8f0; border-radius: 2px; overflow: hidden; }
   .cap-item .cap-fill { height: 100%; background: var(--blue); border-radius: 2px; }
 
   /* ======== END PAGE ======== */
@@ -176,9 +177,9 @@
     text-align: center;
   }
   .end-page h2 { font-size: 32px; font-weight: 800; color: #fff; margin-bottom: 8mm; }
-  .end-page p { font-size: 14px; color: #94a3b8; margin-bottom: 12mm; line-height: 1.9; }
+  .end-page p { font-size: 14px; color: #94a3b8; margin-bottom: 8mm; line-height: 1.9; }
 
-  p { font-size: 12px; line-height: 1.7; }
+  p { font-size: 11px; line-height: 1.6; }
   strong { color: var(--navy); }
   h3 { font-size: 16px; margin: 14px 0 10px; }
   h2 { font-size: 18px; margin: 14px 0 10px; }
@@ -200,26 +201,26 @@
     .cover .c-stats { gap: 12px; flex-wrap: wrap; }
     .cover .c-stat .num { font-size: 24px; }
     .cover .c-stat .label { font-size: 10px; }
-    .kpi-row { flex-wrap: wrap; gap: 2mm; }
+    .kpi-row { page-break-inside: avoid;  flex-wrap: wrap; gap: 2mm; }
     .kpi-card { min-width: 44%; flex: 0 0 auto; padding: 3mm 4mm; }
     .kpi-card .num { font-size: 18px; }
     .kpi-card .label { font-size: 10px; }
     .sec-title { font-size: 18px; }
-    .two-col { flex-direction: column; }
-    .metric-grid { grid-template-columns: 1fr 1fr; gap: 2mm; }
+    .two-col { page-break-inside: avoid;  flex-direction: column; }
+    .metric-grid { page-break-inside: avoid;  grid-template-columns: 1fr 1fr; gap: 2mm; }
     .viz-compare { flex-direction: column; }
     .page-num { display: none; }
     p { font-size: 14px; }
     .tl .tl-title { font-size: 14px; }
     .tl .tl-desc { font-size: 13px; }
-    .hl-box { padding: 4mm; }
+    .hl-box { page-break-inside: avoid;  padding: 4mm; }
     .hl-box ul { font-size: 13px; }
-    .dt { font-size: 10px; }
+    .dt { page-break-inside: avoid;  font-size: 10px; }
     .dt th, .dt td { padding: 2mm; }
     .process-row { flex-wrap: wrap; }
     .process-step { min-width: 40%; flex: 0 0 auto; }
-    .cap-item .cap-label { font-size: 11px; }
-    .ba-table { font-size: 10px; }
+    .cap-item .cap-label { font-size: 10px; }
+    .ba-table { page-break-inside: avoid;  font-size: 10px; }
   }
 
   @media print {
@@ -384,12 +385,7 @@
     </ul>
   </div>
 
-  <div class="sec-subtitle">起量成长轨迹</div>
-  <div class="viz-bar-group"><div class="bar-label">第1周 · 单条消耗</div><div class="bar-track"><div class="bar-fill bar-blue" style="width:22%"></div><span class="bar-val">十万级</span></div></div>
-  <div class="viz-bar-group"><div class="bar-label">1.5个月 · 单条日消耗</div><div class="bar-track"><div class="bar-fill bar-blue" style="width:35%"></div><span class="bar-val">十数万</span></div></div>
-  <div class="viz-bar-group"><div class="bar-label">项目结束 · 单条日消耗</div><div class="bar-track"><div class="bar-fill bar-green" style="width:100%"></div><span class="bar-val">数十万</span></div></div>
-
-  <div class="sec-title" style="margin-top:8mm;">立白卫仕除菌洗衣液 — 卡审突破</div>
+  <div class="sec-title" style="margin-top:5mm;">立白卫仕除菌洗衣液 — 卡审突破</div>
 
   <p>除菌类产品因功效宣称被平台大量驳回，<strong>全品类素材无法正常投放</strong>。</p>
 
