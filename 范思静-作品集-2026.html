@@ -9,15 +9,15 @@
   * { margin: 0; padding: 0; box-sizing: border-box; }
 
   :root {
-    --navy: #2c2416;
-    --blue: #5b4c3a;
-    --light-blue: #f5efe5;
-    --accent: #8c6b4a;
-    --gray: #8c8272;
-    --text: #2c2416;
-    --border: #d4cbb8;
-    --green: #6b7f5e;
-    --amber: #b08040;
+    --navy: #0f172a;
+    --blue: #2563eb;
+    --light-blue: #eff6ff;
+    --accent: #3b82f6;
+    --gray: #64748b;
+    --text: #1e293b;
+    --border: #e2e8f0;
+    --green: #16a34a;
+    --amber: #d97706;
     --page-w: 210mm;
     --page-h: 297mm;
   }
@@ -25,7 +25,7 @@
   body {
     font-family: -apple-system, "PingFang SC", "Microsoft YaHei", sans-serif;
     color: var(--text);
-    background: #e8e4dc;
+    background: #e2e8f0;
     line-height: 1.6;
     -webkit-print-color-adjust: exact;
     print-color-adjust: exact;
@@ -43,31 +43,31 @@
 
   .page-num {
     position: absolute; bottom: 8mm; right: 14mm;
-    font-size: 10px; color: #8c8272;
+    font-size: 10px; color: #64748b;
   }
 
   /* ======== COVER ======== */
   .cover {
-    background: linear-gradient(160deg, #2c2416 0%, #4a3c2c 50%, #5b4c3a 100%);
-    color: #fdfcf8; display: flex; flex-direction: column; justify-content: center;
+    background: linear-gradient(160deg, #0f172a 0%, #1e3a5f 50%, #1e40af 100%);
+    color: #fff; display: flex; flex-direction: column; justify-content: center;
     text-align: center;
   }
   .cover .c-badge {
     display: inline-block; border: 1px solid rgba(255,255,255,0.2);
     padding: 2mm 6mm; border-radius: 20px; font-size: 11px;
-    color: #8c8272; letter-spacing: 3px; margin-bottom: 12mm;
+    color: #94a3b8; letter-spacing: 3px; margin-bottom: 12mm;
   }
   .cover h1 { font-size: 38px; font-weight: 800; letter-spacing: 3px; margin-bottom: 4mm; }
-  .cover .c-sub { font-size: 16px; color: #a8987a; margin-bottom: 10mm; }
+  .cover .c-sub { font-size: 16px; color: #94a3b8; margin-bottom: 10mm; }
   .cover .c-tagline {
-    font-size: 13px; color: #d4cbb8; max-width: 65%; margin: 0 auto 16mm;
+    font-size: 13px; color: #cbd5e1; max-width: 65%; margin: 0 auto 16mm;
     line-height: 1.8;
   }
   .cover .c-stats { display: flex; justify-content: center; gap: 30px; margin-bottom: 16mm; }
   .cover .c-stat { text-align: center; }
-  .cover .c-stat .num { font-size: 30px; font-weight: 800; color: #c4a882; }
-  .cover .c-stat .label { font-size: 11px; color: #8c8272; margin-top: 2mm; }
-  .cover .c-contact { font-size: 12px; color: #8c8272; }
+  .cover .c-stat .num { font-size: 30px; font-weight: 800; color: #60a5fa; }
+  .cover .c-stat .label { font-size: 11px; color: #94a3b8; margin-top: 2mm; }
+  .cover .c-contact { font-size: 12px; color: #94a3b8; }
 
   /* ======== SECTION HEADERS ======== */
   .sec-title {
@@ -85,36 +85,36 @@
     background: var(--light-blue); border-left: 4px solid var(--blue);
     padding: 4mm 5mm; border-radius: 3px;
   }
-  .kpi-card .num { font-size: 20px; font-weight: 800; color: #5b4c3a; }
+  .kpi-card .num { font-size: 20px; font-weight: 800; color: #2563eb; }
   .kpi-card .label { font-size: 10px; color: var(--gray); margin-top: 1mm; }
 
   /* ======== HIGHLIGHT BOX ======== */
   .hl-box {
-    background: #f5efe5; border: 1px solid #d9d3c7; border-radius: 5px;
+    background: #eff6ff; border: 1px solid #bfdbfe; border-radius: 5px;
     padding: 4mm 6mm; margin: 5mm 0;
   }
-  .hl-box .hl-title { font-size: 12px; font-weight: 700; color: #5b4c3a; margin-bottom: 2mm; }
-  .hl-box ul { padding-left: 5mm; font-size: 11px; color: #334155; }
+  .hl-box .hl-title { font-size: 12px; font-weight: 700; color: #2563eb; margin-bottom: 2mm; }
+  .hl-box ul { padding-left: 5mm; font-size: 11px; color: #1e293b; }
   .hl-box ul li { margin-bottom: 1.5mm; }
 
   /* ======== TIMELINE ======== */
   .tl { margin-bottom: 4mm; padding-left: 6mm; border-left: 3px solid var(--blue); }
   .tl .tl-title { font-size: 13px; font-weight: 700; color: var(--navy); }
-  .tl .tl-desc { font-size: 11px; color: #475569; margin-top: 1mm; }
+  .tl .tl-desc { font-size: 11px; color: #334155; margin-top: 1mm; }
 
   /* ======== TABLES ======== */
   .dt {
     width: 100%; border-collapse: collapse; font-size: 10.5px; margin: 4mm 0;
   }
-  .dt th { background: var(--navy); color: #fdfcf8; padding: 2.5mm 3mm; text-align: left; font-weight: 500; }
+  .dt th { background: var(--navy); color: #fff; padding: 2.5mm 3mm; text-align: left; font-weight: 500; }
   .dt td { padding: 2.5mm 3mm; border-bottom: 1px solid var(--border); }
-  .dt tr:nth-child(even) td { background: #f5efe5; }
+  .dt tr:nth-child(even) td { background: #eff6ff; }
   .dt .up { color: var(--green); }
 
   /* ======== TAGS ======== */
   .tag {
-    display: inline-block; font-size: 10px; background: #f0e8d8;
-    color: #5b4c3a; padding: 1mm 4mm; border-radius: 3px; margin: 0 2mm 2mm 0;
+    display: inline-block; font-size: 10px; background: #dbeafe;
+    color: #2563eb; padding: 1mm 4mm; border-radius: 3px; margin: 0 2mm 2mm 0;
   }
 
   /* ======== PROCESS FLOW ======== */
@@ -133,24 +133,24 @@
 
   /* ======== MEDIA PLACEHOLDER ======== */
   .media-ph {
-    background: #f5efe5; border: 2px dashed #d4cbb8; border-radius: 6px;
-    padding: 8mm; text-align: center; color: #8c8272; font-size: 10px; margin: 4mm 0;
+    background: #eff6ff; border: 2px dashed #e2e8f0; border-radius: 6px;
+    padding: 8mm; text-align: center; color: #64748b; font-size: 10px; margin: 4mm 0;
   }
 
   /* ======== CAPABILITY BARS ======== */
   .cap-item { margin-bottom: 3mm; }
   .cap-item .cap-label { font-size: 10px; color: var(--text); margin-bottom: 1mm; display: flex; justify-content: space-between; }
-  .cap-item .cap-bar { height: 3mm; background: #d4cbb8; border-radius: 2px; overflow: hidden; }
+  .cap-item .cap-bar { height: 3mm; background: #e2e8f0; border-radius: 2px; overflow: hidden; }
   .cap-item .cap-fill { height: 100%; background: var(--blue); border-radius: 2px; }
 
   /* ======== END PAGE ======== */
   .end-page {
-    background: linear-gradient(160deg, #2c2416 0%, #4a3c2c 50%, #5b4c3a 100%);
-    color: #fdfcf8; display: flex; flex-direction: column; justify-content: center;
+    background: linear-gradient(160deg, #0f172a 0%, #1e3a5f 50%, #1e40af 100%);
+    color: #fff; display: flex; flex-direction: column; justify-content: center;
     text-align: center;
   }
-  .end-page h2 { font-size: 30px; font-weight: 800; color: #fdfcf8; margin-bottom: 6mm; }
-  .end-page p { font-size: 13px; color: #8c8272; margin-bottom: 10mm; line-height: 1.8; }
+  .end-page h2 { font-size: 30px; font-weight: 800; color: #fff; margin-bottom: 6mm; }
+  .end-page p { font-size: 13px; color: #94a3b8; margin-bottom: 10mm; line-height: 1.8; }
 
   p { font-size: 11px; }
   strong { color: var(--navy); }
@@ -179,7 +179,7 @@
     <div class="c-stat"><div class="num">300万+</div><div class="label">峰值月消耗</div></div>
   </div>
   <div class="c-contact">15218129898 &nbsp;|&nbsp; 15218129898@163.com &nbsp;|&nbsp; 广州</div>
-  <div class="page-num" style="color:#8c8272;">1 / 8</div>
+  <div class="page-num" style="color:#64748b;">1 / 8</div>
 </div>
 
 <!-- ====== P2: 渍无踪 CASE (1) ====== -->
@@ -502,20 +502,20 @@
   <h2>范思静</h2>
   <p>
     信息流视频项目主管<br>
-    <span style="font-size:11px;color:#8c8272;">3年全链路 · 3品类 · 千万级月销</span>
+    <span style="font-size:11px;color:#64748b;">3年全链路 · 3品类 · 千万级月销</span>
   </p>
   <div class="c-stats" style="margin-bottom:12mm;">
     <div class="c-stat"><div class="num" style="color:#60a5fa;">1,500+</div><div class="label">策划视频</div></div>
     <div class="c-stat"><div class="num" style="color:#60a5fa;">35%</div><div class="label">爆款率</div></div>
     <div class="c-stat"><div class="num" style="color:#60a5fa;">千万级</div><div class="label">月销售额</div></div>
   </div>
-  <p style="color:#8c8272;font-size:11px;">
+  <p style="color:#64748b;font-size:11px;">
     15218129898 &nbsp;|&nbsp; 15218129898@163.com &nbsp;|&nbsp; 广州
   </p>
-  <p style="color:#8c8272;font-size:10px;margin-top:8mm;">
+  <p style="color:#64748b;font-size:10px;margin-top:8mm;">
     作品集内数据均来自真实业务复盘，完整视频素材和复盘文档可面试时展示
   </p>
-  <div class="page-num" style="color:#8c8272;">7 / 8</div>
+  <div class="page-num" style="color:#64748b;">7 / 8</div>
 </div>
 
 </body>
