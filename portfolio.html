@@ -184,26 +184,42 @@
   h2 { font-size: 18px; margin: 14px 0 10px; }
 
   @media screen and (max-width: 800px) {
-    body { background: #fff; padding: 0; }
+    body { background: #fff; padding: 0; margin: 0; }
     .page {
-      width: 100%; min-height: auto; margin: 0;
-      padding: 12px 14px; box-shadow: none;
-      page-break-after: auto;
+      width: 100vw !important; max-width: 100vw !important;
+      min-height: auto; height: auto;
+      margin: 0 !important; padding: 16px 14px;
+      box-shadow: none; border-radius: 0;
+      page-break-after: auto; overflow-x: hidden;
     }
-    .cover, .end-page { padding: 32px 20px; }
-    .cover h1 { font-size: 24px; }
-    .cover .c-stats { gap: 16px; flex-wrap: wrap; }
-    .cover .c-stat .num { font-size: 22px; }
-    .kpi-row { flex-wrap: wrap; }
-    .kpi-card { min-width: 40%; }
+    .cover, .end-page { padding: 40px 20px !important; min-height: auto; }
+    .cover h1 { font-size: 26px; }
+    .cover .c-badge { font-size: 10px; }
+    .cover .c-sub { font-size: 14px; }
+    .cover .c-tagline { font-size: 13px; max-width: 90%; }
+    .cover .c-stats { gap: 12px; flex-wrap: wrap; }
+    .cover .c-stat .num { font-size: 24px; }
+    .cover .c-stat .label { font-size: 10px; }
+    .kpi-row { flex-wrap: wrap; gap: 2mm; }
+    .kpi-card { min-width: 44%; flex: 0 0 auto; padding: 3mm 4mm; }
+    .kpi-card .num { font-size: 18px; }
+    .kpi-card .label { font-size: 10px; }
     .sec-title { font-size: 18px; }
     .two-col { flex-direction: column; }
-    .metric-grid { grid-template-columns: 1fr 1fr; }
+    .metric-grid { grid-template-columns: 1fr 1fr; gap: 2mm; }
     .viz-compare { flex-direction: column; }
     .page-num { display: none; }
     p { font-size: 14px; }
+    .tl .tl-title { font-size: 14px; }
     .tl .tl-desc { font-size: 13px; }
+    .hl-box { padding: 4mm; }
     .hl-box ul { font-size: 13px; }
+    .dt { font-size: 10px; }
+    .dt th, .dt td { padding: 2mm; }
+    .process-row { flex-wrap: wrap; }
+    .process-step { min-width: 40%; flex: 0 0 auto; }
+    .cap-item .cap-label { font-size: 11px; }
+    .ba-table { font-size: 10px; }
   }
 
   @media print {
