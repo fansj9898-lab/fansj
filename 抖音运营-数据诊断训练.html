@@ -99,7 +99,7 @@
 <body>
 <div class="container">
   <div class="header">
-    <h1>数据诊断训练</h1>
+    <h1>数据诊断训练</h1><button onclick="expAll()" style="font-size:10px;padding:4px 10px;border:1px solid #5b4c3a;background:transparent;color:#5b4c3a;border-radius:6px;cursor:pointer;-webkit-appearance:none;margin-left:8px">📤 导出</button>
     <p>看真实数据 → 自己分析 → 对照专业解读 → 反复练习</p>
   </div>
 
@@ -360,6 +360,10 @@ function saveAndReveal(sceneId, stepIdx) {
 }
 
 init();
+function expAll(){var r="";var ts=document.querySelectorAll("textarea");ts.forEach(function(t,i){if(t.value.trim())r+="=== Q"+(i+1)+" ===
+"+t.value+"
+
+"});if(!r){alert("no data")};var b=new Blob([r],{type:"text/plain"});var a=document.createElement("a");a.href=URL.createObjectURL(b);a.download="抖音运营-数据诊断训练.txt";a.click()}
 </script>
 </body>
 </html>
