@@ -8,62 +8,62 @@
   * { margin: 0; padding: 0; box-sizing: border-box; }
   body {
     font-family: -apple-system, "PingFang SC", "Microsoft YaHei", sans-serif;
-    background: #0a0e17; color: #d1d5db; min-height: 100vh; padding: 24px;
+    background: #f5f1e8; color: #2c2416; min-height: 100vh; padding: 24px;
   }
   .container { max-width: 900px; margin: 0 auto; }
-  h1 { text-align: center; font-size: 22px; margin-bottom: 4px; color: #f9fafb; }
-  .sub { text-align: center; font-size: 13px; color: #6b7280; margin-bottom: 24px; }
+  h1 { text-align: center; font-size: 22px; margin-bottom: 4px; color: #2c2416; }
+  .sub { text-align: center; font-size: 13px; color: #8c8272; margin-bottom: 24px; }
 
   /* Search/filter */
   .filter-bar { display: flex; gap: 8px; margin-bottom: 20px; flex-wrap: wrap; justify-content: center; }
   .filter-btn {
-    padding: 6px 14px; border-radius: 20px; font-size: 12px; border: 1px solid #1f2937;
-    background: #111827; color: #9ca3af; cursor: pointer; transition: 0.15s;
+    padding: 6px 14px; border-radius: 20px; font-size: 12px; border: 1px solid #d9d3c7;
+    background: #fdfcf8; color: #8c8272; cursor: pointer; transition: 0.15s;
   }
-  .filter-btn:hover, .filter-btn.active { background: #2563eb; color: #fff; border-color: #2563eb; }
+  .filter-btn:hover, .filter-btn.active { background: #5b4c3a; color: #fdfdfc; border-color: #5b4c3a; }
 
   /* Cards */
   .card-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 14px; }
   .metric-card {
-    background: #111827; border: 1px solid #1f2937; border-radius: 12px;
+    background: #fdfcf8; border: 1px solid #d9d3c7; border-radius: 12px;
     padding: 22px; cursor: pointer; transition: 0.2s; position: relative; overflow: hidden;
   }
-  .metric-card:hover { border-color: #374151; }
-  .metric-card.expanded { border-color: #2563eb; grid-column: 1/-1; }
+  .metric-card:hover { border-color: #d9d3c7; }
+  .metric-card.expanded { border-color: #5b4c3a; grid-column: 1/-1; }
 
-  .metric-card .name { font-size: 18px; font-weight: 800; color: #f9fafb; margin-bottom: 4px; }
-  .metric-card .en { font-size: 11px; color: #6b7280; margin-bottom: 10px; }
-  .metric-card .summary { font-size: 13px; color: #9ca3af; line-height: 1.6; display: block; }
-  .metric-card .detail { display: none; margin-top: 14px; padding-top: 14px; border-top: 1px solid #1f2937; }
+  .metric-card .name { font-size: 18px; font-weight: 800; color: #2c2416; margin-bottom: 4px; }
+  .metric-card .en { font-size: 11px; color: #8c8272; margin-bottom: 10px; }
+  .metric-card .summary { font-size: 13px; color: #8c8272; line-height: 1.6; display: block; }
+  .metric-card .detail { display: none; margin-top: 14px; padding-top: 14px; border-top: 1px solid #d9d3c7; }
 
   .metric-card.expanded .detail { display: block; }
   .metric-card.expanded .summary { display: none; }
 
   .detail-section { margin-bottom: 14px; }
   .detail-section .ds-label {
-    font-size: 10px; font-weight: 700; color: #2563eb; text-transform: uppercase;
+    font-size: 10px; font-weight: 700; color: #5b4c3a; text-transform: uppercase;
     letter-spacing: 1px; margin-bottom: 6px;
   }
-  .detail-section p { font-size: 13px; color: #d1d5db; line-height: 1.7; }
+  .detail-section p { font-size: 13px; color: #2c2416; line-height: 1.7; }
 
-  .scenario { background: #0a1628; border-radius: 8px; padding: 12px 16px; margin: 8px 0; font-size: 12px; }
-  .scenario .up { color: #22c55e; }
+  .scenario { background: #f5efe5; border-radius: 8px; padding: 12px 16px; margin: 8px 0; font-size: 12px; }
+  .scenario .up { color: #6b7f5e; }
   .scenario .down { color: #ef4444; }
 
   .linked { display: flex; gap: 6px; flex-wrap: wrap; margin-top: 6px; }
   .linked span {
     font-size: 10px; padding: 3px 10px; border-radius: 12px;
-    background: #1a1f2e; color: #60a5fa; cursor: pointer;
+    background: #f5efe5; color: #5b4c3a; cursor: pointer;
   }
-  .linked span:hover { background: #2563eb; color: #fff; }
+  .linked span:hover { background: #5b4c3a; color: #fdfdfc; }
 
   .tag {
     display: inline-block; font-size: 10px; padding: 3px 8px; border-radius: 4px;
     margin-right: 4px; font-weight: 600;
   }
-  .tag-content { background: #1e3a5f; color: #93c5fd; }
-  .tag-cost { background: #451a1a; color: #fca5a5; }
-  .tag-revenue { background: #14532d; color: #86efac; }
+  .tag-content { background: #d9d3c7; color: #5b4c3a; }
+  .tag-cost { background: #d9d3c7; color: #8c6b4a; }
+  .tag-revenue { background: #d9d3c7; color: #6b7f5e; }
 </style>
 </head>
 <body>
