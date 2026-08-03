@@ -21,6 +21,7 @@ body{font-family:-apple-system,"PingFang SC","Microsoft YaHei",sans-serif;backgr
 /* Preview area */
 .preview{display:flex;justify-content:center;padding:16px}
 .page-preview{width:210mm;min-height:297mm;background:#fff;box-shadow:0 4px 24px rgba(0,0,0,0.15);padding:12mm 14mm;transition:all .3s;overflow:hidden}
+.r-avatar{width:18mm;height:24mm;object-fit:cover;border-radius:4px;flex-shrink:0}
 @media(max-width:800px){.page-preview{width:100%;min-height:auto;padding:16px 12px}}
 </style>
 </head>
@@ -247,39 +248,41 @@ var templates = [
       .r-edu strong{color:#0f172a}
     `
   },
-  { // 3: 现代科技 (bold, blue accents, clean)
+  { // 3: 现代科技 (bold, clean, blue accents)
     name:'现代科技',
     css:`
-      .page-preview{font-family:-apple-system,"PingFang SC","Microsoft YaHei",sans-serif;color:#1a1a2e;line-height:1.5}
-      .r-header{margin-bottom:3mm;display:flex;justify-content:space-between;align-items:flex-end}
-      .r-header h1{font-size:26px;font-weight:800;color:#1a1a2e;letter-spacing:-.5px}
-      .r-title{font-size:12px;color:#4361ee;font-weight:600}
-      .r-intent{font-size:9px;color:#6c757d}
-      .r-contact{display:flex;flex-wrap:wrap;gap:3mm;font-size:8.5px;color:#495057;padding:2.5mm 0;margin-bottom:3mm;border-top:2px solid #4361ee;border-bottom:1px solid #dee2e6}
-      .r-summary{font-size:10px;color:#212529;line-height:1.6;margin-bottom:4mm;background:#f8f9fa;padding:3mm;border-radius:4px;border-left:3px solid #4361ee}
-      .r-kpis{display:flex;gap:3mm;margin-bottom:4mm}
-      .kpi{flex:1;text-align:center;padding:3mm 2mm;background:#fff;border:1px solid #e9ecef;border-radius:6px}
-      .kpi-num{display:block;font-size:16px;font-weight:800;color:#4361ee}
-      .kpi-label{display:block;font-size:7.5px;color:#6c757d;margin-top:.5mm}
-      .r-section{margin-bottom:3.5mm}
-      .r-section h3{font-size:12px;font-weight:700;color:#1a1a2e;padding-bottom:1mm;border-bottom:3px solid #4361ee;margin-bottom:2mm;letter-spacing:-.3px}
-      .r-exp{margin-bottom:3mm}
-      .exp-hd{display:flex;justify-content:space-between;align-items:baseline}
-      .exp-role{font-size:11px;font-weight:700;color:#1a1a2e}
-      .exp-date{font-size:8.5px;color:#6c757d;white-space:nowrap}
-      .exp-co{font-size:9px;color:#4361ee;font-weight:500;margin-bottom:1mm}
+      .page-preview{font-family:-apple-system,"PingFang SC","Microsoft YaHei",sans-serif;color:#1a1a2e;line-height:1.45;padding:8mm 10mm 6mm!important}
+      .r-header{display:flex;align-items:center;gap:4mm;margin-bottom:3mm;padding-bottom:3mm;border-bottom:3px solid #2563eb}
+      .r-header .r-avatar{width:18mm;height:24mm;object-fit:cover;border-radius:4px;flex-shrink:0}
+      .r-header h1{font-size:24px;font-weight:800;color:#0f172a;letter-spacing:-.3px;margin-bottom:1mm}
+      .r-title{font-size:11px;color:#2563eb;font-weight:600}
+      .r-intent{font-size:8.5px;color:#64748b;margin-top:.5mm}
+      .r-contact{display:flex;flex-wrap:wrap;gap:3mm;font-size:8px;color:#475569;padding:2mm 0;margin-bottom:3mm;border-bottom:1px solid #e2e8f0}
+      .r-summary{font-size:9.5px;color:#334155;line-height:1.55;margin-bottom:3mm;background:#f8fafc;padding:2.5mm 3mm;border-radius:6px;border-left:3px solid #2563eb}
+      .r-kpis{display:flex;gap:2mm;margin-bottom:3.5mm}
+      .kpi{flex:1;text-align:center;padding:2.5mm 1.5mm;background:#fff;border:1.5px solid #e2e8f0;border-radius:6px;transition:.15s}
+      .kpi:hover{border-color:#2563eb}
+      .kpi-num{display:block;font-size:15px;font-weight:800;color:#2563eb}
+      .kpi-label{display:block;font-size:7px;color:#64748b;margin-top:.3mm}
+      .r-section{margin-bottom:3mm}
+      .r-section h3{font-size:10.5px;font-weight:700;color:#0f172a;padding-bottom:1mm;border-bottom:2.5px solid #2563eb;margin-bottom:2mm;text-transform:uppercase;letter-spacing:.5px}
+      .r-exp{margin-bottom:2.5mm}
+      .exp-hd{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:.3mm}
+      .exp-role{font-size:10.5px;font-weight:700;color:#0f172a}
+      .exp-date{font-size:8px;color:#64748b;white-space:nowrap}
+      .exp-co{font-size:8.5px;color:#2563eb;font-weight:500;margin-bottom:.8mm}
       .r-exp ul{padding-left:3.5mm}
-      .r-exp li{font-size:9px;margin-bottom:.6mm;line-height:1.45}
-      .r-eval p{font-size:9.5px;margin-bottom:1.5mm;line-height:1.6}
-      .r-tbl{width:100%;font-size:8px;border-collapse:collapse}
-      .r-tbl th{background:#1a1a2e;color:#fff;padding:2mm 2.5mm;text-align:left;font-weight:600}
-      .r-tbl td{padding:2mm 2.5mm;border-bottom:1px solid #e9ecef}
-      .r-tbl tr:nth-child(even) td{background:#f8f9fa}
-      .r-bottom{font-size:8.5px;color:#495057;line-height:2}
-      .sk-cat{font-weight:700;color:#1a1a2e}
-      .sk-tags{margin-right:5mm}
-      .r-edu{padding-top:2mm;border-top:1px solid #dee2e6;margin-top:2mm;color:#6c757d}
-      .r-edu strong{color:#1a1a2e}
+      .r-exp li{font-size:8.5px;margin-bottom:.5mm;line-height:1.4}
+      .r-eval p{font-size:9px;margin-bottom:1.2mm;line-height:1.55}
+      .r-tbl{width:100%;font-size:7.5px;border-collapse:collapse;margin-top:1mm}
+      .r-tbl th{background:#0f172a;color:#fff;padding:1.8mm 2mm;text-align:left;font-weight:600}
+      .r-tbl td{padding:1.8mm 2mm;border-bottom:1px solid #e2e8f0}
+      .r-tbl tr:nth-child(even) td{background:#f8fafc}
+      .r-bottom{font-size:8px;color:#475569;line-height:1.8;margin-top:1.5mm}
+      .sk-cat{font-weight:700;color:#0f172a;margin-right:2mm}
+      .sk-tags{margin-right:4mm}
+      .r-edu{font-size:7.5px;color:#64748b;padding-top:1.5mm;border-top:1px solid #e2e8f0;margin-top:1.5mm}
+      .r-edu strong{color:#0f172a}
     `
   },
   { // 4: 北欧简约 (scandinavian, lots of whitespace, muted)
