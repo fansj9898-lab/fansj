@@ -1,982 +1,142 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
-<html>
+<!DOCTYPE html>
+<html lang="zh-CN">
 <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-  <meta http-equiv="Content-Style-Type" content="text/css">
-  <title></title>
-  <meta name="Generator" content="Cocoa HTML Writer">
-  <meta name="CocoaVersion" content="2685.4">
-  <style type="text/css">
-    body {background-color: #e2e7ed}
-    p.p1 {margin: 0.0px 0.0px 0.0px 0.0px; font: 13.0px '.AppleSimplifiedChineseFont'; color: #4f91f8; -webkit-text-stroke: #4f91f8}
-    p.p2 {margin: 0.0px 0.0px 0.0px 0.0px; font: 13.0px 'Helvetica Neue'; color: #273143; -webkit-text-stroke: #273143}
-    p.p3 {margin: 0.0px 0.0px 0.0px 0.0px; text-align: center; font: 12.0px 'PingFang SC'; color: #ffffff; -webkit-text-stroke: #ffffff; background-color: #1d48e6}
-    p.p4 {margin: 0.0px 0.0px 0.0px 0.0px; text-align: center; font: 12.0px 'PingFang SC'; color: #c0cbda; -webkit-text-stroke: #c0cbda; background-color: #172b4c}
-    p.p5 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px 'PingFang SC'; color: #8291a9; -webkit-text-stroke: #8291a9}
-    p.p6 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px 'Helvetica Neue'; color: #8291a9; -webkit-text-stroke: #8291a9; background-color: #273143; min-height: 15.0px}
-    p.p7 {margin: 0.0px 0.0px 0.0px 0.0px; font: 10.0px 'PingFang SC'; color: #ffffff; -webkit-text-stroke: #ffffff; background-color: #d10e1d}
-    p.p8 {margin: 0.0px 0.0px 0.0px 0.0px; text-align: center; font: 12.0px 'Helvetica Neue'; color: #c0cbda; -webkit-text-stroke: #c0cbda; background-color: #172b4c}
-    p.p9 {margin: 0.0px 0.0px 0.0px 0.0px; font: 10.0px 'PingFang SC'; color: #526078; -webkit-text-stroke: #526078}
-    p.p10 {margin: 0.0px 0.0px 0.0px 0.0px; font: 22.0px '.PingFang UI SC'; color: #0d121f; -webkit-text-stroke: #0d121f}
-    p.p11 {margin: 0.0px 0.0px 0.0px 0.0px; font: 11.5px 'PingFang SC'; color: #1d48e6; -webkit-text-stroke: #1d48e6}
-    p.p12 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px 'PingFang SC'; color: #374356; -webkit-text-stroke: #374356}
-    p.p13 {margin: 0.0px 0.0px 0.0px 0.0px; font: 8.5px 'Helvetica Neue'; color: #374356; -webkit-text-stroke: #374356}
-    p.p14 {margin: 0.0px 0.0px 0.0px 0.0px; font: 8.5px '.Apple Color Emoji UI'; color: #374356; -webkit-text-stroke: #374356}
-    p.p15 {margin: 0.0px 0.0px 0.0px 0.0px; font: 8.5px 'PingFang SC'; color: #374356; -webkit-text-stroke: #374356}
-    p.p16 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.5px 'PingFang SC'; color: #273143; -webkit-text-stroke: #273143}
-    p.p17 {margin: 0.0px 0.0px 0.0px 0.0px; text-align: center; font: 13.0px 'Helvetica Neue'; color: #1d48e6; -webkit-text-stroke: #1d48e6}
-    p.p18 {margin: 0.0px 0.0px 0.0px 0.0px; text-align: center; font: 7.5px 'PingFang SC'; color: #526078; -webkit-text-stroke: #526078}
-    p.p19 {margin: 0.0px 0.0px 0.0px 0.0px; text-align: center; font: 13.0px 'PingFang SC'; color: #1d48e6; -webkit-text-stroke: #1d48e6}
-    p.p21 {margin: 0.0px 0.0px 0.0px 0.0px; font: 10.5px '.AppleSimplifiedChineseFont'; color: #0d121f; -webkit-text-stroke: #0d121f}
-    p.p22 {margin: 0.0px 0.0px 0.0px 0.0px; font: 8.5px 'Helvetica Neue'; color: #526078; -webkit-text-stroke: #526078}
-    p.p23 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px 'PingFang SC'; color: #1d48e6; -webkit-text-stroke: #1d48e6}
-    p.p26 {margin: 0.0px 0.0px 0.0px 0.0px; color: #0d121f; -webkit-text-stroke: #0d121f}
-    p.p27 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px 'PingFang SC'; color: #526078; -webkit-text-stroke: #526078}
-    p.p28 {margin: 0.0px 0.0px 5.7px 0.0px; font: 11.0px 'PingFang SC'; color: #171e2d; -webkit-text-stroke: #171e2d}
-    p.p29 {margin: 0.0px 0.0px 0.0px 0.0px; font: 11.0px 'PingFang SC'; color: #171e2d; -webkit-text-stroke: #171e2d}
-    p.p30 {margin: 0.0px 0.0px 0.0px 0.0px; font: 7.5px 'PingFang SC'; color: #ffffff; -webkit-text-stroke: #ffffff}
-    p.p31 {margin: 0.0px 0.0px 0.0px 0.0px; font: 7.5px 'PingFang SC'; color: #171e2d; -webkit-text-stroke: #171e2d}
-    p.p32 {margin: 0.0px 0.0px 0.0px 0.0px; font: 7.5px 'Helvetica Neue'; color: #171e2d; -webkit-text-stroke: #171e2d}
-    p.p33 {margin: 0.0px 0.0px 0.0px 0.0px; font: 11.0px 'PingFang SC'; color: #526078; -webkit-text-stroke: #526078}
-    p.p34 {margin: 0.0px 0.0px 0.0px 0.0px; font: 8.0px '.AppleSimplifiedChineseFont'; color: #0d121f; -webkit-text-stroke: #0d121f}
-    p.p35 {margin: 0.0px 0.0px 0.0px 0.0px; font: 8.0px 'PingFang SC'; color: #374356; -webkit-text-stroke: #374356}
-    p.p36 {margin: 0.0px 0.0px 0.0px 0.0px; font: 8.0px 'Helvetica Neue'; color: #374356; -webkit-text-stroke: #374356}
-    p.p37 {margin: 0.0px 0.0px 0.0px 0.0px; font: 8.0px 'Helvetica Neue'; color: #526078; -webkit-text-stroke: #526078}
-    p.p38 {margin: 0.0px 0.0px 0.0px 0.0px; text-align: center; font: 11.0px 'Helvetica Neue'; color: #8291a9; -webkit-text-stroke: #8291a9}
-    p.p40 {margin: 0.0px 0.0px 0.0px 0.0px; text-align: center; font: 16.0px 'PingFang SC'; color: #8291a9; -webkit-text-stroke: #8291a9}
-    p.p41 {margin: 0.0px 0.0px 0.0px 0.0px; text-align: center; font: 13.0px 'PingFang SC'; color: #c0cbda; -webkit-text-stroke: #c0cbda}
-    p.p42 {margin: 0.0px 0.0px 0.0px 0.0px; text-align: center; font: 30.0px 'Helvetica Neue'; color: #4f91f8; -webkit-text-stroke: #4f91f8}
-    p.p43 {margin: 0.0px 0.0px 0.0px 0.0px; text-align: center; font: 11.0px 'PingFang SC'; color: #526078; -webkit-text-stroke: #526078}
-    p.p44 {margin: 0.0px 0.0px 0.0px 0.0px; text-align: center; font: 30.0px 'PingFang SC'; color: #4f91f8; -webkit-text-stroke: #4f91f8}
-    p.p45 {margin: 0.0px 0.0px 0.0px 0.0px; text-align: center; font: 12.0px 'Helvetica Neue'; color: #526078; -webkit-text-stroke: #526078}
-    p.p46 {margin: 0.0px 0.0px 0.0px 0.0px; text-align: center; font: 10.0px 'Helvetica Neue'; color: #526078; -webkit-text-stroke: #526078}
-    p.p47 {margin: 0.0px 0.0px 0.0px 0.0px; font: 24.0px 'PingFang SC'; color: #0d121f; -webkit-text-stroke: #0d121f}
-    p.p48 {margin: 0.0px 0.0px 0.0px 0.0px; font: 20.0px 'PingFang SC'; color: #172a9f; -webkit-text-stroke: #172a9f}
-    p.p49 {margin: 0.0px 0.0px 0.0px 0.0px; font: 20.0px 'Helvetica Neue'; color: #172a9f; -webkit-text-stroke: #172a9f}
-    p.p50 {margin: 0.0px 0.0px 0.0px 0.0px; font: 11.0px 'PingFang SC'; color: #374356; -webkit-text-stroke: #374356}
-    p.p51 {margin: 0.0px 0.0px 0.0px 0.0px; color: #172a9f; -webkit-text-stroke: #172a9f}
-    p.p53 {margin: 0.0px 0.0px 0.0px 0.0px; font: 10.0px 'Helvetica Neue'; color: #8291a9; -webkit-text-stroke: #8291a9}
-    p.p54 {margin: 0.0px 0.0px 0.0px 0.0px; font: 16.0px '.AppleSimplifiedChineseFont'; color: #0d121f; -webkit-text-stroke: #0d121f}
-    p.p55 {margin: 0.0px 0.0px 0.0px 0.0px; font: 10.5px 'PingFang SC'; color: #ffffff; -webkit-text-stroke: #ffffff}
-    p.p56 {margin: 0.0px 0.0px 0.0px 0.0px; font: 10.5px 'Helvetica Neue'; color: #ffffff; -webkit-text-stroke: #ffffff}
-    p.p57 {margin: 0.0px 0.0px 0.0px 0.0px; font: 10.5px 'PingFang SC'; color: #171e2d; -webkit-text-stroke: #171e2d}
-    p.p58 {margin: 0.0px 0.0px 0.0px 0.0px; font: 10.5px 'Helvetica Neue'; color: #171e2d; -webkit-text-stroke: #171e2d}
-    p.p59 {margin: 0.0px 0.0px 0.0px 0.0px; font: 10.5px 'Helvetica Neue'; color: #1b963a; -webkit-text-stroke: #1b963a}
-    p.p60 {margin: 0.0px 0.0px 0.0px 0.0px; font: 10.5px 'PingFang SC'; color: #1b963a; -webkit-text-stroke: #1b963a}
-    p.p62 {margin: 0.0px 0.0px 0.0px 0.0px; font: 13.0px '.AppleSimplifiedChineseFont'; color: #0d121f; -webkit-text-stroke: #0d121f}
-    p.p64 {margin: 0.0px 0.0px 0.0px 0.0px; text-align: center; font: 18.0px 'Helvetica Neue'; color: #1d48e6; -webkit-text-stroke: #1d48e6}
-    p.p65 {margin: 0.0px 0.0px 0.0px 0.0px; text-align: center; color: #0d121f; -webkit-text-stroke: #0d121f}
-    p.p66 {margin: 0.0px 0.0px 0.0px 0.0px; text-align: center; font: 9.0px 'PingFang SC'; color: #526078; -webkit-text-stroke: #526078}
-    p.p67 {margin: 0.0px 0.0px 0.0px 0.0px; font: 16.0px 'Helvetica Neue'; color: #8291a9; -webkit-text-stroke: #8291a9}
-    p.p68 {margin: 0.0px 0.0px 0.0px 0.0px; text-align: center; font: 11.0px 'Helvetica Neue'; color: #0d121f; -webkit-text-stroke: #0d121f}
-    p.p69 {margin: 0.0px 0.0px 0.0px 0.0px; font: 10.0px 'PingFang SC'; color: #171e2d; -webkit-text-stroke: #171e2d}
-    p.p70 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px 'Helvetica Neue'; color: #171e2d; -webkit-text-stroke: #171e2d; background-color: #1d48e6; min-height: 15.0px}
-    p.p71 {margin: 0.0px 0.0px 0.0px 0.0px; font: 10.0px 'Helvetica Neue'; color: #171e2d; -webkit-text-stroke: #171e2d}
-    p.p73 {margin: 0.0px 0.0px 37.8px 0.0px; text-align: center; font: 11.0px 'PingFang SC'; color: #526078; -webkit-text-stroke: #526078}
-    p.p74 {margin: 0.0px 0.0px 37.8px 0.0px; text-align: center; font: 11.0px 'Helvetica Neue'; color: #8291a9; -webkit-text-stroke: #8291a9}
-    p.p75 {margin: 0.0px 0.0px 37.8px 0.0px; text-align: center; font: 10.0px 'PingFang SC'; color: #526078; -webkit-text-stroke: #526078}
-    li.li24 {margin: 0.0px 0.0px 2.3px 0.0px; font: 8.5px '.AppleSimplifiedChineseFont'; color: #0d121f; -webkit-text-stroke: #0d121f}
-    li.li25 {margin: 0.0px 0.0px 2.3px 0.0px; font: 8.5px 'PingFang SC'; color: #171e2d; -webkit-text-stroke: #171e2d}
-    li.li52 {margin: 0.0px 0.0px 5.7px 0.0px; font: 11.0px 'PingFang SC'; color: #273143; -webkit-text-stroke: #273143}
-    li.li61 {margin: 0.0px 0.0px 5.7px 0.0px; font: 11.0px '.AppleSimplifiedChineseFont'; color: #273143; -webkit-text-stroke: #0d121f}
-    li.li63 {margin: 0.0px 0.0px 5.7px 0.0px; font: 11.0px 'PingFang SC'; color: #273143; -webkit-text-stroke: #0d121f}
-    span.s1 {font-kerning: none; background-color: #0d121f}
-    span.s2 {font: 13.0px 'Helvetica Neue'; font-kerning: none; background-color: #0d121f}
-    span.s3 {font: 13.0px '.AppleSystemFallback'; font-kerning: none; background-color: #0d121f}
-    span.s4 {font-kerning: none}
-    span.s5 {font: 12.0px '.Apple Color Emoji UI'; font-kerning: none}
-    span.s6 {font: 12.0px 'PingFang SC'; font-kerning: none}
-    span.s7 {font-kerning: none; background-color: #ffffff}
-    span.s8 {font: 11.5px 'Helvetica Neue'; font-kerning: none; background-color: #ffffff}
-    span.s9 {font: 9.0px 'Helvetica Neue'; font-kerning: none; background-color: #ffffff}
-    span.s10 {font: 9.0px '.CJK Symbols Fallback SC'; font-kerning: none; background-color: #ffffff}
-    span.s11 {font: 8.5px '.Apple Color Emoji UI'; font-kerning: none; background-color: #ffffff}
-    span.s12 {font: 8.5px 'Helvetica Neue'; font-kerning: none; background-color: #ffffff}
-    span.s13 {font: 8.5px 'PingFang SC'; font-kerning: none; background-color: #ffffff}
-    span.s14 {font: 9.5px '.AppleSimplifiedChineseFont'; font-kerning: none; color: #1d48e6; background-color: #ffffff; -webkit-text-stroke: 0px #1d48e6}
-    span.s15 {font: 9.5px 'Helvetica Neue'; font-kerning: none; background-color: #ffffff}
-    span.s16 {font: 11.0px 'PingFang SC'; font-kerning: none; color: #171e2d; background-color: #ffffff; -webkit-text-stroke: 0px #171e2d}
-    span.s17 {font: 9.5px 'Lucida Grande'; font-kerning: none; background-color: #ffffff}
-    span.s18 {font-kerning: none; background-color: #ebf3ff}
-    span.s19 {font: 7.5px 'Helvetica Neue'; font-kerning: none; background-color: #ebf3ff}
-    span.s20 {font: 13.0px 'Helvetica Neue'; font-kerning: none; background-color: #ebf3ff}
-    span.s21 {font: 13.0px 'PingFang SC'; font-kerning: none; background-color: #ebf3ff}
-    span.s22 {font: 11.0px '.AppleSimplifiedChineseFont'; font-kerning: none; background-color: #ffffff}
-    span.s23 {font: 10.5px 'Helvetica Neue'; font-kerning: none; background-color: #ffffff}
-    span.s24 {font: 10.5px '.Apple Color Emoji UI'; font-kerning: none; background-color: #ffffff}
-    span.s25 {font: 8.5px 'Helvetica Neue'; background-color: #ffffff; -webkit-text-stroke: 0px #000000}
-    span.s26 {font: 8.5px 'PingFang SC'; font-kerning: none; color: #171e2d; background-color: #ffffff; -webkit-text-stroke: 0px #171e2d}
-    span.s27 {font: 8.5px 'Helvetica Neue'; font-kerning: none; color: #171e2d; background-color: #ffffff; -webkit-text-stroke: 0px #171e2d}
-    span.s28 {font: 8.5px 'Helvetica Neue'; color: #0d121f; background-color: #ffffff; -webkit-text-stroke: 0px #000000}
-    span.s29 {font: 8.5px '.AppleSimplifiedChineseFont'; font-kerning: none; color: #0d121f; background-color: #ffffff; -webkit-text-stroke: 0px #0d121f}
-    span.s30 {font: 8.5px 'Helvetica Neue'; font-kerning: none; color: #0d121f; background-color: #ffffff; -webkit-text-stroke: 0px #0d121f}
-    span.s31 {font: 10.5px '.AppleSimplifiedChineseFont'; font-kerning: none; background-color: #ffffff}
-    span.s32 {font-kerning: none; color: #1d48e6; background-color: #ffffff; -webkit-text-stroke: 0px #1d48e6}
-    span.s33 {font: 9.0px 'Helvetica Neue'; font-kerning: none; color: #1d48e6; background-color: #ffffff; -webkit-text-stroke: 0px #1d48e6}
-    span.s34 {font: 11.0px '.AppleSimplifiedChineseFont'; font-kerning: none; color: #0d121f; background-color: #ffffff; -webkit-text-stroke: 0px #0d121f}
-    span.s35 {font: 11.0px 'Helvetica Neue'; font-kerning: none; background-color: #ffffff}
-    span.s36 {font: 7.5px 'Helvetica Neue'; font-kerning: none; background-color: #ffffff}
-    span.s37 {font: 7.5px '.CJK Symbols Fallback SC'; font-kerning: none; background-color: #ffffff}
-    span.s38 {font: 7.5px 'PingFang SC'; font-kerning: none; background-color: #ffffff}
-    span.s39 {font: 11.0px '.CJK Symbols Fallback SC'; font-kerning: none; background-color: #ffffff}
-    span.s40 {font: 8.0px 'Helvetica Neue'; font-kerning: none; background-color: #ffffff}
-    span.s41 {font: 8.0px '.CJK Symbols Fallback SC'; font-kerning: none; background-color: #ffffff}
-    span.s42 {font: 8.0px 'PingFang SC'; font-kerning: none; background-color: #ffffff}
-    span.s43 {font: 8.0px '.AppleSimplifiedChineseFont'; font-kerning: none; color: #0d121f; background-color: #ffffff; -webkit-text-stroke: 0px #0d121f}
-    span.s44 {font: 16.0px 'Helvetica Neue'; font-kerning: none}
-    span.s45 {font: 16.0px '.CJK Symbols Fallback SC'; font-kerning: none}
-    span.s46 {font: 13.0px 'Helvetica Neue'; font-kerning: none}
-    span.s47 {font: 30.0px 'PingFang SC'; font-kerning: none}
-    span.s48 {font: 24.0px 'Helvetica Neue'; font-kerning: none; background-color: #ffffff}
-    span.s49 {font: 20.0px 'Helvetica Neue'; font-kerning: none; background-color: #ebf3ff}
-    span.s50 {font: 20.0px 'PingFang SC'; font-kerning: none; background-color: #ebf3ff}
-    span.s51 {font: 11.0px 'Helvetica Neue'; font-kerning: none; color: #0d121f; background-color: #ffffff; -webkit-text-stroke: 0px #0d121f}
-    span.s52 {font: 16.0px '.AppleSimplifiedChineseFont'; font-kerning: none; background-color: #ffffff}
-    span.s53 {font: 13.0px 'Helvetica Neue'; font-kerning: none; background-color: #ffffff}
-    span.s54 {font: 13.0px '.AppleSimplifiedChineseFont'; font-kerning: none; background-color: #ffffff}
-    span.s55 {font: 12.0px '.AppleSimplifiedChineseFont'; font-kerning: none; background-color: #ebf3ff}
-    span.s56 {font: 11.0px 'Helvetica Neue'; background-color: #ebf3ff; -webkit-text-stroke: 0px #000000}
-    span.s57 {font: 11.0px 'Helvetica Neue'; font-kerning: none; background-color: #ebf3ff}
-    span.s58 {font: 11.0px '.AppleSimplifiedChineseFont'; font-kerning: none; color: #0d121f; background-color: #ebf3ff; -webkit-text-stroke: 0px #0d121f}
-    span.s59 {font: 16.0px 'Helvetica Neue'; font-kerning: none; background-color: #ffffff}
-    span.s60 {font: 10.5px 'PingFang SC'; font-kerning: none; background-color: #ffffff}
-    span.s61 {font: 11.0px 'Helvetica Neue'; font-kerning: none; color: #0d121f; background-color: #ebf3ff; -webkit-text-stroke: 0px #0d121f}
-    span.s62 {font: 10.0px 'Helvetica Neue'; font-kerning: none; background-color: #ebf3ff}
-    span.s63 {font: 11.0px 'PingFang SC'; font-kerning: none; background-color: #ebf3ff; -webkit-text-stroke: 0px #273143}
-    span.s64 {font: 11.0px 'Helvetica Neue'; font-kerning: none; color: #0d121f; background-color: #ebf3ff}
-    span.s65 {font-kerning: none; color: #0d121f; background-color: #ebf3ff}
-    span.s66 {font-kerning: none; background-color: #ebf3ff; -webkit-text-stroke: 0px #273143}
-    span.s67 {font: 11.0px '.AppleSimplifiedChineseFont'; font-kerning: none; color: #0d121f; background-color: #ebf3ff}
-    span.s68 {font: 11.0px 'Helvetica Neue'; color: #0d121f; background-color: #ebf3ff; -webkit-text-stroke: 0px #000000}
-    span.s69 {font: 11.0px '.AppleSimplifiedChineseFont'; font-kerning: none; background-color: #ebf3ff}
-    span.s70 {font: 9.0px 'Helvetica Neue'; font-kerning: none; background-color: #ebf3ff}
-    span.s71 {font: 10.0px '.AppleSimplifiedChineseFont'; font-kerning: none; color: #0d121f; background-color: #ebf3ff; -webkit-text-stroke: 0px #0d121f}
-    span.s72 {font: 10.0px 'Helvetica Neue'; font-kerning: none; color: #0d121f; background-color: #ebf3ff; -webkit-text-stroke: 0px #0d121f}
-    span.s73 {font: 10.0px 'Helvetica Neue'; font-kerning: none; background-color: #ffffff}
-    span.s74 {font: 10.0px 'PingFang SC'; font-kerning: none; background-color: #ffffff}
-    span.s75 {font: 13.0px 'PingFang SC'; font-kerning: none; color: #8291a9; -webkit-text-stroke: 0px #8291a9}
-    span.s76 {font: 13.0px 'Helvetica Neue'; font-kerning: none; color: #8291a9; -webkit-text-stroke: 0px #8291a9}
-    span.s77 {font: 11.0px 'Helvetica Neue'; font-kerning: none}
-    span.s78 {font: 11.0px '.CJK Symbols Fallback SC'; font-kerning: none}
-    span.s79 {font: 11.0px 'PingFang SC'; font-kerning: none}
-    table.t1 {margin: 3.8px 0.0px 0.0px 0.0px; border-collapse: collapse}
-    table.t2 {margin: 15.1px 0.0px 15.1px 0.0px; border-collapse: collapse}
-    td.td1 {width: 184.7px; background-color: #0d121f; padding: 5.7px 7.6px 5.7px 7.6px}
-    td.td2 {width: 67.5px; background-color: #0d121f; padding: 5.7px 7.6px 5.7px 7.6px}
-    td.td3 {width: 117.7px; background-color: #0d121f; padding: 5.7px 7.6px 5.7px 7.6px}
-    td.td4 {width: 333.2px; background-color: #0d121f; padding: 5.7px 7.6px 5.7px 7.6px}
-    td.td5 {width: 184.7px; background-color: #eef2f7; border-style: solid; border-width: 0.0px 0.0px 1.0px 0.0px; border-color: #171e2d #171e2d #dbe2ec #171e2d; padding: 5.7px 7.6px 5.7px 7.6px}
-    td.td6 {width: 67.5px; background-color: #eef2f7; border-style: solid; border-width: 0.0px 0.0px 1.0px 0.0px; border-color: #171e2d #171e2d #dbe2ec #171e2d; padding: 5.7px 7.6px 5.7px 7.6px}
-    td.td7 {width: 117.7px; background-color: #eef2f7; border-style: solid; border-width: 0.0px 0.0px 1.0px 0.0px; border-color: #171e2d #171e2d #dbe2ec #171e2d; padding: 5.7px 7.6px 5.7px 7.6px}
-    td.td8 {width: 333.2px; background-color: #eef2f7; border-style: solid; border-width: 0.0px 0.0px 1.0px 0.0px; border-color: #171e2d #171e2d #dbe2ec #171e2d; padding: 5.7px 7.6px 5.7px 7.6px}
-    td.td9 {width: 184.7px; border-style: solid; border-width: 0.0px 0.0px 1.0px 0.0px; border-color: #171e2d #171e2d #dbe2ec #171e2d; padding: 5.7px 7.6px 5.7px 7.6px}
-    td.td10 {width: 67.5px; border-style: solid; border-width: 0.0px 0.0px 1.0px 0.0px; border-color: #171e2d #171e2d #dbe2ec #171e2d; padding: 5.7px 7.6px 5.7px 7.6px}
-    td.td11 {width: 117.7px; border-style: solid; border-width: 0.0px 0.0px 1.0px 0.0px; border-color: #171e2d #171e2d #dbe2ec #171e2d; padding: 5.7px 7.6px 5.7px 7.6px}
-    td.td12 {width: 333.2px; border-style: solid; border-width: 0.0px 0.0px 1.0px 0.0px; border-color: #171e2d #171e2d #dbe2ec #171e2d; padding: 5.7px 7.6px 5.7px 7.6px}
-    td.td13 {width: 158.6px; background-color: #0d121f; padding: 9.4px 11.3px 9.4px 11.3px}
-    td.td14 {width: 150.5px; background-color: #0d121f; padding: 9.4px 11.3px 9.4px 11.3px}
-    td.td15 {width: 152.0px; background-color: #0d121f; padding: 9.4px 11.3px 9.4px 11.3px}
-    td.td16 {width: 226.8px; background-color: #0d121f; padding: 9.4px 11.3px 9.4px 11.3px}
-    td.td17 {width: 158.6px; background-color: #f6f9fb; border-style: solid; border-width: 0.0px 0.0px 1.0px 0.0px; border-color: #171e2d #171e2d #dbe2ec #171e2d; padding: 9.4px 11.3px 9.4px 11.3px}
-    td.td18 {width: 150.5px; background-color: #f6f9fb; border-style: solid; border-width: 0.0px 0.0px 1.0px 0.0px; border-color: #171e2d #171e2d #dbe2ec #171e2d; padding: 9.4px 11.3px 9.4px 11.3px}
-    td.td19 {width: 152.0px; background-color: #f6f9fb; border-style: solid; border-width: 0.0px 0.0px 1.0px 0.0px; border-color: #171e2d #171e2d #dbe2ec #171e2d; padding: 9.4px 11.3px 9.4px 11.3px}
-    td.td20 {width: 226.8px; background-color: #f6f9fb; border-style: solid; border-width: 0.0px 0.0px 1.0px 0.0px; border-color: #1b963a #1b963a #dbe2ec #1b963a; padding: 9.4px 11.3px 9.4px 11.3px}
-    td.td21 {width: 158.6px; border-style: solid; border-width: 0.0px 0.0px 1.0px 0.0px; border-color: #171e2d #171e2d #dbe2ec #171e2d; padding: 9.4px 11.3px 9.4px 11.3px}
-    td.td22 {width: 150.5px; border-style: solid; border-width: 0.0px 0.0px 1.0px 0.0px; border-color: #171e2d #171e2d #dbe2ec #171e2d; padding: 9.4px 11.3px 9.4px 11.3px}
-    td.td23 {width: 152.0px; border-style: solid; border-width: 0.0px 0.0px 1.0px 0.0px; border-color: #171e2d #171e2d #dbe2ec #171e2d; padding: 9.4px 11.3px 9.4px 11.3px}
-    td.td24 {width: 226.8px; border-style: solid; border-width: 0.0px 0.0px 1.0px 0.0px; border-color: #1b963a #1b963a #dbe2ec #1b963a; padding: 9.4px 11.3px 9.4px 11.3px}
-    td.td25 {width: 226.8px; background-color: #f6f9fb; border-style: solid; border-width: 0.0px 0.0px 1.0px 0.0px; border-color: #171e2d #171e2d #dbe2ec #171e2d; padding: 9.4px 11.3px 9.4px 11.3px}
-    td.td26 {width: 226.8px; border-style: solid; border-width: 0.0px 0.0px 1.0px 0.0px; border-color: #171e2d #171e2d #dbe2ec #171e2d; padding: 9.4px 11.3px 9.4px 11.3px}
-    td.td27 {width: 151.0px; background-color: #0d121f; padding: 9.4px 11.3px 9.4px 11.3px}
-    td.td28 {width: 147.7px; background-color: #0d121f; padding: 9.4px 11.3px 9.4px 11.3px}
-    td.td29 {width: 158.7px; background-color: #0d121f; padding: 9.4px 11.3px 9.4px 11.3px}
-    td.td30 {width: 230.5px; background-color: #0d121f; padding: 9.4px 11.3px 9.4px 11.3px}
-    td.td31 {width: 151.0px; background-color: #f6f9fb; border-style: solid; border-width: 0.0px 0.0px 1.0px 0.0px; border-color: #171e2d #171e2d #dbe2ec #171e2d; padding: 9.4px 11.3px 9.4px 11.3px}
-    td.td32 {width: 147.7px; background-color: #f6f9fb; border-style: solid; border-width: 0.0px 0.0px 1.0px 0.0px; border-color: #171e2d #171e2d #dbe2ec #171e2d; padding: 9.4px 11.3px 9.4px 11.3px}
-    td.td33 {width: 158.7px; background-color: #f6f9fb; border-style: solid; border-width: 0.0px 0.0px 1.0px 0.0px; border-color: #171e2d #171e2d #dbe2ec #171e2d; padding: 9.4px 11.3px 9.4px 11.3px}
-    td.td34 {width: 230.5px; background-color: #f6f9fb; border-style: solid; border-width: 0.0px 0.0px 1.0px 0.0px; border-color: #171e2d #171e2d #dbe2ec #171e2d; padding: 9.4px 11.3px 9.4px 11.3px}
-    td.td35 {width: 151.0px; border-style: solid; border-width: 0.0px 0.0px 1.0px 0.0px; border-color: #171e2d #171e2d #dbe2ec #171e2d; padding: 9.4px 11.3px 9.4px 11.3px}
-    td.td36 {width: 147.7px; border-style: solid; border-width: 0.0px 0.0px 1.0px 0.0px; border-color: #171e2d #171e2d #dbe2ec #171e2d; padding: 9.4px 11.3px 9.4px 11.3px}
-    td.td37 {width: 158.7px; border-style: solid; border-width: 0.0px 0.0px 1.0px 0.0px; border-color: #171e2d #171e2d #dbe2ec #171e2d; padding: 9.4px 11.3px 9.4px 11.3px}
-    td.td38 {width: 230.5px; border-style: solid; border-width: 0.0px 0.0px 1.0px 0.0px; border-color: #171e2d #171e2d #dbe2ec #171e2d; padding: 9.4px 11.3px 9.4px 11.3px}
-    td.td39 {width: 230.5px; border-style: solid; border-width: 0.0px 0.0px 1.0px 0.0px; border-color: #1b963a #1b963a #dbe2ec #1b963a; padding: 9.4px 11.3px 9.4px 11.3px}
-    td.td40 {width: 78.9px; background-color: #0d121f; padding: 9.4px 11.3px 9.4px 11.3px}
-    td.td41 {width: 245.2px; background-color: #0d121f; padding: 9.4px 11.3px 9.4px 11.3px}
-    td.td42 {width: 363.8px; background-color: #0d121f; padding: 9.4px 11.3px 9.4px 11.3px}
-    td.td43 {width: 78.9px; background-color: #f6f9fb; border-style: solid; border-width: 0.0px 0.0px 1.0px 0.0px; border-color: #171e2d #171e2d #dbe2ec #171e2d; padding: 9.4px 11.3px 9.4px 11.3px}
-    td.td44 {width: 245.2px; background-color: #f6f9fb; border-style: solid; border-width: 0.0px 0.0px 1.0px 0.0px; border-color: #171e2d #171e2d #dbe2ec #171e2d; padding: 9.4px 11.3px 9.4px 11.3px}
-    td.td45 {width: 363.8px; background-color: #f6f9fb; border-style: solid; border-width: 0.0px 0.0px 1.0px 0.0px; border-color: #171e2d #171e2d #dbe2ec #171e2d; padding: 9.4px 11.3px 9.4px 11.3px}
-    td.td46 {width: 78.9px; border-style: solid; border-width: 0.0px 0.0px 1.0px 0.0px; border-color: #171e2d #171e2d #dbe2ec #171e2d; padding: 9.4px 11.3px 9.4px 11.3px}
-    td.td47 {width: 245.2px; border-style: solid; border-width: 0.0px 0.0px 1.0px 0.0px; border-color: #171e2d #171e2d #dbe2ec #171e2d; padding: 9.4px 11.3px 9.4px 11.3px}
-    td.td48 {width: 363.8px; border-style: solid; border-width: 0.0px 0.0px 1.0px 0.0px; border-color: #171e2d #171e2d #dbe2ec #171e2d; padding: 9.4px 11.3px 9.4px 11.3px}
-    td.td49 {width: 149.1px; background-color: #0d121f; padding: 9.4px 11.3px 9.4px 11.3px}
-    td.td50 {width: 146.5px; background-color: #0d121f; padding: 9.4px 11.3px 9.4px 11.3px}
-    td.td51 {width: 146.0px; background-color: #0d121f; padding: 9.4px 11.3px 9.4px 11.3px}
-    td.td52 {width: 246.2px; background-color: #0d121f; padding: 9.4px 11.3px 9.4px 11.3px}
-    td.td53 {width: 149.1px; background-color: #f6f9fb; border-style: solid; border-width: 0.0px 0.0px 1.0px 0.0px; border-color: #171e2d #171e2d #dbe2ec #171e2d; padding: 9.4px 11.3px 9.4px 11.3px}
-    td.td54 {width: 146.5px; background-color: #f6f9fb; border-style: solid; border-width: 0.0px 0.0px 1.0px 0.0px; border-color: #171e2d #171e2d #dbe2ec #171e2d; padding: 9.4px 11.3px 9.4px 11.3px}
-    td.td55 {width: 146.0px; background-color: #f6f9fb; border-style: solid; border-width: 0.0px 0.0px 1.0px 0.0px; border-color: #171e2d #171e2d #dbe2ec #171e2d; padding: 9.4px 11.3px 9.4px 11.3px}
-    td.td56 {width: 246.2px; background-color: #f6f9fb; border-style: solid; border-width: 0.0px 0.0px 1.0px 0.0px; border-color: #171e2d #171e2d #dbe2ec #171e2d; padding: 9.4px 11.3px 9.4px 11.3px}
-    td.td57 {width: 149.1px; border-style: solid; border-width: 0.0px 0.0px 1.0px 0.0px; border-color: #171e2d #171e2d #dbe2ec #171e2d; padding: 9.4px 11.3px 9.4px 11.3px}
-    td.td58 {width: 146.5px; border-style: solid; border-width: 0.0px 0.0px 1.0px 0.0px; border-color: #171e2d #171e2d #dbe2ec #171e2d; padding: 9.4px 11.3px 9.4px 11.3px}
-    td.td59 {width: 146.0px; border-style: solid; border-width: 0.0px 0.0px 1.0px 0.0px; border-color: #171e2d #171e2d #dbe2ec #171e2d; padding: 9.4px 11.3px 9.4px 11.3px}
-    td.td60 {width: 246.2px; border-style: solid; border-width: 0.0px 0.0px 1.0px 0.0px; border-color: #171e2d #171e2d #dbe2ec #171e2d; padding: 9.4px 11.3px 9.4px 11.3px}
-    td.td61 {width: 192.9px; background-color: #0d121f; padding: 9.4px 11.3px 9.4px 11.3px}
-    td.td62 {width: 302.2px; background-color: #0d121f; padding: 9.4px 11.3px 9.4px 11.3px}
-    td.td63 {width: 192.9px; background-color: #f6f9fb; border-style: solid; border-width: 0.0px 0.0px 1.0px 0.0px; border-color: #171e2d #171e2d #dbe2ec #171e2d; padding: 9.4px 11.3px 9.4px 11.3px}
-    td.td64 {width: 302.2px; background-color: #f6f9fb; border-style: solid; border-width: 0.0px 0.0px 1.0px 0.0px; border-color: #171e2d #171e2d #dbe2ec #171e2d; padding: 9.4px 11.3px 9.4px 11.3px}
-    td.td65 {width: 192.9px; border-style: solid; border-width: 0.0px 0.0px 1.0px 0.0px; border-color: #171e2d #171e2d #dbe2ec #171e2d; padding: 9.4px 11.3px 9.4px 11.3px}
-    td.td66 {width: 302.2px; border-style: solid; border-width: 0.0px 0.0px 1.0px 0.0px; border-color: #171e2d #171e2d #dbe2ec #171e2d; padding: 9.4px 11.3px 9.4px 11.3px}
-    ul.ul1 {list-style-type: disc}
-  </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+<title>范思静 · 简历</title>
+<style>
+  @page { size: A4; margin: 0; }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  :root { --bg: #f5f1e8; --card: #fdfcf8; --border: #d4cbb8; --text: #2c2416; --muted: #8c8272; --accent: #5b4c3a; }
+  body { font-family: -apple-system, "PingFang SC", "Microsoft YaHei", sans-serif; background: #e8e4dc; color: var(--text); line-height: 1.5; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+  .page { width: 210mm; min-height: 297mm; margin: 8mm auto; background: #fff; box-shadow: 0 2px 16px rgba(44,36,22,0.08); padding: 9mm 12mm 7mm; }
+  .r-header { margin-bottom: 2.5mm; }
+  .r-header h1 { font-family: "Times New Roman", "Songti SC", "Noto Serif SC", Georgia, serif; font-size: 22px; font-weight: 400; letter-spacing: 2px; color: var(--text); display: inline-block; }
+  .r-header .r-title { font-size: 11.5px; color: var(--accent); font-weight: 600; margin: 0.8mm 0; }
+  .r-header .r-intent { font-size: 9px; color: var(--muted); margin-bottom: 1.5mm; }
+  .r-contact-strip { display: flex; flex-wrap: wrap; gap: 3mm; font-size: 8.5px; color: var(--muted); padding: 2mm 0; margin-bottom: 3mm; border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); }
+  .r-contact-strip span { white-space: nowrap; }
+  .r-summary { font-size: 9.5px; color: var(--text); line-height: 1.55; margin-bottom: 3mm; }
+  .r-summary strong { color: var(--accent); }
+  .r-kpi-row { display: flex; gap: 2.5mm; margin-bottom: 4mm; }
+  .r-kpi-row .r-kpi { flex: 1; text-align: center; background: #f5efe5; border-radius: 3px; padding: 2.5mm 2mm; }
+  .r-kpi-row .r-kpi .k { font-size: 13px; font-weight: 800; color: var(--accent); }
+  .r-kpi-row .r-kpi .l { font-size: 7.5px; color: var(--muted); margin-top: 0.3mm; }
+  .r-section { margin-bottom: 3mm; }
+  .r-section h3 { font-size: 11px; font-weight: 700; color: var(--text); padding-bottom: 1.2mm; border-bottom: 2px solid var(--accent); margin-bottom: 2mm; }
+  .r-exp { margin-bottom: 2.5mm; }
+  .r-exp .r-exp-hd { display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 0.5mm; }
+  .r-exp .r-exp-role { font-size: 10.5px; font-weight: 700; color: var(--text); }
+  .r-exp .r-exp-date { font-size: 8.5px; color: var(--muted); white-space: nowrap; }
+  .r-exp .r-exp-co { font-size: 9px; color: var(--accent); font-weight: 500; margin-bottom: 1mm; }
+  .r-exp ul { padding-left: 3.5mm; }
+  .r-exp ul li { font-size: 8.5px; color: var(--text); margin-bottom: 0.6mm; line-height: 1.4; }
+  .r-exp ul li b, .r-exp ul li strong { color: var(--text); }
+  .r-tbl { width: 100%; font-size: 7.5px; border-collapse: collapse; margin-top: 1mm; }
+  .r-tbl th { background: var(--accent); color: #fdfcf8; padding: 1.5mm 2mm; text-align: left; font-weight: 500; }
+  .r-tbl td { padding: 1.5mm 2mm; border-bottom: 1px solid var(--border); }
+  .r-tbl tr:nth-child(even) td { background: rgba(240,232,216,0.3); }
+  .r-bottom { margin-top: 2mm; }
+  .r-skills-strip { margin-bottom: 2mm; }
+  .r-skills-strip .sk-line { margin-bottom: 1mm; display: flex; align-items: baseline; gap: 1.5mm; font-size: 8px; }
+  .r-skills-strip .sk-line .sk-cat { font-weight: 700; color: var(--text); white-space: nowrap; min-width: 16mm; }
+  .r-skills-strip .sk-line .sk-tags { color: var(--muted); }
+  .r-edu { font-size: 8px; color: var(--muted); padding-top: 1.5mm; border-top: 1px solid var(--border); }
+  .r-edu strong { color: var(--text); }
+  @media print { body { background: #fff; } .page { margin: 0; box-shadow: none; } }
+</style>
 </head>
 <body>
-<p class="p1"><span class="s1"><b>范思静</b></span><span class="s2"><b> </b></span><span class="s3"><b>·</b></span><span class="s2"><b> </b></span><span class="s1"><b>面试资料</b><b></b></span></p>
-<p class="p2"><span class="s1">|</span></p>
-<p class="p3"><span class="s4">简历</span></p>
-<p class="p4"><span class="s4">作品集</span></p>
-<p class="p4"><span class="s4">全部</span></p>
-<p class="p2"><span class="s1">|</span></p>
-<p class="p5"><span class="s1">脱敏模式</span></p>
-<p class="p6"><span class="s4"></span><br></p>
-<p class="p7"><span class="s4">精确版</span></p>
-<p class="p2"><span class="s1">|</span></p>
-<p class="p8"><span class="s5">🖨</span><span class="s4"> </span><span class="s6">打印</span><span class="s4"> / </span><span class="s6">导出</span><span class="s4">PDF</span></p>
-<p class="p9"><span class="s1">提示：打印时自动隐藏本面板和脱敏标记</span></p>
-<p class="p10"><span class="s7">范思静</span></p>
-<p class="p11"><span class="s7">信息流视频项目主管</span><span class="s8"> / </span><span class="s7">短视频内容操盘手</span></p>
-<p class="p12"><span class="s7">求职意向：信息流内容负责人</span><span class="s9"> / </span><span class="s7">短视频项目主管</span><span class="s9"> </span><span class="s10">·</span><span class="s9"> </span><span class="s7">广州（品牌方</span><span class="s9"> / </span><span class="s7">代理均可）</span></p>
-<p class="p13"><span class="s11">📱</span><span class="s7"> 15218129898</span></p>
-<p class="p14"><span class="s7">✉️</span><span class="s12"> </span><span class="s13">？</span></p>
-<p class="p14"><span class="s7">📍</span><span class="s12"> </span><span class="s13">广州</span></p>
-<p class="p13"><span class="s11">🎂</span><span class="s7"> 26</span><span class="s13">岁</span></p>
-<p class="p15"><span class="s11">🎬</span><span class="s12"> </span><span class="s7">作品集：？</span></p>
-<p class="p16"><span class="s14"><b>核心价值：</b></span><span class="s15">4</span><span class="s7">年内容操盘经验（</span><span class="s15">2021</span><span class="s7">至今），</span><span class="s15">3</span><span class="s7">年内完成从设计师助理到信息流项目主管的三级跃升（</span><span class="s15">3.5K→15K</span><span class="s7">）。</span><span class="s16">从</span><span class="s7">0</span><span class="s17">→1</span><span class="s7">，横跨大健康、女装、家清三大品类均交出可量化成果；能下场拍剪、能带团队出活、能对品牌方结果负责。</span></p>
-<p class="p17"><span class="s18">1,500+</span></p>
-<p class="p18"><span class="s18">策划短视频</span></p>
-<p class="p17"><span class="s18">35%</span></p>
-<p class="p18"><span class="s18">爆款率（行业均值</span><span class="s19">~15%</span><span class="s18">）</span></p>
-<p class="p19"><span class="s18">千万</span><span class="s20">+</span></p>
-<p class="p18"><span class="s18">月销售额峰值</span></p>
-<p class="p17"><span class="s18">300</span><span class="s21">万</span><span class="s18">+</span></p>
-<p class="p18"><span class="s18">峰值月消耗</span></p>
-<p class="p17"><span class="s18">3</span><span class="s21">天</span></p>
-<p class="p18"><span class="s18">素材迭代周期（行业</span><span class="s19">7</span><span class="s18">天）</span></p>
-<h3 style="margin: 0.0px 0.0px 7.5px 0.0px; color: #0d121f; -webkit-text-stroke: #0d121f"><span class="s22"><b>工作经历</b><b></b></span></h3>
-<p class="p21"><span class="s7"><b>编导组长</b></span><span class="s23"><b> </b></span><span class="s24">➡️</span><span class="s7"><b>项目负责人</b><b></b></span></p>
-<p class="p22"><span class="s7">2025.03 — 2026.07</span><span class="s13">（</span><span class="s7">1</span><span class="s13">年半）</span></p>
-<p class="p23"><span class="s7">故事传媒（广州）·</span><span class="s9"> </span><span class="s7">家清品类（渍无踪、滴露、立白）</span></p>
-<ul class="ul1">
-  <li class="li24"><span class="s25"><b></b></span><span class="s7"><b>【旧品复活：</b></span><span class="s12"><b>3</b></span><span class="s7"><b>个月未起量</b></span><span class="s12"><b> → </b></span><span class="s7"><b>月销千万】</b></span><span class="s26">主导渍无踪全链路操盘。团队已放弃该品，通过</span><span class="s7"><b>推动千川转全域投放、率先研发墨水渍系列抢占内容蓝海、拓展</b></span><span class="s12"><b>6</b></span><span class="s7"><b>种以上打法</b></span><span class="s26">，逆转至峰值月耗</span><span class="s12"><b>300</b></span><span class="s7"><b>万</b></span><span class="s12"><b>+</b></span><span class="s7"><b>、月销千万</b></span><span class="s26">，半年稳定</span><span class="s27">200</span><span class="s26">万</span><span class="s27">/</span><span class="s26">月</span></li>
-  <li class="li25"><span class="s28"><b></b></span><span class="s29"><b>【</b></span><span class="s30"><b>0→1</b></span><span class="s29"><b>起量：新品牌首周即起量】</b></span><span class="s7">独立操盘立白小白白羽绒服干洗剂，对标爆款首批素材即起量，月耗保</span><span class="s12">��</span><span class="s7">在</span><span class="s29"><b>百万级</b></span><span class="s7">，撬动立白集团后续深度合作</span></li>
-  <li class="li25"><span class="s28"><b></b></span><span class="s29"><b>【卡审突破</b></span><span class="s30"><b> + </b></span><span class="s29"><b>团队建设】</b></span><span class="s7">接手立白卫仕全品类因审核卡死，主动研究规则调整表述，过审率恢复至正常。同步建立团队</span><span class="s12">SOP</span><span class="s7">体系</span><span class="s12">——</span><span class="s7">每月复盘落地</span><span class="s12">50+</span><span class="s7">优化项、编写培训白皮书</span><span class="s12">——</span><span class="s7">效率提升</span><span class="s30"><b>62.5%</b></span><span class="s7">，组员晋升组长</span></li>
-</ul>
-<p class="p26"><span class="s31"><b>短视频内容负责人（项目制合作）</b><b></b></span></p>
-<p class="p22"><span class="s7">2024.09 — 2024.12</span><span class="s13">（近半年）</span></p>
-<p class="p23"><span class="s7">远巨传媒（广州）·</span><span class="s9"> </span><span class="s7">女装品类（雅鹿羽绒系列）</span></p>
-<ul class="ul1">
-  <li class="li25"><span class="s28"><b></b></span><span class="s29"><b>【新品类快速起量：爆款率</b></span><span class="s30"><b>20% → 35%+</b></span><span class="s29"><b>】</b></span><span class="s7">以项目制形式加入，</span><span class="s29"><b>首次接触女装品类</b></span><span class="s7">即在</span><span class="s12">4</span><span class="s7">个月内搭建完整内容体系。主导建立脚本分层测试机制（框架</span><span class="s12">→</span><span class="s7">痛点</span><span class="s12">→</span><span class="s7">元素</span><span class="s12">→</span><span class="s7">裂变四层），将爆款率从</span><span class="s12">20%</span><span class="s7">提升至</span><span class="s30"><b>35%+</b></span><span class="s7">，策划</span><span class="s12">500+</span><span class="s7">条短视频</span></li>
-  <li class="li25"><span class="s28"><b></b></span><span class="s29"><b>【效率标准化：人效</b></span><span class="s30"><b>+60%</b></span><span class="s29"><b>，</b></span><span class="s30"><b>GMV+15%</b></span><span class="s29"><b>】</b></span><span class="s7">主动制定剪辑标准化模板并推动复用至</span><span class="s12">3</span><span class="s7">个新账号，建立数据日复盘机制快速淘汰低效素材，</span><span class="s29"><b>人效提升</b></span><span class="s30"><b>60%</b></span><span class="s7">，直播</span><span class="s12">GMV</span><span class="s7">增长</span><span class="s12">15%</span><span class="s7">，单条视频</span><span class="s12">GMV</span><span class="s7">突破</span><span class="s30"><b>30</b></span><span class="s29"><b>万</b><b></b></span></li>
-</ul>
-<p class="p26"><span class="s31"><b>短视频策划与运营</b><b></b></span></p>
-<p class="p22"><span class="s7">2021.11 — 2024.09</span><span class="s13">（近</span><span class="s7">3</span><span class="s13">年）</span></p>
-<p class="p27"><span class="s32">合诚实业（广州）·</span><span class="s33"> </span><span class="s32">大健康品类（胶原蛋白系列、益生菌）·</span><span class="s33"> </span><span class="s7">从设计师助理起步，</span><span class="s9">3</span><span class="s7">年内薪资</span><span class="s9">3.5K→6.7K</span><span class="s7">，独立负责品牌内容全链路</span></p>
-<ul class="ul1">
-  <li class="li25"><span class="s28"><b></b></span><span class="s29"><b>【</b></span><span class="s30"><b>0→1</b></span><span class="s29"><b>搭建：从设计助理到独立操盘】</b></span><span class="s7">作为品牌</span><span class="s29"><b>第一个内容岗</b></span><span class="s7">加入，从设计师助理起步，</span><span class="s12">3</span><span class="s7">年内从零搭建抖音</span><span class="s12">+</span><span class="s7">小红书+公众号等多平台体系，产出</span><span class="s12">600+</span><span class="s7">条内容（</span><span class="s12">8</span><span class="s7">种形式），粉丝从</span><span class="s12">0</span><span class="s7">做到</span><span class="s12">1.5</span><span class="s7">万。主动搭建追踪表建立</span><span class="s12">A/B</span><span class="s7">测试，迭代周期压缩至</span><span class="s30"><b>3</b></span><span class="s29"><b>天</b></span><span class="s7">（超行业均值），搜索率提升</span><span class="s12">15%</span></li>
-  <li class="li25"><span class="s28"><b></b></span><span class="s29"><b>【外部资源管理：合作8</b></span><span class="s30"><b>00+</b></span><span class="s29"><b>条】</b></span><span class="s7">制定品牌剪辑细化表和需求标准化规范，管理第三方视频公司累计合作</span><span class="s30"><b>800+</b></span><span class="s29"><b>条</b></span><span class="s7">内容，推动平台更新频率达到日更两条</span></li>
-</ul>
-<h3 style="margin: 0.0px 0.0px 7.5px 0.0px; color: #0d121f; -webkit-text-stroke: #0d121f"><span class="s22"><b>自我评价</b><b></b></span></h3>
-<p class="p28"><span class="s34"><b>【为什么是我】</b></span><span class="s35">4</span><span class="s7">年内容操盘经验，</span><span class="s35">3</span><span class="s7">年内完成设计师助理</span><span class="s35">→</span><span class="s7">信息流项目主管的三级跃升（</span><span class="s35">3.5K→15K</span><span class="s7">），横跨大健康、女装、家清均交出可量化成果。能下场拍剪、能带团队出活、能对品牌方结果负责。具有持续迭代升级的能力，不仅对个人的升级，更是能够带领团队优化升级。有着清晰的逻辑思维与方法实操，对明确的结果有着清晰的落地路径。对</span></p>
-<p class="p28"><span class="s34"><b>【全链路操盘】</b></span><span class="s7">覆盖选品</span><span class="s35">→</span><span class="s7">脚本</span><span class="s35">→</span><span class="s7">拍摄</span><span class="s35">→</span><span class="s7">剪辑</span><span class="s35">→</span><span class="s7">投放</span><span class="s35">→</span><span class="s7">数据复盘全流程，爆款率</span><span class="s35">30-35%</span><span class="s7">（行业均值约</span><span class="s35">15%</span><span class="s7">）。精通千川</span><span class="s35">/</span><span class="s7">巨量引擎</span><span class="s35">/</span><span class="s7">全域推广，熟悉抖音</span><span class="s35">+</span><span class="s7">小红书双平台。</span></p>
-<p class="p29"><span class="s34"><b>【管理可复制】</b></span><span class="s7">从</span><span class="s35">0</span><span class="s7">搭建</span><span class="s35">SOP</span><span class="s7">体系，编写的培训白皮书和组长流程规范已被团队复用，所带组员已独立晋升组长</span><span class="s35">——</span><span class="s7">方法论可迁移至新团队。</span></p>
-<h3 style="margin: 0.0px 0.0px 7.5px 0.0px; color: #0d121f; -webkit-text-stroke: #0d121f"><span class="s22"><b>项目速览</b><b></b></span></h3>
-<table cellspacing="0" cellpadding="0" class="t1">
-  <tbody>
-    <tr>
-      <td valign="middle" class="td1">
-        <p class="p30"><span class="s7">项目</span></p>
-      </td>
-      <td valign="middle" class="td2">
-        <p class="p30"><span class="s7">品类</span></p>
-      </td>
-      <td valign="middle" class="td3">
-        <p class="p30"><span class="s7">角色</span></p>
-      </td>
-      <td valign="middle" class="td4">
-        <p class="p30"><span class="s7">核心成果</span></p>
-      </td>
-    </tr>
-    <tr>
-      <td valign="middle" class="td5">
-        <p class="p31"><span class="s7">渍无踪去渍啫喱</span></p>
-      </td>
-      <td valign="middle" class="td6">
-        <p class="p31"><span class="s7">家清</span></p>
-      </td>
-      <td valign="middle" class="td7">
-        <p class="p31"><span class="s7">编导组长</span></p>
-      </td>
-      <td valign="middle" class="td8">
-        <p class="p31"><span class="s7">旧品复活</span><span class="s36"> </span><span class="s37">·</span><span class="s36"> </span><span class="s7">月销千万</span><span class="s36"> </span><span class="s37">·</span><span class="s36"> </span><span class="s7">峰值月耗</span><span class="s36">300</span><span class="s7">万</span><span class="s36">+</span></p>
-      </td>
-    </tr>
-    <tr>
-      <td valign="middle" class="td9">
-        <p class="p31"><span class="s7">小白白羽绒服干洗剂</span></p>
-      </td>
-      <td valign="middle" class="td10">
-        <p class="p31"><span class="s7">家清</span></p>
-      </td>
-      <td valign="middle" class="td11">
-        <p class="p31"><span class="s7">项目负责人</span></p>
-      </td>
-      <td valign="middle" class="td12">
-        <p class="p31"><span class="s36">0→1</span><span class="s7">起量</span><span class="s36"> </span><span class="s37">·</span><span class="s36"> </span><span class="s7">首周起量</span><span class="s36"> </span><span class="s37">·</span><span class="s36"> </span><span class="s7">月耗百万级</span></p>
-      </td>
-    </tr>
-    <tr>
-      <td valign="middle" class="td5">
-        <p class="p31"><span class="s7">立白卫仕洗衣液</span></p>
-      </td>
-      <td valign="middle" class="td6">
-        <p class="p31"><span class="s7">家清</span></p>
-      </td>
-      <td valign="middle" class="td7">
-        <p class="p31"><span class="s7">编导组长</span></p>
-      </td>
-      <td valign="middle" class="td8">
-        <p class="p31"><span class="s7">卡审突破</span><span class="s36"> </span><span class="s37">·</span><span class="s36"> </span><span class="s7">方案可复制</span></p>
-      </td>
-    </tr>
-    <tr>
-      <td valign="middle" class="td9">
-        <p class="p31"><span class="s7">雅鹿羽绒服</span></p>
-      </td>
-      <td valign="middle" class="td10">
-        <p class="p31"><span class="s7">女装</span></p>
-      </td>
-      <td valign="middle" class="td11">
-        <p class="p31"><span class="s7">内容负责人</span></p>
-      </td>
-      <td valign="middle" class="td12">
-        <p class="p32"><span class="s38">爆款率</span><span class="s7">35%+ </span><span class="s37">·</span><span class="s7"> </span><span class="s38">单条</span><span class="s7">GMV 30</span><span class="s38">万</span></p>
-      </td>
-    </tr>
-    <tr>
-      <td valign="middle" class="td5">
-        <p class="p31"><span class="s7">益品达健大健康</span></p>
-      </td>
-      <td valign="middle" class="td6">
-        <p class="p31"><span class="s7">保健</span></p>
-      </td>
-      <td valign="middle" class="td7">
-        <p class="p31"><span class="s7">策划运营</span></p>
-      </td>
-      <td valign="middle" class="td8">
-        <p class="p32"><span class="s7">0→1</span><span class="s38">搭建</span><span class="s7"> </span><span class="s37">·</span><span class="s7"> </span><span class="s38">搜索率</span><span class="s7">+15%</span></p>
-      </td>
-    </tr>
-  </tbody>
-</table>
-<h3 style="margin: 0.0px 0.0px 7.5px 0.0px; color: #0d121f; -webkit-text-stroke: #0d121f"><span class="s22"><b>补充说明</b><b></b></span></h3>
-<p class="p33"><span class="s39">·</span><span class="s35"> 2024.12—2025.03 </span><span class="s7">为项目制结束后的择业过渡期，持续跟进行业动态。可接受品牌方或代理公司内容负责人</span><span class="s35">/</span><span class="s7">项目主管岗位，</span><span class="s35">base</span><span class="s7">广州，亦可远程。作品集视频素材面试时可展示。</span></p>
-<p class="p34"><span class="s7"><b>投放</b></span><span class="s40"><b>&amp;</b></span><span class="s7"><b>数据</b><b></b></span></p>
-<p class="p35"><span class="s7">千川</span><span class="s40"> </span><span class="s41">·</span><span class="s40"> </span><span class="s7">巨量引擎</span><span class="s40"> </span><span class="s41">·</span><span class="s40"> </span><span class="s7">全域推广</span><span class="s40"> </span><span class="s41">·</span><span class="s40"> Excel</span><span class="s7">透视表</span></p>
-<p class="p34"><span class="s7"><b>内容</b></span><span class="s40"><b>&amp;</b></span><span class="s7"><b>设计</b><b></b></span></p>
-<p class="p36"><span class="s42">剪映</span><span class="s7"> </span><span class="s41">·</span><span class="s7"> Premiere </span><span class="s41">·</span><span class="s7"> AE </span><span class="s41">·</span><span class="s7"> Photoshop </span><span class="s41">·</span><span class="s7"> Illustrator </span><span class="s41">·</span><span class="s7"> Figma</span></p>
-<p class="p34"><span class="s7"><b>管理</b></span><span class="s40"><b>&amp;</b></span><span class="s7"><b>品类</b><b></b></span></p>
-<p class="p35"><span class="s40">SOP</span><span class="s7">搭建</span><span class="s40"> </span><span class="s41">·</span><span class="s40"> </span><span class="s7">团队带教</span><span class="s40"> </span><span class="s41">·</span><span class="s40"> </span><span class="s7">跨部门协调</span><span class="s40">  |  </span><span class="s7">家清</span><span class="s40"> </span><span class="s41">·</span><span class="s40"> </span><span class="s7">女装</span><span class="s40"> </span><span class="s41">·</span><span class="s40"> </span><span class="s7">大健康</span></p>
-<p class="p37"><span class="s43"><b>广东南华工商职业学院</b></span><span class="s7"> </span><span class="s41">·</span><span class="s7"> </span><span class="s42">数字媒体应用技术</span><span class="s7"> </span><span class="s41">·</span><span class="s7"> 2019.09—2022.06  |  GPA 3.6 </span><span class="s41">·</span><span class="s7"> </span><span class="s42">优秀毕业生</span><span class="s7"> </span><span class="s41">·</span><span class="s7"> </span><span class="s42">国家奖学金</span></p>
-<p class="p38"><span class="s4">PORTFOLIO 2026</span></p>
-<h1 style="margin: 0.0px 0.0px 15.1px 0.0px; text-align: center; font: 38.0px 'PingFang SC'; color: #ffffff; -webkit-text-stroke: #ffffff"><span class="s4">范思静</span></h1>
-<p class="p40"><span class="s4">信息流视频项目主管</span><span class="s44"> </span><span class="s45">·</span><span class="s44"> </span><span class="s4">作品集</span></p>
-<p class="p41"><span class="s46">3</span><span class="s4">年短视频电商全链路操盘，覆盖家清、女装、大健康三个品类。</span></p>
-<p class="p41"><span class="s4">擅长旧品复活、</span><span class="s46">0→1</span><span class="s4">起量、卡审突破，数据驱动的爆款方法论沉淀。</span></p>
-<p class="p42"><span class="s4">1,500+</span></p>
-<p class="p43"><span class="s4">策划短视频</span></p>
-<p class="p42"><span class="s4">35%+</span></p>
-<p class="p43"><span class="s4">整体爆款率</span></p>
-<p class="p44"><span class="s4">千万级</span></p>
-<p class="p43"><span class="s4">月销售额峰值</span></p>
-<p class="p42"><span class="s4">300</span><span class="s47">万</span><span class="s4">+</span></p>
-<p class="p43"><span class="s4">峰值月消耗</span></p>
-<p class="p45"><span class="s4">15218129898  |  1445727280@qq.com  |  </span><span class="s6">广州</span></p>
-<p class="p46"><span class="s4">1 / 7</span></p>
-<p class="p47"><span class="s7">核心案例：渍无踪去渍啫喱</span><span class="s48"> — </span><span class="s7">旧品复活</span></p>
-<p class="p48"><span class="s49">3</span><span class="s18">个月</span></p>
-<p class="p9"><span class="s18">接手前未起量</span></p>
-<p class="p49"><span class="s18">300</span><span class="s50">万</span><span class="s18">+</span></p>
-<p class="p9"><span class="s18">峰值月消耗</span></p>
-<p class="p49"><span class="s18">1000</span><span class="s50">万</span><span class="s18">+</span></p>
-<p class="p9"><span class="s18">月销售额</span></p>
-<p class="p49"><span class="s18">200</span><span class="s50">万</span></p>
-<p class="p9"><span class="s18">稳定月消耗（持续半年）</span></p>
-<p class="p49"><span class="s18">150</span><span class="s50">万</span></p>
-<p class="p9"><span class="s18">单条视频累计消耗</span></p>
-<p class="p29"><span class="s7">渍无踪（利洁时</span><span class="s35">/Vanish</span><span class="s7">）因公司合作下放广州分部。我入职时已</span><span class="s34"><b>连续</b></span><span class="s51"><b>3</b></span><span class="s34"><b>个月未起量</b></span><span class="s7">，团队完全无信心，品牌方持续缩减预算。</span></p>
-<p class="p26"><span class="s52"><b>我做的三件事</b><b></b></span></p>
-<p class="p26"><span class="s53"><b>1. </b></span><span class="s54"><b>投放策略转型</b><b></b></span></p>
-<p class="p50"><span class="s7">分析历史数据发现千川标准投放已触达天花板，推动切换至</span><span class="s34"><b>全域投放</b></span><span class="s7">模式。运营混剪消耗占比从</span><span class="s35">~23%</span><span class="s7">提升至</span><span class="s35">~31%</span><span class="s7">。</span></p>
-<p class="p26"><span class="s53"><b>2. </b></span><span class="s54"><b>抓住爆点</b><b></b></span></p>
-<p class="p50"><span class="s7">观察到竞品</span><span class="s35">"</span><span class="s7">邮政打墨水渍</span><span class="s35">"</span><span class="s7">形式在千川起量，立即研究不同墨水</span><span class="s35">×</span><span class="s7">不同布料的污渍制作方法，</span><span class="s34"><b>率先产出墨水渍系列视频</b></span><span class="s7">，为该品指明方向，成为最核心跑量素材类型之一。</span></p>
-<p class="p26"><span class="s53"><b>3. </b></span><span class="s54"><b>突破形式限制</b><b></b></span></p>
-<p class="p50"><span class="s7">前期品类局限在单一展示形式。全域投放后推动尝试口播、对比、沉浸式、剧情、混剪等多种内容形式，大幅拓展素材产出类型和跑量概率。</span></p>
-<p class="p51"><span class="s55"><b>扭转结果</b><b></b></span></p>
-<ul class="ul1">
-  <li class="li52"><span class="s56"></span><span class="s18">从</span><span class="s57">"</span><span class="s18">不被看好的过渡品</span><span class="s57">"</span><span class="s18">变为</span><span class="s58"><b>公司核心利润产品</b><b></b></span></li>
-  <li class="li52"><span class="s56"></span><span class="s18">品牌方从缩减预算</span><span class="s57"> → </span><span class="s58"><b>追加投放预算</b><b></b></span></li>
-  <li class="li52"><span class="s56"></span><span class="s18">产品稳定后，</span><span class="s58"><b>将组员培养至可接任组长</b></span><span class="s18">，自己再次带队负责新品</span></li>
-</ul>
-<p class="p53"><span class="s7">2 / 7</span></p>
-<p class="p47"><span class="s7">渍无踪</span><span class="s48"> — </span><span class="s7">数据增长轨迹</span><span class="s48"> &amp; </span><span class="s7">持续优化</span></p>
-<p class="p54"><span class="s7"><b>起量验证期（</b></span><span class="s59"><b>2025</b></span><span class="s7"><b>年</b></span><span class="s59"><b>3-4</b></span><span class="s7"><b>月）</b><b></b></span></p>
-<table cellspacing="0" cellpadding="0" class="t2">
-  <tbody>
-    <tr>
-      <td valign="middle" class="td13">
-        <p class="p55"><span class="s7">指标</span></p>
-      </td>
-      <td valign="middle" class="td14">
-        <p class="p56"><span class="s7">3.4 - 3.17</span></p>
-      </td>
-      <td valign="middle" class="td15">
-        <p class="p56"><span class="s7">3.18 - 4.5</span></p>
-      </td>
-      <td valign="middle" class="td16">
-        <p class="p55"><span class="s7">变化</span></p>
-      </td>
-    </tr>
-    <tr>
-      <td valign="middle" class="td17">
-        <p class="p57"><span class="s7">整体消耗</span></p>
-      </td>
-      <td valign="middle" class="td18">
-        <p class="p58"><span class="s7">106.1</span><span class="s60">万</span></p>
-      </td>
-      <td valign="middle" class="td19">
-        <p class="p58"><span class="s7">149.1</span><span class="s60">万</span></p>
-      </td>
-      <td valign="middle" class="td20">
-        <p class="p59"><span class="s7">+40%</span></p>
-      </td>
-    </tr>
-    <tr>
-      <td valign="middle" class="td21">
-        <p class="p58"><span class="s60">整体</span><span class="s7">GMV</span></p>
-      </td>
-      <td valign="middle" class="td22">
-        <p class="p58"><span class="s7">182.7</span><span class="s60">万</span></p>
-      </td>
-      <td valign="middle" class="td23">
-        <p class="p58"><span class="s7">259.1</span><span class="s60">万</span></p>
-      </td>
-      <td valign="middle" class="td24">
-        <p class="p59"><span class="s7">+42%</span></p>
-      </td>
-    </tr>
-    <tr>
-      <td valign="middle" class="td17">
-        <p class="p58"><span class="s60">整体</span><span class="s7">ROI</span></p>
-      </td>
-      <td valign="middle" class="td18">
-        <p class="p58"><span class="s7">1.72</span></p>
-      </td>
-      <td valign="middle" class="td19">
-        <p class="p58"><span class="s7">1.74</span></p>
-      </td>
-      <td valign="middle" class="td25">
-        <p class="p58"><span class="s7">↑ </span><span class="s60">稳定</span></p>
-      </td>
-    </tr>
-    <tr>
-      <td valign="middle" class="td21">
-        <p class="p57"><span class="s7">转化率</span></p>
-      </td>
-      <td valign="middle" class="td22">
-        <p class="p58"><span class="s7">10.41%</span></p>
-      </td>
-      <td valign="middle" class="td23">
-        <p class="p58"><span class="s7">13.85%</span></p>
-      </td>
-      <td valign="middle" class="td26">
-        <p class="p57"><span class="s23">↑ </span><span class="s7">素材精准度提升</span></p>
-      </td>
-    </tr>
-    <tr>
-      <td valign="middle" class="td17">
-        <p class="p57"><span class="s7">素材成片</span></p>
-      </td>
-      <td valign="middle" class="td18">
-        <p class="p58"><span class="s7">795</span></p>
-      </td>
-      <td valign="middle" class="td19">
-        <p class="p58"><span class="s7">902</span></p>
-      </td>
-      <td valign="middle" class="td25">
-        <p class="p58"><span class="s7">↑</span></p>
-      </td>
-    </tr>
-    <tr>
-      <td valign="middle" class="td21">
-        <p class="p57"><span class="s7">素材过审率</span></p>
-      </td>
-      <td valign="middle" class="td22">
-        <p class="p58"><span class="s7">99%</span></p>
-      </td>
-      <td valign="middle" class="td23">
-        <p class="p58"><span class="s7">99%</span></p>
-      </td>
-      <td valign="middle" class="td26">
-        <p class="p58"><span class="s7">→ </span><span class="s60">稳定</span></p>
-      </td>
-    </tr>
-  </tbody>
-</table>
-<p class="p54"><span class="s7"><b>成熟运营期（</b></span><span class="s59"><b>2026</b></span><span class="s7"><b>年</b></span><span class="s59"><b>5-6</b></span><span class="s7"><b>月）</b><b></b></span></p>
-<table cellspacing="0" cellpadding="0" class="t2">
-  <tbody>
-    <tr>
-      <td valign="middle" class="td27">
-        <p class="p55"><span class="s7">指标</span></p>
-      </td>
-      <td valign="middle" class="td28">
-        <p class="p56"><span class="s7">5.20 - 6.9</span></p>
-      </td>
-      <td valign="middle" class="td29">
-        <p class="p56"><span class="s7">6.10 - 6.30</span></p>
-      </td>
-      <td valign="middle" class="td30">
-        <p class="p55"><span class="s7">说明</span></p>
-      </td>
-    </tr>
-    <tr>
-      <td valign="middle" class="td31">
-        <p class="p57"><span class="s7">整体消耗</span></p>
-      </td>
-      <td valign="middle" class="td32">
-        <p class="p58"><span class="s7">214.9</span><span class="s60">万</span></p>
-      </td>
-      <td valign="middle" class="td33">
-        <p class="p58"><span class="s7">133.3</span><span class="s60">万</span></p>
-      </td>
-      <td valign="middle" class="td34">
-        <p class="p57"><span class="s23">618</span><span class="s7">后流量正常回落</span></p>
-      </td>
-    </tr>
-    <tr>
-      <td valign="middle" class="td35">
-        <p class="p58"><span class="s60">整体</span><span class="s7">GMV</span></p>
-      </td>
-      <td valign="middle" class="td36">
-        <p class="p58"><span class="s7">361.8</span><span class="s60">万</span></p>
-      </td>
-      <td valign="middle" class="td37">
-        <p class="p58"><span class="s7">229.3</span><span class="s60">万</span></p>
-      </td>
-      <td valign="middle" class="td38">
-        <p class="p57"><span class="s7">大促后正常回调</span></p>
-      </td>
-    </tr>
-    <tr>
-      <td valign="middle" class="td31">
-        <p class="p58"><span class="s60">整体</span><span class="s7">ROI</span></p>
-      </td>
-      <td valign="middle" class="td32">
-        <p class="p58"><span class="s7">1.68</span></p>
-      </td>
-      <td valign="middle" class="td33">
-        <p class="p58"><span class="s7">1.72</span></p>
-      </td>
-      <td valign="middle" class="td34">
-        <p class="p58"><span class="s7">ROI</span><span class="s60">稳定</span></p>
-      </td>
-    </tr>
-    <tr>
-      <td valign="middle" class="td35">
-        <p class="p57"><span class="s7">素材成片</span></p>
-      </td>
-      <td valign="middle" class="td36">
-        <p class="p58"><span class="s7">2,566</span></p>
-      </td>
-      <td valign="middle" class="td37">
-        <p class="p58"><span class="s7">3,572</span></p>
-      </td>
-      <td valign="middle" class="td39">
-        <p class="p60"><span class="s7">产能大幅提升</span></p>
-      </td>
-    </tr>
-    <tr>
-      <td valign="middle" class="td31">
-        <p class="p57"><span class="s7">素材过审率</span></p>
-      </td>
-      <td valign="middle" class="td32">
-        <p class="p58"><span class="s7">99%</span></p>
-      </td>
-      <td valign="middle" class="td33">
-        <p class="p58"><span class="s7">98%</span></p>
-      </td>
-      <td valign="middle" class="td34">
-        <p class="p57"><span class="s7">持续高位</span></p>
-      </td>
-    </tr>
-  </tbody>
-</table>
-<p class="p26"><span class="s52"><b>月度复盘机制</b><b></b></span></p>
-<table cellspacing="0" cellpadding="0" class="t2">
-  <tbody>
-    <tr>
-      <td valign="middle" class="td40">
-        <p class="p55"><span class="s7">类型</span></p>
-      </td>
-      <td valign="middle" class="td41">
-        <p class="p55"><span class="s7">发现的问题</span></p>
-      </td>
-      <td valign="middle" class="td42">
-        <p class="p55"><span class="s7">落地优化</span></p>
-      </td>
-    </tr>
-    <tr>
-      <td valign="middle" class="td43">
-        <p class="p57"><span class="s7">拍摄执行</span></p>
-      </td>
-      <td valign="middle" class="td44">
-        <p class="p57"><span class="s7">手影过重影响画面质量；补光位置不当</span></p>
-      </td>
-      <td valign="middle" class="td45">
-        <p class="p57"><span class="s7">调整主光角度和位置；建立拍摄前灯光检查清单</span></p>
-      </td>
-    </tr>
-    <tr>
-      <td valign="middle" class="td46">
-        <p class="p57"><span class="s7">内容策略</span></p>
-      </td>
-      <td valign="middle" class="td47">
-        <p class="p57"><span class="s7">翻拍爆款效果不佳，未明确核心爆点</span></p>
-      </td>
-      <td valign="middle" class="td48">
-        <p class="p57"><span class="s7">先拆解爆款核心要素再翻拍，而非直接照搬</span></p>
-      </td>
-    </tr>
-    <tr>
-      <td valign="middle" class="td43">
-        <p class="p57"><span class="s7">合规应对</span></p>
-      </td>
-      <td valign="middle" class="td44">
-        <p class="p57"><span class="s7">墨水渍内容因差评被平台限制</span></p>
-      </td>
-      <td valign="middle" class="td45">
-        <p class="p57"><span class="s7">统计</span><span class="s23">8</span><span class="s7">条起量视频中</span><span class="s23">3</span><span class="s7">条涉及墨水渍；果渍改为</span><span class="s23">"</span><span class="s7">果汁渍</span><span class="s23">"</span><span class="s7">说法</span></p>
-      </td>
-    </tr>
-    <tr>
-      <td valign="middle" class="td46">
-        <p class="p57"><span class="s7">拍摄细节</span></p>
-      </td>
-      <td valign="middle" class="td47">
-        <p class="p57"><span class="s7">产品演示环节不可控因素多</span></p>
-      </td>
-      <td valign="middle" class="td48">
-        <p class="p57"><span class="s7">优化演示流程顺序；放弃不可复现的演示方案</span></p>
-      </td>
-    </tr>
-    <tr>
-      <td valign="middle" class="td43">
-        <p class="p57"><span class="s7">质量标准</span></p>
-      </td>
-      <td valign="middle" class="td44">
-        <p class="p57"><span class="s7">产品呈现效果不理想；道具质量问题</span></p>
-      </td>
-      <td valign="middle" class="td45">
-        <p class="p57"><span class="s7">开拍前统一产品准备标准；道具入库前检查</span></p>
-      </td>
-    </tr>
-  </tbody>
-</table>
-<p class="p51"><span class="s55"><b>这组数据的面试价值</b><b></b></span></p>
-<ul class="ul1">
-  <li class="li52"><span class="s56"></span><span class="s18">不是</span><span class="s57">"</span><span class="s18">某一条爆了</span><span class="s57">"</span><span class="s18">，而是从起量到稳定的</span><span class="s58"><b>完整增长曲线</b><b></b></span></li>
-  <li class="li52"><span class="s56"></span><span class="s18">每个问题都有</span><span class="s61"><b>"</b></span><span class="s58"><b>发现</b></span><span class="s61"><b>→</b></span><span class="s58"><b>方案</b></span><span class="s61"><b>→</b></span><span class="s58"><b>落地</b></span><span class="s61"><b>"</b></span><span class="s18">的闭环</span><span class="s57">——</span><span class="s18">证明执行力和管理习惯</span></li>
-  <li class="li52"><span class="s56"></span><span class="s18">沉淀了跨品类知识资产和</span><span class="s61"><b>5</b></span><span class="s58"><b>份规范文档</b><b></b></span></li>
-</ul>
-<p class="p53"><span class="s7">3 / 7</span></p>
-<p class="p47"><span class="s7">小白白羽绒服干洗剂</span><span class="s48"> — 0→1</span><span class="s7">起量</span></p>
-<p class="p48"><span class="s18">首周</span></p>
-<p class="p9"><span class="s18">即起量（前</span><span class="s62">5</span><span class="s18">条视频）</span></p>
-<p class="p49"><span class="s18">10</span><span class="s50">万</span><span class="s18">+</span></p>
-<p class="p9"><span class="s18">首周单条消耗</span></p>
-<p class="p49"><span class="s18">45</span><span class="s50">万</span><span class="s18">+</span></p>
-<p class="p9"><span class="s18">项目结束单条日消耗</span></p>
-<p class="p48"><span class="s18">百万级</span></p>
-<p class="p9"><span class="s18">持续月消耗</span></p>
-<p class="p29"><span class="s7">立白集团旗下新品，零历史数据，作为</span><span class="s34"><b>项目负责人独立带队</b></span><span class="s7">。</span></p>
-<p class="p26"><span class="s54"><b>第</b></span><span class="s53"><b>1</b></span><span class="s54"><b>周：快速对标起量</b><b></b></span></p>
-<p class="p50"><span class="s7">对标竞品爆款框架快速产出第一批测试素材。首批素材即起量，验证了品类方向和内容框架的可行性。</span></p>
-<p class="p26"><span class="s53"><b>1.5</b></span><span class="s54"><b>个月：放大跑量</b><b></b></span></p>
-<p class="p50"><span class="s7">聚焦高转化素材类型，持续优化脚本结构和拍摄细节。单条日产达</span><span class="s35">15</span><span class="s7">万</span><span class="s35">+</span><span class="s7">，项目结束时跑至</span><span class="s35">45</span><span class="s7">万</span><span class="s35">+</span><span class="s7">。</span></p>
-<p class="p26"><span class="s54"><b>长期：稳定与撬动</b><b></b></span></p>
-<p class="p50"><span class="s7">月消耗保持百万级，</span><span class="s34"><b>撬动了立白集团深度合作</b></span><span class="s7">（卫仕洗衣液）。</span></p>
-<p class="p51"><span class="s55"><b>这个案例证明</b><b></b></span></p>
-<ul class="ul1">
-  <li class="li61"><span class="s56"></span><span class="s63">给我一个新品，</span><span class="s64"><b>1</b></span><span class="s65"><b>周内找到起量方向</b><b></b></span></li>
-  <li class="li52"><span class="s56"></span><span class="s18">不是靠运气爆一条</span><span class="s57">——</span><span class="s18">持续产出、持续迭代、持续放量</span></li>
-  <li class="li52"><span class="s56"></span><span class="s18">从编导组长到</span><span class="s58"><b>项目负责人</b></span><span class="s18">，独立对品牌方结果负责</span></li>
-</ul>
-<p class="p47"><span class="s7">立白卫仕除菌洗衣液</span><span class="s48"> — </span><span class="s7">卡审突破</span></p>
-<p class="p29"><span class="s7">立白卫仕除菌洗衣液是立白集团与故事传媒的深度合作项目。产品上线后遭遇</span><span class="s34"><b>全品类视频卡审</b></span><span class="s35">——</span><span class="s7">除菌类产品因涉及功效宣称被平台大量驳回，导致所有素材无法正常投放。</span></p>
-<p class="p62"><span class="s7"><b>从</b></span><span class="s53"><b>"</b></span><span class="s7"><b>全卡</b></span><span class="s53"><b>"</b></span><span class="s7"><b>到</b></span><span class="s53"><b>"</b></span><span class="s7"><b>不卡</b></span><span class="s53"><b>"</b><b></b></span></p>
-<p class="p50"><span class="s7">研究审核规则后，发现核心问题在</span><span class="s34"><b>菌种表述</b></span><span class="s7">。将</span><span class="s35">"</span><span class="s7">多菌种</span><span class="s35">/</span><span class="s7">多种细菌</span><span class="s35">"</span><span class="s7">改为单一</span><span class="s35">"</span><span class="s7">除菌</span><span class="s35">"</span><span class="s7">表述，视频过审率从几乎为</span><span class="s35">0</span><span class="s7">恢复到正常水平。产出</span><span class="s35">27</span><span class="s7">条脚本，方案可复用至其他除菌品类。</span></p>
-<p class="p51"><span class="s55"><b>面试价值</b><b></b></span></p>
-<ul class="ul1">
-  <li class="li63"><span class="s56"></span><span class="s66">不仅能做爆款，还能解决</span><span class="s64"><b>"</b></span><span class="s67"><b>别人解决不了</b></span><span class="s64"><b>"</b></span><span class="s67"><b>的合规问题</b><b></b></span></li>
-  <li class="li52"><span class="s56"></span><span class="s18">方案的可复制性高</span><span class="s57">——</span><span class="s18">后续同类产品可直接复用</span></li>
-</ul>
-<p class="p53"><span class="s7">4 / 7</span></p>
-<p class="p47"><span class="s7">合诚实业（大健康）</span><span class="s48">— </span><span class="s7">品牌方从</span><span class="s48">0</span><span class="s7">到</span><span class="s48">1</span></p>
-<p class="p49"><span class="s18">400+</span></p>
-<p class="p9"><span class="s18">短视频产出</span></p>
-<p class="p49"><span class="s18">200+</span></p>
-<p class="p9"><span class="s18">图文产出</span></p>
-<p class="p49"><span class="s18">+18%</span></p>
-<p class="p9"><span class="s18">小红书转粉率</span></p>
-<p class="p49"><span class="s18">+22%</span></p>
-<p class="p9"><span class="s18">抖音点击率</span></p>
-<p class="p49"><span class="s18">+15%</span></p>
-<p class="p9"><span class="s18">搜索率（超行业</span><span class="s62">5%</span><span class="s18">）</span></p>
-<p class="p29"><span class="s35">2021</span><span class="s7">年我作为</span><span class="s34"><b>第一个内容岗位员工</b></span><span class="s7">加入合诚实业，从零搭建品牌在抖音和小红书的短视频</span><span class="s35">+</span><span class="s7">图文内容体系。</span><span class="s34"><b>这是我职业生涯的起点，也是最长的一段经历（近</b></span><span class="s51"><b>3</b></span><span class="s34"><b>年）。</b><b></b></span></p>
-<p class="p51"><span class="s55"><b>核心贡献</b><b></b></span></p>
-<ul class="ul1">
-  <li class="li52"><span class="s56"></span><span class="s18">从</span><span class="s57">0</span><span class="s18">到</span><span class="s57">1</span><span class="s18">搭建抖音</span><span class="s57">+</span><span class="s18">小红书双平台内容体系</span></li>
-  <li class="li52"><span class="s56"></span><span class="s18">建立品类视觉素材库（图片</span><span class="s57">+</span><span class="s18">短视频，成为后续内容生产的基础设施）</span></li>
-  <li class="li52"><span class="s56"></span><span class="s18">独立搭建视频效果追踪表，跑通</span><span class="s57">A/B</span><span class="s18">测试流程</span></li>
-  <li class="li52"><span class="s56"></span><span class="s18">素材迭代周期从</span><span class="s57">7</span><span class="s18">天压缩至</span><span class="s57">3</span><span class="s18">天</span></li>
-  <li class="li52"><span class="s56"></span><span class="s18">产出</span><span class="s57">8</span><span class="s18">种以上内容形式（口播</span><span class="s57">/</span><span class="s18">科普</span><span class="s57">/</span><span class="s18">剧情</span><span class="s57">/</span><span class="s18">热点借势等）</span></li>
-  <li class="li52"><span class="s56"></span><span class="s18">管理第三方供应商合作，累计数百条内容</span></li>
-</ul>
-<p class="p51"><span class="s55"><b>这段经历的面试价值</b><b></b></span></p>
-<ul class="ul1">
-  <li class="li52"><span class="s68"><b></b></span><span class="s58"><b>品牌方视角</b></span><span class="s18">：不只是流量操盘，理解品牌长期建设和视觉资产管理</span></li>
-  <li class="li52"><span class="s68"><b></b></span><span class="s61"><b>0→1</b></span><span class="s58"><b>能力</b></span><span class="s18">：无前人、无模板、无数据体系下自己搭建一切</span></li>
-  <li class="li52"><span class="s68"><b></b></span><span class="s58"><b>多平台思维</b></span><span class="s18">：抖音（转化）</span><span class="s57">+ </span><span class="s18">小红书（种草）双平台</span></li>
-  <li class="li52"><span class="s68"><b></b></span><span class="s58"><b>近</b></span><span class="s61"><b>3</b></span><span class="s58"><b>年稳定性</b></span><span class="s18">：证明能在一个地方持续深耕</span></li>
-</ul>
-<p class="p26"><span class="s52"><b>跨品类经验</b><b></b></span></p>
-<table cellspacing="0" cellpadding="0" class="t2">
-  <tbody>
-    <tr>
-      <td valign="middle" class="td49">
-        <p class="p55"><span class="s7">品类</span></p>
-      </td>
-      <td valign="middle" class="td50">
-        <p class="p55"><span class="s7">代表产品类型</span></p>
-      </td>
-      <td valign="middle" class="td51">
-        <p class="p55"><span class="s7">主要形式</span></p>
-      </td>
-      <td valign="middle" class="td52">
-        <p class="p55"><span class="s7">核心成果</span></p>
-      </td>
-    </tr>
-    <tr>
-      <td valign="middle" class="td53">
-        <p class="p57"><span class="s7">家清·去渍</span></p>
-      </td>
-      <td valign="middle" class="td54">
-        <p class="p57"><span class="s7">去渍啫喱</span></p>
-      </td>
-      <td valign="middle" class="td55">
-        <p class="p57"><span class="s7">口播</span><span class="s23">+</span><span class="s7">对比</span><span class="s23">+</span><span class="s7">混剪</span></p>
-      </td>
-      <td valign="middle" class="td56">
-        <p class="p57"><span class="s7">月销千万级</span></p>
-      </td>
-    </tr>
-    <tr>
-      <td valign="middle" class="td57">
-        <p class="p57"><span class="s7">家清·羽绒服清洁</span></p>
-      </td>
-      <td valign="middle" class="td58">
-        <p class="p57"><span class="s7">羽绒服干洗剂</span></p>
-      </td>
-      <td valign="middle" class="td59">
-        <p class="p57"><span class="s7">口播</span><span class="s23">+</span><span class="s7">演示</span><span class="s23">+</span><span class="s7">直播</span></p>
-      </td>
-      <td valign="middle" class="td60">
-        <p class="p57"><span class="s7">首周起量，月耗百万级</span></p>
-      </td>
-    </tr>
-    <tr>
-      <td valign="middle" class="td53">
-        <p class="p57"><span class="s7">家清·除菌</span></p>
-      </td>
-      <td valign="middle" class="td54">
-        <p class="p57"><span class="s7">除菌洗衣液</span></p>
-      </td>
-      <td valign="middle" class="td55">
-        <p class="p57"><span class="s7">多种开头</span><span class="s23">+</span><span class="s7">混剪</span></p>
-      </td>
-      <td valign="middle" class="td56">
-        <p class="p57"><span class="s7">卡审突破</span></p>
-      </td>
-    </tr>
-    <tr>
-      <td valign="middle" class="td57">
-        <p class="p57"><span class="s7">女装·羽绒</span></p>
-      </td>
-      <td valign="middle" class="td58">
-        <p class="p57"><span class="s7">羽绒服</span><span class="s23">/</span><span class="s7">羽绒裤</span></p>
-      </td>
-      <td valign="middle" class="td59">
-        <p class="p57"><span class="s7">户外实拍</span><span class="s23">+</span><span class="s7">展示</span></p>
-      </td>
-      <td valign="middle" class="td60">
-        <p class="p58"><span class="s60">爆款率</span><span class="s7">30%+</span><span class="s60">，单条</span><span class="s7">GMV 30</span><span class="s60">万</span></p>
-      </td>
-    </tr>
-    <tr>
-      <td valign="middle" class="td53">
-        <p class="p57"><span class="s7">大健康</span></p>
-      </td>
-      <td valign="middle" class="td54">
-        <p class="p57"><span class="s7">口服美容</span><span class="s23">/</span><span class="s7">益生菌</span></p>
-      </td>
-      <td valign="middle" class="td55">
-        <p class="p57"><span class="s7">口播</span><span class="s23">+</span><span class="s7">科普</span><span class="s23">+</span><span class="s7">剧情</span></p>
-      </td>
-      <td valign="middle" class="td56">
-        <p class="p57"><span class="s7">品牌搜索率显著提升</span></p>
-      </td>
-    </tr>
-    <tr>
-      <td valign="middle" class="td57">
-        <p class="p57"><span class="s7">家清·地板清洁</span></p>
-      </td>
-      <td valign="middle" class="td58">
-        <p class="p57"><span class="s7">地板清洁液</span></p>
-      </td>
-      <td valign="middle" class="td59">
-        <p class="p57"><span class="s7">机器音</span><span class="s23">+</span><span class="s7">展示</span></p>
-      </td>
-      <td valign="middle" class="td60">
-        <p class="p57"><span class="s7">持续产出爆款脚本</span></p>
-      </td>
-    </tr>
-  </tbody>
-</table>
-<p class="p53"><span class="s7">5 / 7</span></p>
-<p class="p47"><span class="s7">我的方法论</span><span class="s48"> &amp; </span><span class="s7">能力体系</span></p>
-<p class="p26"><span class="s52"><b>信息流视频起量五步法</b><b></b></span></p>
-<p class="p64"><span class="s18">1</span></p>
-<p class="p65"><span class="s69"><b>竞品拆解</b><b></b></span></p>
-<p class="p66"><span class="s18">找对标</span><span class="s70">/</span><span class="s18">拆框架</span><span class="s70">/</span><span class="s18">提取爆点</span></p>
-<p class="p67"><span class="s7">→</span></p>
-<p class="p64"><span class="s18">2</span></p>
-<p class="p68"><span class="s18"><b>A/B</b></span><span class="s69"><b>测试</b><b></b></span></p>
-<p class="p66"><span class="s18">多版本脚本</span><span class="s70">/</span><span class="s18">多开头</span><span class="s70">/</span><span class="s18">多形式</span></p>
-<p class="p67"><span class="s7">→</span></p>
-<p class="p64"><span class="s18">3</span></p>
-<p class="p65"><span class="s69"><b>数据验证</b><b></b></span></p>
-<p class="p66"><span class="s18">消耗</span><span class="s70">/ROI/</span><span class="s18">转化</span><span class="s70">/</span><span class="s18">人群画像</span></p>
-<p class="p67"><span class="s7">→</span></p>
-<p class="p64"><span class="s18">4</span></p>
-<p class="p65"><span class="s69"><b>爆款裂变</b><b></b></span></p>
-<p class="p66"><span class="s18">翻拍</span><span class="s70">/</span><span class="s18">混剪复刻</span><span class="s70">/</span><span class="s18">变体测试</span></p>
-<p class="p67"><span class="s7">→</span></p>
-<p class="p64"><span class="s18">5</span></p>
-<p class="p65"><span class="s69"><b>体系沉淀</b><b></b></span></p>
-<p class="p66"><span class="s70">SOP/</span><span class="s18">模板</span><span class="s70">/</span><span class="s18">知识库</span><span class="s70">/</span><span class="s18">培训</span></p>
-<p class="p26"><span class="s52"><b>脚本分层测试体系</b><b></b></span></p>
-<table cellspacing="0" cellpadding="0" class="t2">
-  <tbody>
-    <tr>
-      <td valign="middle" class="td61">
-        <p class="p55"><span class="s7">层级</span></p>
-      </td>
-      <td valign="middle" class="td62">
-        <p class="p55"><span class="s7">策略</span></p>
-      </td>
-      <td valign="middle" class="td61">
-        <p class="p55"><span class="s7">目的</span></p>
-      </td>
-    </tr>
-    <tr>
-      <td valign="middle" class="td63">
-        <p class="p57"><span class="s7">第一层：框架测试</span></p>
-      </td>
-      <td valign="middle" class="td64">
-        <p class="p57"><span class="s7">同一产品，</span><span class="s23">5-8</span><span class="s7">种不同框架结构</span></p>
-      </td>
-      <td valign="middle" class="td63">
-        <p class="p57"><span class="s7">找到最优框架</span></p>
-      </td>
-    </tr>
-    <tr>
-      <td valign="middle" class="td65">
-        <p class="p57"><span class="s7">第二层：痛点测试</span></p>
-      </td>
-      <td valign="middle" class="td66">
-        <p class="p57"><span class="s7">同一框架，不同痛点关键词</span></p>
-      </td>
-      <td valign="middle" class="td65">
-        <p class="p57"><span class="s7">找到最高转化痛点</span></p>
-      </td>
-    </tr>
-    <tr>
-      <td valign="middle" class="td63">
-        <p class="p57"><span class="s7">第三层：元素测试</span></p>
-      </td>
-      <td valign="middle" class="td64">
-        <p class="p57"><span class="s7">同一痛点，不同开头</span><span class="s23">/</span><span class="s7">人声</span><span class="s23">/</span><span class="s7">画面</span></p>
-      </td>
-      <td valign="middle" class="td63">
-        <p class="p57"><span class="s7">微调提升跑量概率</span></p>
-      </td>
-    </tr>
-    <tr>
-      <td valign="middle" class="td65">
-        <p class="p57"><span class="s7">第四层：裂变</span></p>
-      </td>
-      <td valign="middle" class="td66">
-        <p class="p57"><span class="s7">爆款框架</span><span class="s23"> × </span><span class="s7">新痛点</span><span class="s23">/</span><span class="s7">场景</span><span class="s23">/</span><span class="s7">人群</span></p>
-      </td>
-      <td valign="middle" class="td65">
-        <p class="p57"><span class="s7">规模化复制</span></p>
-      </td>
-    </tr>
-  </tbody>
-</table>
-<p class="p26"><span class="s52"><b>团队效率体系</b><b></b></span></p>
-<p class="p51"><span class="s55"><b>剪辑模板化</b><b></b></span></p>
-<p class="p69"><span class="s18">爆款结构拆解为可复用模板（开头</span><span class="s62">→</span><span class="s18">展示</span><span class="s62">→</span><span class="s18">对比</span><span class="s62">→</span><span class="s18">催促），剪辑按模板套用，</span><span class="s71"><b>效率提升</b></span><span class="s72"><b>60%+</b><b></b></span></p>
-<p class="p51"><span class="s55"><b>日复盘机制</b><b></b></span></p>
-<p class="p69"><span class="s18">每日追踪素材跑量数据，快速淘汰低效素材、加倍高效素材，</span><span class="s71"><b>迭代周期从周级压缩到天级</b><b></b></span></p>
-<p class="p26"><span class="s52"><b>能力掌握度</b><b></b></span></p>
-<p class="p69"><span class="s7">信息流投放</span><span class="s73"> &amp; </span><span class="s7">数据复盘</span></p>
-<p class="p69"><span class="s7">精通</span></p>
-<p class="p70"><span class="s4"></span><br></p>
-<p class="p69"><span class="s7">视频内容策划</span><span class="s73"> &amp; </span><span class="s7">制作</span></p>
-<p class="p69"><span class="s7">精通</span></p>
-<p class="p70"><span class="s4"></span><br></p>
-<p class="p69"><span class="s7">团队管理</span><span class="s73"> &amp; </span><span class="s7">流程搭建</span></p>
-<p class="p69"><span class="s7">熟练</span></p>
-<p class="p70"><span class="s4"></span><br></p>
-<p class="p71"><span class="s74">视觉设计</span><span class="s7"> (PS/AI/Figma)</span></p>
-<p class="p69"><span class="s7">精通</span></p>
-<p class="p70"><span class="s4"></span><br></p>
-<p class="p69"><span class="s7">跨品类内容迁移</span></p>
-<p class="p69"><span class="s7">熟练</span></p>
-<p class="p70"><span class="s4"></span><br></p>
-<p class="p53"><span class="s7">6 / 7</span></p>
-<h2 style="margin: 0.0px 0.0px 22.7px 0.0px; text-align: center; font: 30.0px 'PingFang SC'; color: #ffffff; -webkit-text-stroke: #ffffff"><span class="s4">范思静</span></h2>
-<p class="p73"><span class="s75">信息流视频项目主管</span><span class="s76"><br>
-</span><span class="s77">3</span><span class="s4">年全链路</span><span class="s77"> </span><span class="s78">·</span><span class="s77"> 3</span><span class="s4">品类</span><span class="s77"> </span><span class="s78">·</span><span class="s77"> </span><span class="s4">千万级月销</span></p>
-<p class="p42"><span class="s4">1,500+</span></p>
-<p class="p43"><span class="s4">策划视频</span></p>
-<p class="p42"><span class="s4">35%</span></p>
-<p class="p43"><span class="s4">爆款率</span></p>
-<p class="p44"><span class="s4">千万级</span></p>
-<p class="p43"><span class="s4">月销售额</span></p>
-<p class="p74"><span class="s4">15218129898  |  1445727280@qq.com  |  </span><span class="s79">广州</span></p>
-<p class="p75"><span class="s4">作品集内数据均来自真实业务复盘，完整视频素材和复盘文档可面试时展示</span></p>
-<p class="p46"><span class="s4">7 / 7</span></p>
+<div class="page">
+
+  <div class="r-header">
+    <h1>范思静</h1>
+    <div class="r-title">信息流视频项目主管 / 内容操盘手</div>
+    <div class="r-intent">求职意向：信息流内容负责人 / 短视频项目主管 · 广州（品牌方 / 代理均可）</div>
+  </div>
+
+  <div class="r-contact-strip">
+    <span>📱 15218129898</span>
+    <span>✉️ fansijing@outlook.com</span>
+    <span>📍 广州</span>
+    <span>🎂 26岁</span>
+    <span>🎬 作品集：面试时展示</span>
+  </div>
+
+  <div class="r-summary">
+    <strong>核心价值：</strong>4年内容操盘经验（2021至今），3年内完成从设计师助理到信息流项目主管的三级跃升（3.5K→15K）。从0→1，横跨大健康、女装、家清三大品类均交出可量化成果；能下场拍剪、能带团队出活、能对品牌方结果负责。
+  </div>
+
+  <div class="r-kpi-row">
+    <div class="r-kpi"><div class="k">3次</div><div class="l">0→1 品类起量</div></div>
+    <div class="r-kpi"><div class="k">千万+</div><div class="l">月销售额峰值</div></div>
+    <div class="r-kpi"><div class="k">300万+</div><div class="l">峰值月消耗</div></div>
+    <div class="r-kpi"><div class="k">1,500+</div><div class="l">策划短视频</div></div>
+    <div class="r-kpi"><div class="k">35%</div><div class="l">爆款率（行业均值~15%）</div></div>
+    <div class="r-kpi"><div class="k">3天</div><div class="l">素材迭代周期（行业7天）</div></div>
+  </div>
+
+  <div class="r-section">
+    <h3>工作经历</h3>
+    <div class="r-exp">
+      <div class="r-exp-hd"><span class="r-exp-role">编导组长 / 项目负责人</span><span class="r-exp-date">2025.03 — 2026.07（1年5个月）</span></div>
+      <div class="r-exp-co">故事传媒（广州）· 家清品类（渍无踪、滴露、立白、椰放）</div>
+      <ul>
+        <li><b>【旧品复活：3个月未起量 → 月销千万】</b>主导渍无踪全链路操盘。团队已放弃该品，通过<strong>推动千川转全域投放、率先研发墨水渍系列抢占内容蓝海、拓展6种以上打法</strong>，逆转至峰值月耗<strong>300万+、月销千万</strong>，半年稳定200万/月</li>
+        <li><b>【0→1起量：新品牌首周即起量】</b>独立操盘立白小白白羽绒服干洗剂，对标爆款首批素材即起量，月耗保持<strong>百万级</strong>，撬动立白集团后续深度合作</li>
+        <li><b>【卡审突破 + 团队建设】</b>接手立白卫仕全品类因审核卡死，主动研究规则调整表述，过审率恢复至正常。同步建立静组SOP体系——每月复盘落地50+优化项、编写培训白皮书——效率提升<strong>62.5%</strong>，组员晋升组长</li>
+      </ul>
+    </div>
+    <div class="r-exp">
+      <div class="r-exp-hd"><span class="r-exp-role">短视频内容负责人（项目制合作）</span><span class="r-exp-date">2024.09 — 2024.12（4个月）</span></div>
+      <div class="r-exp-co">远巨传媒（广州）· 女装品类（雅鹿羽绒服/羽绒裤）</div>
+      <ul>
+        <li><b>【新品类快速起量：爆款率20% → 35%+】</b>以项目制形式加入，<strong>首次接触女装品类</strong>即在4个月内搭建完整内容体系。主导建立脚本分层测试机制，将爆款率从20%提升至<strong>35%+</strong>，策划500+条短视频</li>
+        <li><b>【效率标准化：人效+60%，GMV+15%】</b>主动制定剪辑标准化模板并推动复用至3个新账号，建立数据日复盘机制快速淘汰低效素材，<strong>人效提升60%</strong>，直播GMV增长15%，单条视频GMV突破<strong>30万</strong></li>
+      </ul>
+    </div>
+    <div class="r-exp">
+      <div class="r-exp-hd"><span class="r-exp-role">短视频策划与运营</span><span class="r-exp-date">2021.11 — 2024.09（近3年）</span></div>
+      <div class="r-exp-co">合诚实业（广州）· 大健康品类（胶原蛋白/益生菌）· <span style="color:var(--muted);">从设计师助理起步，3年内薪资3.5K→6.7K，独立负责品牌内容全链路</span></div>
+      <ul>
+        <li><b>【0→1搭建：从设计助理到独立操盘】</b>作为品牌<strong>第一个内容岗</strong>加入，从设计师助理起步，3年内从零搭建抖音+小红书等多平台体系，产出600+条内容（8种形式），粉丝从0做到1.5万。主动搭建追踪表建立A/B测试，迭代周期压缩至<strong>3天</strong>（超行业均值），搜索率提升15%</li>
+        <li><b>【外部资源管理：合作400+条】</b>制定品牌剪辑细化表和需求标准化规范，管理第三方视频公司累计合作<strong>400+条</strong>，推动平台更新频率达到每周两更</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="r-section">
+    <h3>自我评价</h3>
+    <div style="font-size:9px;line-height:1.6;">
+      <p style="margin-bottom:1.5mm;"><b>【为什么是我】</b>4年完成从<strong>执行到管理的完整闭环</strong>。前期扎根内容全链路——拍摄、剪辑、投放、策略独立承接，打下实操基础。后期转向团队建设——搭建SOP体系、建立月度复盘机制、编写培训白皮书与组长流程规范。将濒死产品拉至月销千万后，培养组员独立晋升组长，验证了管理方法论的可复制性。</p>
+      <p style="margin-bottom:1.5mm;"><b>【全链路操盘】</b>覆盖选品→脚本→拍摄→剪辑→投放→数据复盘全流程，爆款率30-35%（行业均值约15%）。精通千川/巨量引擎/全域推广，熟悉抖音+小红书双平台。</p>
+      <p><b>【管理可复制】</b>从0搭建SOP体系，编写的培训白皮书和组长流程规范已被团队复用，所带组员已独立晋升组长——方法论可迁移至新团队。</p>
+    </div>
+  </div>
+
+  <div class="r-section">
+    <h3>项目速览</h3>
+    <table class="r-tbl">
+      <tr><th>项目</th><th>品类</th><th>角色</th><th>核心成果</th></tr>
+      <tr><td>渍无踪去渍啫喱</td><td>家清</td><td>编导组长</td><td>旧品复活 · 月销千万 · 峰值月耗300万+</td></tr>
+      <tr><td>小白白羽绒服干洗剂</td><td>家清</td><td>项目负责人</td><td>0→1起量 · 首周起量 · 月耗百万级</td></tr>
+      <tr><td>立白卫仕洗衣液</td><td>家清</td><td>编导组长</td><td>卡审突破 · 方案可复制</td></tr>
+      <tr><td>雅鹿羽绒服</td><td>女装</td><td>内容负责人</td><td>爆款率35%+ · 单条GMV 30万</td></tr>
+      <tr><td>益品达健大健康</td><td>保健</td><td>策划运营</td><td>0→1搭建 · 搜索率+15%</td></tr>
+    </table>
+  </div>
+
+  <div class="r-bottom">
+    <div class="r-skills-strip">
+      <div class="sk-line"><span class="sk-cat">投放&amp;数据</span><span class="sk-tags">千川 · 巨量引擎 · 全域推广 · Excel透视表</span></div>
+      <div class="sk-line"><span class="sk-cat">内容&amp;设计</span><span class="sk-tags">剪映 · Premiere · AE · Photoshop · Illustrator · Figma</span></div>
+      <div class="sk-line"><span class="sk-cat">管理&amp;品类</span><span class="sk-tags">SOP搭建 · 团队带教 · 跨部门协调 &nbsp;|&nbsp; 家清 · 女装 · 大健康</span></div>
+    </div>
+    <div class="r-edu">
+      <strong>广东南华工商职业学院</strong> · 数字媒体应用技术 · 2019.09—2022.06 &nbsp;|&nbsp; GPA 3.6 · 优秀毕业生 · 国家奖学金
+    </div>
+  </div>
+
+</div>
 </body>
 </html>
