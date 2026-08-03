@@ -8,29 +8,29 @@
   * { margin: 0; padding: 0; box-sizing: border-box; }
   body {
     font-family: -apple-system, "PingFang SC", "Microsoft YaHei", sans-serif;
-    background: #0a0e17; color: #d1d5db; min-height: 100vh; padding: 24px;
+    background: #f5f1e8; color: #2c2416; min-height: 100vh; padding: 24px;
     line-height: 1.6;
   }
   .container { max-width: 850px; margin: 0 auto; }
-  h1 { text-align: center; font-size: 22px; color: #f9fafb; margin-bottom: 4px; }
-  .sub { text-align: center; font-size: 13px; color: #6b7280; margin-bottom: 28px; }
+  h1 { text-align: center; font-size: 22px; color: #2c2416; margin-bottom: 4px; }
+  .sub { text-align: center; font-size: 13px; color: #8c8272; margin-bottom: 28px; }
 
   .step-nav { display: flex; gap: 6px; justify-content: center; margin-bottom: 24px; flex-wrap: wrap; }
   .step-dot {
     width: 36px; height: 36px; border-radius: 50%; display: flex; align-items: center; justify-content: center;
     font-size: 12px; font-weight: 700; cursor: pointer; transition: 0.2s;
-    background: #111827; border: 2px solid #1f2937; color: #6b7280;
+    background: #fdfcf8; border: 2px solid #d9d3c7; color: #8c8272;
   }
-  .step-dot:hover { border-color: #374151; }
-  .step-dot.active { background: #2563eb; color: #fff; border-color: #2563eb; box-shadow: 0 0 16px rgba(37,99,235,0.4); }
-  .step-dot.done { background: #14532d; color: #86efac; border-color: #16a34a; }
+  .step-dot:hover { border-color: #d9d3c7; }
+  .step-dot.active { background: #5b4c3a; color: #fdfdfc; border-color: #5b4c3a; box-shadow: 0 0 16px rgba(37,99,235,0.4); }
+  .step-dot.done { background: #d9d3c7; color: #6b7f5e; border-color: #16a34a; }
 
   .stage-card {
-    background: #111827; border: 1px solid #1f2937; border-radius: 12px;
+    background: #fdfcf8; border: 1px solid #d9d3c7; border-radius: 12px;
     padding: 28px; margin-bottom: 16px;
   }
-  .stage-card h2 { font-size: 18px; color: #f9fafb; margin-bottom: 4px; }
-  .stage-card .phase { font-size: 11px; color: #2563eb; font-weight: 700; letter-spacing: 2px; margin-bottom: 16px; }
+  .stage-card h2 { font-size: 18px; color: #2c2416; margin-bottom: 4px; }
+  .stage-card .phase { font-size: 11px; color: #5b4c3a; font-weight: 700; letter-spacing: 2px; margin-bottom: 16px; }
 
   /* Flow diagram */
   .flow {
@@ -38,39 +38,39 @@
   }
   .flow-step {
     display: flex; gap: 12px; align-items: flex-start;
-    padding: 14px; border-radius: 8px; background: #1a1f2e;
+    padding: 14px; border-radius: 8px; background: #f5efe5;
   }
   .flow-step .step-num {
-    width: 32px; height: 32px; border-radius: 50%; background: #2563eb;
+    width: 32px; height: 32px; border-radius: 50%; background: #5b4c3a;
     display: flex; align-items: center; justify-content: center;
-    font-weight: 800; font-size: 14px; flex-shrink: 0; color: #fff;
+    font-weight: 800; font-size: 14px; flex-shrink: 0; color: #fdfdfc;
   }
   .flow-step .step-content { flex: 1; }
-  .flow-step .step-title { font-weight: 700; color: #f9fafb; font-size: 14px; margin-bottom: 4px; }
-  .flow-step .step-desc { font-size: 12px; color: #9ca3af; }
-  .flow-arrow { text-align: center; color: #374151; font-size: 16px; }
+  .flow-step .step-title { font-weight: 700; color: #2c2416; font-size: 14px; margin-bottom: 4px; }
+  .flow-step .step-desc { font-size: 12px; color: #8c8272; }
+  .flow-arrow { text-align: center; color: #d9d3c7; font-size: 16px; }
 
   .insight {
-    background: #0a1628; border: 1px solid #1e3a5f; border-radius: 8px;
-    padding: 14px 18px; margin-top: 16px; font-size: 12px; color: #93c5fd; line-height: 1.7;
+    background: #f5efe5; border: 1px solid #d9d3c7; border-radius: 8px;
+    padding: 14px 18px; margin-top: 16px; font-size: 12px; color: #5b4c3a; line-height: 1.7;
   }
-  .insight strong { color: #60a5fa; }
+  .insight strong { color: #5b4c3a; }
 
   .example {
-    background: #1a0a0a; border: 1px solid #451a1a; border-radius: 8px;
+    background: #f5efe5; border: 1px solid #d9d3c7; border-radius: 8px;
     padding: 14px 18px; margin-top: 12px; font-size: 12px;
   }
-  .example .ex-label { color: #f87171; font-weight: 700; font-size: 10px; letter-spacing: 1px; margin-bottom: 6px; }
+  .example .ex-label { color: #8c6b4a; font-weight: 700; font-size: 10px; letter-spacing: 1px; margin-bottom: 6px; }
 
   .btn-row { display: flex; gap: 10px; margin-top: 16px; }
   .btn {
     padding: 10px 24px; border-radius: 8px; font-size: 13px; font-weight: 700;
     border: none; cursor: pointer; transition: 0.15s;
   }
-  .btn-primary { background: #2563eb; color: #fff; }
-  .btn-primary:hover { background: #1d4ed8; }
-  .btn-ghost { background: transparent; color: #9ca3af; border: 1px solid #374151; }
-  .btn-ghost:hover { background: #1a1f2e; }
+  .btn-primary { background: #5b4c3a; color: #fdfdfc; }
+  .btn-primary:hover { background: #4a3c2c; }
+  .btn-ghost { background: transparent; color: #8c8272; border: 1px solid #d9d3c7; }
+  .btn-ghost:hover { background: #f5efe5; }
 </style>
 </head>
 <body>
