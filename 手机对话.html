@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="AI对话">
+<title>范思静 · AI对话</title>
+<style>
+:root{--bg:#f5f1e8;--card:#fdfcf8;--border:#d4cbb8;--text:#2c2416;--muted:#8c8272;--accent:#5b4c3a}
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:-apple-system,"PingFang SC","Microsoft YaHei",sans-serif;background:var(--bg);color:var(--text);min-height:100vh;display:flex;align-items:center;justify-content:center;padding:20px;-webkit-tap-highlight-color:transparent}
+.card{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:36px 28px;max-width:400px;width:100%;text-align:center;box-shadow:0 2px 12px rgba(44,36,22,0.04)}
+.card h1{font-family:"Times New Roman","Songti SC","Noto Serif SC",Georgia,serif;font-size:22px;font-weight:400;letter-spacing:2px;margin-bottom:6px}
+.card p{font-size:14px;color:var(--muted);line-height:1.7;margin-bottom:20px}
+.btn{display:block;width:100%;padding:16px;border-radius:12px;font-size:15px;font-weight:700;border:none;cursor:pointer;text-decoration:none;margin-bottom:10px;transition:.2s;-webkit-appearance:none}
+.btn-primary{background:var(--accent);color:#fdfcf8}
+.btn-primary:active{transform:scale(.97)}
+.btn-ghost{background:var(--bg);color:var(--accent);border:1px solid var(--border)}
+.btn-ghost:active{background:var(--border)}
+.btn-small{background:transparent;color:var(--muted);border:1px solid var(--border);font-size:12px;padding:10px;margin-top:6px}
+.divider{font-size:11px;color:var(--muted);margin:16px 0 12px;letter-spacing:2px}
+.copy-hint{font-size:11px;color:#16a34a;margin-top:8px;display:none}
+</style>
+</head>
+<body>
+<div class="card">
+  <h1>范思静</h1>
+  <p>手机随时对话</p>
+
+  <a class="btn btn-primary" href="https://claude.ai" target="_blank">打开 Claude AI 网页版</a>
+
+  <div class="divider">或使用其他 AI（复制下方提示词）</div>
+
+  <button class="btn btn-ghost" onclick="copyPrompt()">📋 复制提示词</button>
+
+  <div class="copy-hint" id="hint">✅ 已复制！粘贴到任意AI对话框即可</div>
+
+  <div class="divider">快捷工具</div>
+  <a class="btn btn-small" href="https://fansj9898-lab.github.io/fansj/">打开工具箱</a>
+  <a class="btn btn-small" href="https://fansj9898-lab.github.io/fansj/范思静-完整对话记录.html">打开对话全记录</a>
+</div>
+
+<script>
+function copyPrompt(){
+  var prompt = `你是范思静的工作助手。
+
+## 范思静是谁
+- 27岁，女，广州，168cm，50kg
+- 信息流视频项目主管 / 内容操盘手
+- 4年短视频电商实战（大健康→女装→家清）
+- 策划视频1500+条，爆款率35%（行业~15%）
+- 峰值月消耗300万+，月销千万+
+- 学历：专科（广东南华工商职业学院·数字媒体应用技术）
+- 薪资轨迹：3.5K→6.7K→10K→15K，目标17-20K
+- 目前状态：被裁后空窗期，在找工作+学AI+备考认证
+
+## 她的职业经历
+- 合诚实业（2021-2024）：设计师助理→品牌内容全链路
+- 远巨传媒（2024.9-12）：女装品类内容负责人（项目制）
+- 故事传媒（2025.3-2026.7）：编导组长，渍无踪旧品复活月销千万
+
+## 她的性格
+- 防御型驱动：被低估时更强，需要在有人质疑时发力
+- 对话型输出：有人跟她对话她就能讲出来，一个人闷头写反而卡住
+- 主动感知危机：环境停滞会自己焦虑然后改变，不是被动等推动
+- 无条件选前进：嘴巴说想要安稳，但每次有安稳vs前进的选项都选前进
+- 帮助别人让她有成就感：教别人的过程自己也会更清晰更自信
+
+## 她的风格
+- 结论先行，数据驱动，动词优先
+- 短句为主，一个句子只讲一件事
+- 不需要被鼓励——需要被逻辑说服
+- 一旦逻辑通了，她会自己去执行
+
+## 她的工具箱
+- 主页：https://fansj9898-lab.github.io/fansj/
+- 对话全记录：https://fansj9898-lab.github.io/fansj/范思静-完整对话记录.html
+
+## 她需要什么
+诚实、直接、逻辑清晰、有依据的分析。不要空泛的鼓励。如果指出她的盲区，她会更信任你。`;
+
+  navigator.clipboard.writeText(prompt).then(function(){
+    var h = document.getElementById('hint');
+    h.style.display='block';
+    setTimeout(function(){h.style.display='none'},2000);
+  });
+}
+</script>
+</body>
+</html>
