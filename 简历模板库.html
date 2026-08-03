@@ -248,24 +248,23 @@ var templates = [
       .r-edu strong{color:#0f172a}
     `
   },
-  { // 3: 现代科技 (bold, clean, blue accents)
+  { // 3: 现代科技 (单栏A4, 从顶到底, 蓝色强调)
     name:'现代科技',
     css:`
-      .page-preview{font-family:-apple-system,"PingFang SC","Microsoft YaHei",sans-serif;color:#1a1a2e;line-height:1.45;padding:8mm 10mm 6mm!important}
-      .r-header{display:flex;align-items:center;gap:4mm;margin-bottom:3mm;padding-bottom:3mm;border-bottom:3px solid #2563eb}
-      .r-header .r-avatar{width:18mm;height:24mm;object-fit:cover;border-radius:4px;flex-shrink:0}
-      .r-header h1{font-size:24px;font-weight:800;color:#0f172a;letter-spacing:-.3px;margin-bottom:1mm}
-      .r-title{font-size:11px;color:#2563eb;font-weight:600}
-      .r-intent{font-size:8.5px;color:#64748b;margin-top:.5mm}
-      .r-contact{display:flex;flex-wrap:wrap;gap:3mm;font-size:8px;color:#475569;padding:2mm 0;margin-bottom:3mm;border-bottom:1px solid #e2e8f0}
-      .r-summary{font-size:9.5px;color:#334155;line-height:1.55;margin-bottom:3mm;background:#f8fafc;padding:2.5mm 3mm;border-radius:6px;border-left:3px solid #2563eb}
-      .r-kpis{display:flex;gap:2mm;margin-bottom:3.5mm}
-      .kpi{flex:1;text-align:center;padding:2.5mm 1.5mm;background:#fff;border:1.5px solid #e2e8f0;border-radius:6px;transition:.15s}
-      .kpi:hover{border-color:#2563eb}
+      .page-preview{font-family:-apple-system,"PingFang SC","Microsoft YaHei",sans-serif;color:#1e293b;line-height:1.5;padding:10mm 12mm 8mm!important;display:block!important}
+      .r-header{margin-bottom:3mm;padding-bottom:3mm;border-bottom:3px solid #2563eb}
+      .r-header .r-avatar{width:20mm;height:26mm;object-fit:cover;border-radius:4px;float:right;margin-left:4mm;margin-bottom:2mm}
+      .r-header h1{font-size:24px;font-weight:800;color:#0f172a;letter-spacing:-.5px}
+      .r-title{font-size:11px;color:#2563eb;font-weight:600;margin:1mm 0}
+      .r-intent{font-size:8.5px;color:#64748b}
+      .r-contact{clear:both;display:flex;flex-wrap:wrap;gap:3mm;font-size:8.5px;color:#475569;padding:2mm 0;margin-bottom:3mm;border-bottom:1px solid #e2e8f0}
+      .r-summary{font-size:9.5px;color:#334155;line-height:1.55;margin-bottom:3.5mm;background:#f8fafc;padding:2.5mm 3mm;border-radius:6px;border-left:3px solid #2563eb}
+      .r-kpis{display:flex;gap:2mm;margin-bottom:4mm}
+      .kpi{flex:1;text-align:center;padding:2.5mm 2mm;background:#fff;border:1.5px solid #e2e8f0;border-radius:6px}
       .kpi-num{display:block;font-size:15px;font-weight:800;color:#2563eb}
       .kpi-label{display:block;font-size:7px;color:#64748b;margin-top:.3mm}
       .r-section{margin-bottom:3mm}
-      .r-section h3{font-size:10.5px;font-weight:700;color:#0f172a;padding-bottom:1mm;border-bottom:2.5px solid #2563eb;margin-bottom:2mm;text-transform:uppercase;letter-spacing:.5px}
+      .r-section h3{font-size:10.5px;font-weight:700;color:#0f172a;padding-bottom:1mm;border-bottom:2.5px solid #2563eb;margin-bottom:2mm;letter-spacing:.3px}
       .r-exp{margin-bottom:2.5mm}
       .exp-hd{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:.3mm}
       .exp-role{font-size:10.5px;font-weight:700;color:#0f172a}
