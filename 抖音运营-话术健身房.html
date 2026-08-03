@@ -104,7 +104,7 @@
 </head>
 <body>
 <div class="container">
-<div class="header"><h1>🎤 话术健身房 <span id="sd" style="font-size:12px;"></span></h1><p>写下你的版本 → 对照三级优化 → 练到脱口而出</p></div>
+<div class="header"><h1>🎤 话术健身房 <span id="sd" style="font-size:12px;"></span></h1><p>写下你的版本 → 对照三级优化 → 练到脱口而出</p><button onclick="exp()" style="margin-top:6px;padding:6px 14px;border:1px solid #5b4c3a;background:transparent;color:#5b4c3a;border-radius:8px;font-size:11px;cursor:pointer;-webkit-appearance:none">📤 导出答案</button></div>
 
 <div class="tabs">
   <a class="tab" href="#q1">1.最大项目</a>
@@ -367,7 +367,13 @@ var SK='talkgym_v1', TOTAL=14;
 function ld(){try{var d=JSON.parse(localStorage.getItem(SK)||'{}');for(var i=1;i<=TOTAL;i++){var t=document.getElementById('ta'+i);if(t&&d['q'+i])t.value=d['q'+i];}}catch(e){}}
 function sv(n){try{var d=JSON.parse(localStorage.getItem(SK)||'{}');var t=document.getElementById('ta'+n);d['q'+n]=t?t.value:'';localStorage.setItem(SK,JSON.stringify(d));var s=document.getElementById('sd');if(s){s.textContent='●';s.style.color='#6b7f5e';setTimeout(function(){s.textContent=''},1500);}}catch(e){}}
 function clr(){if(confirm('清除所有已保存的回答？')){localStorage.removeItem(SK);for(var i=1;i<=TOTAL;i++){var t=document.getElementById('ta'+i);if(t)t.value='';}}}
-function toggle(id){var el=document.getElementById(id);if(el.classList.contains('on'))el.classList.remove('on');else{el.classList.add('on');el.scrollIntoView({behavior:'smooth',block:'center'});}}
+
+function exp(){var r="";for(var i=1;i<=TOTAL;i++){var t=document.getElementById("ta"+i);var q=document.querySelector("#q"+i+" .q-title");if(t&&q&&t.value.trim()){r+="=== Q"+i+": "+q.textContent+" ===
+"+t.value+"
+
+"}}if(!r){alert("还没有填写任何回答");return}var b=new Blob([r],{type:"text/plain"});var a=document.createElement("a");a.href=URL.createObjectURL(b);a.download="话术健身房_答案.txt";a.click();var s=document.getElementById("sd");if(s){s.textContent="✅ 已导出";s.style.color="#6b7f5e";setTimeout(function(){s.textContent=""},2000)}}
+function toggle(id)
+{var el=document.getElementById(id);if(el.classList.contains('on'))el.classList.remove('on');else{el.classList.add('on');el.scrollIntoView({behavior:'smooth',block:'center'});}}
 window.addEventListener('DOMContentLoaded',ld);
 </script>
 </body>
