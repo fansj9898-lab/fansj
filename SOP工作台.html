@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=yes">
+<title>SOP工作台</title>
+<style>
+:root{--bg:#f5f1e8;--card:#fdfcf8;--border:#d4cbb8;--text:#2c2416;--muted:#8c8272;--accent:#5b4c3a}
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:-apple-system,"PingFang SC","Microsoft YaHei",sans-serif;background:var(--bg);color:var(--text);min-height:100vh;line-height:1.7;padding:16px;-webkit-tap-highlight-color:transparent;padding-bottom:80px}
+.c{max-width:720px;margin:0 auto}
+h1{font-family:"Times New Roman","Songti SC","Noto Serif SC",Georgia,serif;font-size:22px;font-weight:400;letter-spacing:2px;text-align:center;margin:16px 0 4px}
+.sub{text-align:center;font-size:12px;color:var(--muted);margin-bottom:20px}
+
+/* chapter list */
+.chapter-list{display:flex;flex-direction:column;gap:6px;margin-bottom:20px}
+.ch-row{display:flex;align-items:center;gap:10px;background:var(--card);border:1px solid var(--border);border-radius:10px;padding:12px 14px;cursor:pointer;transition:.2s}
+.ch-row:hover{border-color:var(--accent)}
+.ch-row .ch-num{width:28px;height:28px;border-radius:50%;background:var(--accent);color:#fdfcf8;font-size:12px;font-weight:700;text-align:center;line-height:28px;flex-shrink:0}
+.ch-row .ch-info{flex:1;min-width:0}
+.ch-row .ch-title{font-size:13px;font-weight:700}
+.ch-row .ch-desc{font-size:11px;color:var(--muted)}
+.ch-row .ch-status{font-size:10px;padding:3px 8px;border-radius:4px;font-weight:600}
+.st-writing{background:#fef3c7;color:#92400e}
+.st-draft{background:#dbeafe;color:#1e40af}
+.st-empty{background:var(--bg);color:var(--muted)}
+
+/* editor area */
+.editor{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:20px;margin-bottom:14px}
+.editor h3{font-size:14px;margin-bottom:4px}
+.editor .hint{font-size:11px;color:var(--muted);margin-bottom:12px}
+.editor textarea{width:100%;min-height:200px;background:#fff;border:2px solid var(--border);border-radius:10px;padding:14px;font-size:13px;font-family:inherit;line-height:1.8;resize:vertical;-webkit-appearance:none;color:var(--text)}
+.editor textarea:focus{outline:none;border-color:var(--accent)}
+.editor textarea::placeholder{color:var(--muted)}
+
+.btn{display:inline-block;padding:10px 22px;border-radius:8px;font-size:13px;font-weight:700;border:none;cursor:pointer;-webkit-appearance:none;transition:.15s}
+.btn-primary{background:var(--accent);color:#fdfcf8;margin-right:8px}
+.btn-ghost{background:transparent;border:1px solid var(--border);color:var(--muted)}
+
+.save-hint{font-size:11px;color:#16a34a;margin-left:8px;opacity:0;transition:opacity .3s}
+.save-hint.show{opacity:1}
+
+.progress-bar{display:flex;gap:4px;margin-bottom:16px}
+.progress-bar .seg{flex:1;height:3px;border-radius:2px;background:var(--border)}
+.progress-bar .seg.filled{background:var(--accent)}
+
+/* add chapter */
+.add-btn{width:100%;padding:14px;border-radius:10px;border:2px dashed var(--border);background:transparent;color:var(--muted);font-size:13px;cursor:pointer;margin-bottom:12px;-webkit-appearance:none}
+.add-btn:hover{border-color:var(--accent);color:var(--accent)}
+.add-form{display:none;background:var(--card);border:1px solid var(--border);border-radius:10px;padding:14px;margin-bottom:12px}
+.add-form.show{display:block}
+.add-form input{width:100%;padding:10px 12px;border:1.5px solid var(--border);border-radius:8px;font-size:13px;font-family:inherit;margin-bottom:8px;-webkit-appearance:none;background:#fff;color:var(--text)}
+.add-form input:focus{outline:none;border-color:var(--accent)}
+
+@media(max-width:500px){body{padding:10px}}
+</style>
+</head>
+<body>
+<div class="c">
+<h1>SOP 工作台</h1>
+<div class="sub">信息流视频操盘 · 从入门到精通 · 独立编写</div>
+
+<div class="progress-bar" id="progress"></div>
+<div class="chapter-list" id="chapters"></div>
+<button class="add-btn" onclick="document.getElementById('addForm').classList.toggle('show')">+ 新建章节</button>
+<div class="add-form" id="addForm">
+  <input id="newTitle" placeholder="章节标题">
+  <button class="btn btn-primary" onclick="addChapter()">添加</button>
+</div>
+<div class="editor" id="editor" style="display:none">
+  <h3 id="edTitle"></h3>
+  <div class="hint" id="edHint"></div>
+  <textarea id="edContent" placeholder="在这里写内容..."></textarea>
+  <div style="margin-top:10px">
+    <button class="btn btn-primary" onclick="saveChapter()">保存</button>
+    <button class="btn btn-ghost" onclick="closeEditor()">返回列表</button>
+    <span class="save-hint" id="saveHint">● 已保存</span>
+  </div>
+</div>
+</div>
+
+<script>
+var KEY='sop_workbench_v1';
+var chapters=[];
+var defaultChapters=[
+  {title:'信息流入门底层逻辑',hint:'了解信息流的本质：在日活最多的平台上，以短视频形式做可量化的广告。对新人的三件事：了解逻辑、了解产品、拆解爆款。',content:'1.了解信息流的本质：在一个日活人数最多的平台（抖音），基于短视频形式的广告，有直观的数据看到有没有卖出去。\n\n对新人来说：\n1.了解信息流的大概逻辑，知道重点是什么，视频拍摄的重点是哪些\n2.了解产品——做脑图，了解产品本身的卖点、痛点，最主要是与竞品的优劣势分析，得出产品区别与市场的点是什么\n3.拆解爆款视频——得出基本的爆款脚本框架，多行业多品类去拆，能得出共性'},
+  {title:'素材诊断：产品为什么不起量',hint:'三分钟判断问题出在哪：过审率→人群→素材。先排除不是问题的部分，再锁定根因。',content:''},
+  {title:'素材方向测试',hint:'竞品TOP100拆解→5方向×3版本矩阵→72小时数据淘汰。怎么测、测多少、测多久判断要不要继续。',content:''},
+  {title:'投放策略：从标准到全域',hint:'什么时候该切换投放模式？CPM上涨+消耗还在涨=人群即将耗尽，切全域。CPM上涨+消耗也跌了=素材疲劳，换素材。',content:''},
+  {title:'数据复盘框架',hint:'不是报数据——是找原因。三问：指标变了多少→为什么变→下一步做什么。前置指标（完播率）比滞后指标（GMV）提前3-5天告诉你要出问题。',content:''},
+  {title:'素材衰减的判断与应对',hint:'5秒完播率<45%+CPM涨15%→素材进入衰减期。换开头/BGM/前三帧做变体→72小时测试→判断是否放弃。',content:''},
+  {title:'卡审应对策略',hint:'不是等审核恢复。分析驳回原因→找到触发关键词→做安全词/危险词对照表→批量生产安全版本。',content:''},
+  {title:'团队SOP搭建',hint:'剪辑模板化（效率+60%）+每月复盘机制（问题→方案→落地）+培训白皮书+新人带教流程。',content:''},
+  {title:'品牌方沟通与汇报',hint:'给对方确定性和时间节点。商业语言转化：投手语言→品牌方语言→老板语言。',content:''},
+  {title:'新人带教：从0到独立操盘',hint:'四周渐进法：第一周你做她看→第二周她做你在旁边→第三周她独立你每天查→第四周你只抽查。',content:''},
+];
+
+function load(){
+  try{chapters=JSON.parse(localStorage.getItem(KEY))}catch(e){}
+  if(!chapters||chapters.length===0){chapters=JSON.parse(JSON.stringify(defaultChapters));save()}
+  render();
+}
+function save(){localStorage.setItem(KEY,JSON.stringify(chapters));render()}
+
+function render(){
+  var filled=chapters.filter(function(c){return c.content&&c.content.trim().length>10}).length;
+  var html='';
+  for(var i=0;i<chapters.length;i++)html+='<div class="seg'+(i<filled?' filled':'')+'"></div>';
+  document.getElementById('progress').innerHTML=html;
+
+  document.getElementById('chapters').innerHTML=chapters.map(function(c,i){
+    var hasContent=c.content&&c.content.trim().length>10;
+    return '<div class="ch-row" onclick="openChapter('+i+')"><div class="ch-num">'+(i+1)+'</div><div class="ch-info"><div class="ch-title">'+c.title+'</div><div class="ch-desc">'+c.hint+'</div></div><div class="ch-status '+(hasContent?'st-draft':'st-empty')+'">'+(hasContent?'有内容':'待写')+'</div></div>';
+  }).join('');
+}
+
+var curIdx=-1;
+function openChapter(i){
+  curIdx=i;
+  var c=chapters[i];
+  document.getElementById('edTitle').textContent=c.title;
+  document.getElementById('edHint').textContent='💡 '+c.hint;
+  document.getElementById('edContent').value=c.content||'';
+  document.getElementById('editor').style.display='block';
+  document.getElementById('chapters').style.display='none';
+  document.querySelector('.add-btn').style.display='none';
+  document.getElementById('addForm').style.display='none';
+  document.getElementById('addForm').classList.remove('show');
+  window.scrollTo(0,0);
+}
+function closeEditor(){curIdx=-1;document.getElementById('editor').style.display='none';document.getElementById('chapters').style.display='';document.querySelector('.add-btn').style.display=''}
+function saveChapter(){
+  if(curIdx<0)return;
+  chapters[curIdx].content=document.getElementById('edContent').value;
+  save();
+  var hint=document.getElementById('saveHint');hint.classList.add('show');setTimeout(function(){hint.classList.remove('show')},1500);
+}
+function addChapter(){
+  var title=document.getElementById('newTitle').value.trim();
+  if(!title)return;
+  chapters.push({title:title,hint:'',content:''});
+  document.getElementById('newTitle').value='';
+  document.getElementById('addForm').classList.remove('show');
+  save();
+}
+// Auto-save on typing
+document.addEventListener('input',function(e){if(e.target.id==='edContent'&&curIdx>=0){chapters[curIdx].content=e.target.value;localStorage.setItem(KEY,JSON.stringify(chapters))}});
+
+load();
+</script>
+</body>
+</html>
