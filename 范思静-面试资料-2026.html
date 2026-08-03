@@ -9,41 +9,41 @@
   * { margin: 0; padding: 0; box-sizing: border-box; }
   :root { --bg: #f5f1e8; --card: #fdfcf8; --border: #d4cbb8; --text: #2c2416; --muted: #8c8272; --accent: #5b4c3a; }
   body { font-family: -apple-system, "PingFang SC", "Microsoft YaHei", sans-serif; background: #e8e4dc; color: var(--text); line-height: 1.5; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
-  .page { width: 210mm; min-height: 297mm; margin: 8mm auto; background: #fff; box-shadow: 0 2px 16px rgba(44,36,22,0.08); padding: 10mm 13mm 9mm; }
-  .r-header { margin-bottom: 3mm; display: flex; align-items: center; gap: 5mm; }
-  .r-header .r-avatar { width: 22mm; height: 28mm; object-fit: cover; border-radius: 4px; flex-shrink: 0; }
+  .page { width: 210mm; min-height: 297mm; margin: 8mm auto; background: #fff; box-shadow: 0 2px 16px rgba(44,36,22,0.08); padding: 9mm 12mm 7mm; }
+  .r-header { margin-bottom: 2.5mm; display: flex; align-items: center; gap: 5mm; }
+  .r-header .r-avatar { width: 20mm; height: 26mm; object-fit: cover; border-radius: 4px; flex-shrink: 0; }
   .r-header .r-info { flex: 1; }
-  .r-header h1 { font-family: "Times New Roman", "Songti SC", "Noto Serif SC", Georgia, serif; font-size: 24px; font-weight: 400; letter-spacing: 2px; color: var(--text); }
-  .r-header .r-title { font-size: 12px; color: var(--accent); font-weight: 600; margin: 1mm 0; }
-  .r-header .r-intent { font-size: 9.5px; color: var(--muted); margin-bottom: 1.5mm; }
-  .r-contact-strip { display: flex; flex-wrap: wrap; gap: 3.5mm; font-size: 9px; color: var(--muted); padding: 2.5mm 0; margin-bottom: 3.5mm; border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); }
+  .r-header h1 { font-family: "Times New Roman", "Songti SC", "Noto Serif SC", Georgia, serif; font-size: 22px; font-weight: 400; letter-spacing: 2px; color: var(--text); }
+  .r-header .r-title { font-size: 11px; color: var(--accent); font-weight: 600; margin: 0.8mm 0; }
+  .r-header .r-intent { font-size: 9px; color: var(--muted); margin-bottom: 1mm; }
+  .r-contact-strip { display: flex; flex-wrap: wrap; gap: 3mm; font-size: 8.5px; color: var(--muted); padding: 2mm 0; margin-bottom: 2.5mm; border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); }
   .r-contact-strip span { white-space: nowrap; }
-  .r-summary { font-size: 10px; color: var(--text); line-height: 1.6; margin-bottom: 3.5mm; }
+  .r-summary { font-size: 9.5px; color: var(--text); line-height: 1.55; margin-bottom: 3mm; }
   .r-summary strong { color: var(--accent); }
-  .r-kpi-row { display: flex; gap: 3mm; margin-bottom: 4.5mm; }
-  .r-kpi-row .r-kpi { flex: 1; text-align: center; background: #f5efe5; border-radius: 4px; padding: 3mm 2.5mm; }
+  .r-kpi-row { display: flex; gap: 2.8mm; margin-bottom: 3.5mm; }
+  .r-kpi-row .r-kpi { flex: 1; text-align: center; background: #f5efe5; border-radius: 4px; padding: 2.8mm 2mm; }
   .r-kpi-row .r-kpi .k { font-size: 14px; font-weight: 800; color: var(--accent); }
-  .r-kpi-row .r-kpi .l { font-size: 8px; color: var(--muted); margin-top: 0.5mm; }
-  .r-section { margin-bottom: 3.5mm; }
-  .r-section h3 { font-size: 11.5px; font-weight: 700; color: var(--text); padding-bottom: 1.5mm; border-bottom: 2px solid var(--accent); margin-bottom: 2.5mm; }
-  .r-exp { margin-bottom: 3mm; }
-  .r-exp .r-exp-hd { display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 0.5mm; }
-  .r-exp .r-exp-role { font-size: 11px; font-weight: 700; color: var(--text); }
-  .r-exp .r-exp-date { font-size: 9px; color: var(--muted); white-space: nowrap; }
-  .r-exp .r-exp-co { font-size: 9.5px; color: var(--accent); font-weight: 500; margin-bottom: 1.5mm; }
-  .r-exp ul { padding-left: 4mm; }
-  .r-exp ul li { font-size: 9px; color: var(--text); margin-bottom: 0.8mm; line-height: 1.45; }
+  .r-kpi-row .r-kpi .l { font-size: 8px; color: var(--muted); margin-top: 0.3mm; }
+  .r-section { margin-bottom: 3mm; }
+  .r-section h3 { font-size: 11px; font-weight: 700; color: var(--text); padding-bottom: 1.2mm; border-bottom: 2px solid var(--accent); margin-bottom: 2mm; }
+  .r-exp { margin-bottom: 2.5mm; }
+  .r-exp .r-exp-hd { display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 0.4mm; }
+  .r-exp .r-exp-role { font-size: 10.5px; font-weight: 700; color: var(--text); }
+  .r-exp .r-exp-date { font-size: 8.5px; color: var(--muted); white-space: nowrap; }
+  .r-exp .r-exp-co { font-size: 9px; color: var(--accent); font-weight: 500; margin-bottom: 1mm; }
+  .r-exp ul { padding-left: 3.5mm; }
+  .r-exp ul li { font-size: 8.8px; color: var(--text); margin-bottom: 0.6mm; line-height: 1.42; }
   .r-exp ul li b, .r-exp ul li strong { color: var(--text); }
-  .r-tbl { width: 100%; font-size: 8px; border-collapse: collapse; margin-top: 1.5mm; }
-  .r-tbl th { background: var(--accent); color: #fdfcf8; padding: 2mm 2.5mm; text-align: left; font-weight: 500; }
-  .r-tbl td { padding: 2mm 2.5mm; border-bottom: 1px solid var(--border); }
+  .r-tbl { width: 100%; font-size: 7.8px; border-collapse: collapse; margin-top: 1mm; }
+  .r-tbl th { background: var(--accent); color: #fdfcf8; padding: 1.8mm 2mm; text-align: left; font-weight: 500; }
+  .r-tbl td { padding: 1.8mm 2mm; border-bottom: 1px solid var(--border); }
   .r-tbl tr:nth-child(even) td { background: rgba(240,232,216,0.3); }
-  .r-bottom { margin-top: 2.5mm; }
-  .r-skills-strip { margin-bottom: 2mm; }
-  .r-skills-strip .sk-line { margin-bottom: 1.2mm; display: flex; align-items: baseline; gap: 2mm; font-size: 8.5px; }
+  .r-bottom { margin-top: 2mm; }
+  .r-skills-strip { margin-bottom: 1.5mm; }
+  .r-skills-strip .sk-line { margin-bottom: 1mm; display: flex; align-items: baseline; gap: 1.5mm; font-size: 8px; }
   .r-skills-strip .sk-line .sk-cat { font-weight: 700; color: var(--text); white-space: nowrap; min-width: 16mm; }
   .r-skills-strip .sk-line .sk-tags { color: var(--muted); }
-  .r-edu { font-size: 8.5px; color: var(--muted); padding-top: 2mm; border-top: 1px solid var(--border); }
+  .r-edu { font-size: 8px; color: var(--muted); padding-top: 1.5mm; border-top: 1px solid var(--border); }
   .r-edu strong { color: var(--text); }
   @media print { body { background: #fff; } .page { margin: 0; box-shadow: none; } }
 </style>
@@ -111,7 +111,7 @@
 
   <div class="r-section">
     <h3>自我评价</h3>
-    <div style="font-size:9.5px;line-height:1.65;">
+    <div style="font-size:9px;line-height:1.6;">
       <p style="margin-bottom:1.5mm;"><b>【为什么是我】</b>4年完成从<strong>执行到管理的完整闭环</strong>。前期扎根内容全链路——拍摄、剪辑、投放、策略独立承接，打下实操基础。后期转向团队建设——搭建SOP体系、建立月度复盘机制、编写培训白皮书与组长流程规范。将濒死产品拉至月销千万后，培养组员独立晋升组长，验证了管理方法论的可复制性。</p>
       <p style="margin-bottom:1.5mm;"><b>【全链路操盘】</b>覆盖选品→脚本→拍摄→剪辑→投放→数据复盘全流程，爆款率30-35%（行业均值约15%）。精通千川/巨量引擎/全域推广，熟悉抖音+小红书双平台。</p>
       <p><b>【管理可复制】</b>从0搭建SOP体系，编写的培训白皮书和组长流程规范已被团队复用，所带组员已独立晋升组长——方法论可迁移至新团队。</p>
