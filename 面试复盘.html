@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=yes">
+<title>面试复盘</title>
+<style>
+:root{--bg:#f5f1e8;--card:#fdfcf8;--border:#d4cbb8;--text:#2c2416;--muted:#8c8272;--accent:#5b4c3a;--green:#6b7f5e;--gold:#b08040}
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:-apple-system,"PingFang SC","Microsoft YaHei",sans-serif;background:var(--bg);color:var(--text);min-height:100vh;padding:16px;-webkit-tap-highlight-color:transparent}
+.c{max-width:680px;margin:0 auto}
+h1{font-family:"Times New Roman","Songti SC","Noto Serif SC",Georgia,serif;font-size:22px;font-weight:400;letter-spacing:2px;text-align:center;margin:16px 0 4px}
+.sub{text-align:center;font-size:12px;color:var(--muted);margin-bottom:20px}
+
+.list{display:flex;flex-direction:column;gap:12px}
+.card{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:18px 16px}
+.card .top{display:flex;justify-content:space-between;align-items:center;margin-bottom:10px}
+.card .company{font-size:14px;font-weight:700}
+.card .date{font-size:11px;color:var(--muted)}
+.card .q-block{margin-bottom:8px}
+.card .q-block .q{font-size:11px;font-weight:700;color:var(--accent);margin-bottom:2px}
+.card .q-block .a{font-size:12px;color:var(--text);line-height:1.5}
+.card .score-row{display:flex;gap:6px;margin-top:8px;font-size:11px}
+.card .score-row span{padding:3px 8px;border-radius:4px;font-weight:600}
+.s-good{background:rgba(107,127,94,.12);color:var(--green)}
+.s-bad{background:rgba(176,96,80,.12);color:#b06050}
+
+.add-btn{width:100%;padding:14px;border-radius:10px;border:2px dashed var(--border);background:transparent;color:var(--muted);font-size:13px;cursor:pointer;margin-bottom:12px;-webkit-appearance:none}
+.add-btn:hover{border-color:var(--accent);color:var(--accent)}
+
+.form{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:16px;display:none;margin-bottom:12px}
+.form.show{display:block}
+.form input,.form textarea{width:100%;padding:10px 12px;border:1.5px solid var(--border);border-radius:8px;font-size:13px;font-family:inherit;margin-bottom:8px;background:#fff;color:var(--text);-webkit-appearance:none;resize:vertical}
+.form input:focus,.form textarea:focus{outline:none;border-color:var(--accent)}
+.form textarea{min-height:60px}
+.form button{padding:10px 24px;border-radius:8px;border:none;background:var(--accent);color:#fdfcf8;font-size:13px;font-weight:700;cursor:pointer;-webkit-appearance:none}
+
+.tpl-btn{font-size:10px;padding:4px 10px;border:1px solid var(--border);border-radius:4px;background:transparent;color:var(--accent);cursor:pointer;margin:2px;-webkit-appearance:none}
+.tpl-btn:hover{background:var(--bg)}
+
+.empty{text-align:center;padding:40px;color:var(--muted);font-size:14px}
+</style>
+</head>
+<body>
+<div class="c">
+<h1>面试复盘</h1>
+<div class="sub">每次面试后记录 · 积累三五次质变</div>
+
+<button class="add-btn" onclick="toggleForm()">+ 记录一场面试</button>
+
+<div class="form" id="form">
+  <input id="inpCompany" placeholder="公司名">
+  <input id="inpRole" placeholder="岗位">
+  <p style="font-size:10px;color:var(--muted);margin-bottom:4px">快速模板：</p>
+  <button class="tpl-btn" onclick="fillTpl()">📋 填充复盘模板</button>
+  <textarea id="inpQ1" placeholder="被问的第一个关键问题"></textarea>
+  <textarea id="inpA1" placeholder="我当时怎么回答的"></textarea>
+  <textarea id="inpQ2" placeholder="被问的第二个关键问题"></textarea>
+  <textarea id="inpA2" placeholder="我当时怎么回答的"></textarea>
+  <textarea id="inpGood" placeholder="这次面试哪里做得好？"></textarea>
+  <textarea id="inpBad" placeholder="哪里可以改进？"></textarea>
+  <button onclick="saveReview()">保存记录</button>
+</div>
+
+<div class="list" id="list"></div>
+</div>
+
+<script>
+var KEY='interview_review_v1';
+var reviews=[];
+
+function load(){
+  try{reviews=JSON.parse(localStorage.getItem(KEY)||'[]')}catch(e){reviews=[]}
+  render();
+}
+function save(){localStorage.setItem(KEY,JSON.stringify(reviews));render()}
+
+function toggleForm(){document.getElementById('form').classList.toggle('show')}
+
+function fillTpl(){
+  document.getElementById('inpQ1').value='面试官最深入追问的一个问题';
+  document.getElementById('inpA1').value='我当时怎么回答的（逐字回忆）';
+  document.getElementById('inpQ2').value='另一个让我卡住或答得好的问题';
+  document.getElementById('inpA2').value='我的回答';
+  document.getElementById('inpGood').value='做得好的：';
+  document.getElementById('inpBad').value='要改进的：';
+}
+
+function saveReview(){
+  var c=document.getElementById('inpCompany').value.trim();
+  var r=document.getElementById('inpRole').value.trim();
+  if(!c){alert('请填写公司名');return}
+  reviews.unshift({
+    company:c,role:r,date:new Date().toISOString().slice(0,10),
+    q1:document.getElementById('inpQ1').value.trim(),
+    a1:document.getElementById('inpA1').value.trim(),
+    q2:document.getElementById('inpQ2').value.trim(),
+    a2:document.getElementById('inpA2').value.trim(),
+    good:document.getElementById('inpGood').value.trim(),
+    bad:document.getElementById('inpBad').value.trim()
+  });
+  ['inpCompany','inpRole','inpQ1','inpA1','inpQ2','inpA2','inpGood','inpBad'].forEach(function(id){document.getElementById(id).value=''});
+  document.getElementById('form').classList.remove('show');
+  save();
+}
+
+function remove(i){if(confirm('删除？')){reviews.splice(i,1);save()}}
+
+function render(){
+  var list=document.getElementById('list');
+  if(reviews.length===0){list.innerHTML='<div class="empty">还没有面试记录<br><br>点击上方按钮开始记录</div>';return}
+  list.innerHTML=reviews.map(function(r,i){
+    return '<div class="card"><div class="top"><span class="company">'+r.company+' · '+r.role+'</span><span class="date">'+r.date+'</span></div>'+
+      (r.q1?'<div class="q-block"><div class="q">Q: '+r.q1+'</div><div class="a">A: '+r.a1+'</div></div>':'')+
+      (r.q2?'<div class="q-block"><div class="q">Q: '+r.q2+'</div><div class="a">A: '+r.a2+'</div></div>':'')+
+      (r.good||r.bad?'<div class="score-row">'+(r.good?'<span class="s-good">✅ '+r.good+'</span>':'')+(r.bad?' <span class="s-bad">💡 '+r.bad+'</span>':'')+'</div>':'')+
+      '<button class="del" style="background:none;border:none;color:var(--muted);cursor:pointer;float:right" onclick="remove('+i+')">删除</button></div>';
+  }).join('');
+}
+load();
+</script>
+</body>
+</html>
