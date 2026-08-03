@@ -8,25 +8,25 @@
   * { margin: 0; padding: 0; box-sizing: border-box; }
   body {
     font-family: -apple-system, "PingFang SC", "Microsoft YaHei", sans-serif;
-    background: #0f172a; color: #e2e8f0; min-height: 100vh;
+    background: #f5f1e8; color: #2c2416; min-height: 100vh;
     display: flex; justify-content: center; align-items: center;
     padding: 20px;
   }
   .game {
     max-width: 700px; width: 100%;
-    background: #1e293b; border-radius: 16px; padding: 36px 32px;
+    background: #fdfcf8; border-radius: 16px; padding: 36px 32px;
     box-shadow: 0 8px 40px rgba(0,0,0,0.4);
     position: relative; overflow: hidden;
   }
   .game::before {
     content: ""; position: absolute; top: 0; left: 0; right: 0; height: 4px;
-    background: linear-gradient(90deg, #2563eb, #8b5cf6, #ec4899);
+    background: linear-gradient(90deg, #5b4c3a, #8b5cf6, #ec4899);
   }
 
   /* Header */
   .header { text-align: center; margin-bottom: 24px; }
   .header h1 { font-size: 24px; font-weight: 800; letter-spacing: 1px; }
-  .header .sub { font-size: 13px; color: #64748b; margin-top: 4px; }
+  .header .sub { font-size: 13px; color: #8c8272; margin-top: 4px; }
 
   /* Level bar */
   .levels { display: flex; gap: 8px; justify-content: center; margin-bottom: 28px; }
@@ -34,36 +34,36 @@
     width: 40px; height: 40px; border-radius: 10px;
     display: flex; align-items: center; justify-content: center;
     font-size: 13px; font-weight: 700;
-    background: #334155; color: #64748b;
+    background: #d9d3c7; color: #8c8272;
     transition: 0.3s; cursor: default; position: relative;
   }
-  .lv.done { background: #16a34a; color: #fff; }
-  .lv.active { background: #2563eb; color: #fff; box-shadow: 0 0 16px rgba(37,99,235,0.5); animation: pulse 1.5s infinite; }
-  .lv.locked { background: #1e293b; border: 2px solid #334155; color: #475569; }
+  .lv.done { background: #16a34a; color: #fdfdfc; }
+  .lv.active { background: #5b4c3a; color: #fdfdfc; box-shadow: 0 0 16px rgba(37,99,235,0.5); animation: pulse 1.5s infinite; }
+  .lv.locked { background: #fdfcf8; border: 2px solid #d9d3c7; color: #5b4c3a; }
   @keyframes pulse { 0%,100% { box-shadow: 0 0 12px rgba(37,99,235,0.4); } 50% { box-shadow: 0 0 24px rgba(37,99,235,0.7); } }
 
   /* Question */
-  .q-counter { font-size: 12px; color: #64748b; margin-bottom: 8px; }
-  .q-title { font-size: 17px; font-weight: 700; color: #f1f5f9; margin-bottom: 20px; line-height: 1.6; }
+  .q-counter { font-size: 12px; color: #8c8272; margin-bottom: 8px; }
+  .q-title { font-size: 17px; font-weight: 700; color: #f7f5f0; margin-bottom: 20px; line-height: 1.6; }
 
   /* Options */
   .options { display: flex; flex-direction: column; gap: 10px; }
   .opt {
-    background: #334155; border: 2px solid transparent; border-radius: 10px;
-    padding: 14px 18px; font-size: 14px; color: #cbd5e1; cursor: pointer;
+    background: #d9d3c7; border: 2px solid transparent; border-radius: 10px;
+    padding: 14px 18px; font-size: 14px; color: #d9d3c7; cursor: pointer;
     transition: 0.15s; text-align: left; line-height: 1.5;
     display: flex; align-items: center; gap: 10px;
   }
-  .opt:hover { background: #3b4f6b; border-color: #475569; }
+  .opt:hover { background: #3b4f6b; border-color: #5b4c3a; }
   .opt .letter {
     width: 28px; height: 28px; border-radius: 7px;
-    background: #1e293b; display: flex; align-items: center; justify-content: center;
+    background: #fdfcf8; display: flex; align-items: center; justify-content: center;
     font-weight: 700; font-size: 13px; flex-shrink: 0;
   }
-  .opt.correct { background: #14532d; border-color: #16a34a; }
-  .opt.correct .letter { background: #16a34a; color: #fff; }
-  .opt.wrong { background: #450a0a; border-color: #dc2626; }
-  .opt.wrong .letter { background: #dc2626; color: #fff; }
+  .opt.correct { background: #d9d3c7; border-color: #16a34a; }
+  .opt.correct .letter { background: #16a34a; color: #fdfdfc; }
+  .opt.wrong { background: #fef2f2; border-color: #dc2626; }
+  .opt.wrong .letter { background: #dc2626; color: #fdfdfc; }
   .opt.disabled { pointer-events: none; opacity: 0.7; }
   .opt.disabled:not(.correct):not(.wrong) { opacity: 0.4; }
 
@@ -72,8 +72,8 @@
     margin-top: 16px; padding: 14px 18px; border-radius: 10px;
     font-size: 13px; line-height: 1.6; display: none;
   }
-  .explain.correct-explain { background: #14532d; border: 1px solid #16a34a; color: #86efac; display: block; }
-  .explain.wrong-explain { background: #450a0a; border: 1px solid #dc2626; color: #fca5a5; display: block; }
+  .explain.correct-explain { background: #d9d3c7; border: 1px solid #16a34a; color: #6b7f5e; display: block; }
+  .explain.wrong-explain { background: #fef2f2; border: 1px solid #dc2626; color: #8c6b4a; display: block; }
 
   /* Button */
   .btn-row { margin-top: 20px; display: flex; gap: 10px; justify-content: center; }
@@ -81,23 +81,23 @@
     padding: 10px 28px; border-radius: 8px; font-size: 14px; font-weight: 700;
     border: none; cursor: pointer; transition: 0.15s;
   }
-  .btn-next { background: #2563eb; color: #fff; }
-  .btn-next:hover { background: #1d4ed8; }
-  .btn-retry { background: #334155; color: #cbd5e1; }
-  .btn-retry:hover { background: #475569; }
+  .btn-next { background: #5b4c3a; color: #fdfdfc; }
+  .btn-next:hover { background: #4a3c2c; }
+  .btn-retry { background: #d9d3c7; color: #d9d3c7; }
+  .btn-retry:hover { background: #5b4c3a; }
 
   /* Score */
   .score-bar {
     display: flex; justify-content: space-between; align-items: center;
-    margin-bottom: 20px; font-size: 13px; color: #64748b;
+    margin-bottom: 20px; font-size: 13px; color: #8c8272;
   }
-  .score-bar .stars { color: #f59e0b; font-size: 18px; letter-spacing: 2px; }
+  .score-bar .stars { color: #8c6b4a; font-size: 18px; letter-spacing: 2px; }
 
   /* Win */
   .win { text-align: center; }
   .win .trophy { font-size: 64px; margin-bottom: 12px; }
-  .win h2 { font-size: 22px; margin-bottom: 8px; color: #f59e0b; }
-  .win p { color: #94a3b8; font-size: 14px; line-height: 1.7; }
+  .win h2 { font-size: 22px; margin-bottom: 8px; color: #8c6b4a; }
+  .win p { color: #8c8272; font-size: 14px; line-height: 1.7; }
 
   /* Responsive */
   @media (max-width: 500px) {
@@ -322,7 +322,7 @@ function render() {
         <p>你已掌握抖音运营的核心知识体系<br><br>
         总得分：${state.totalCorrect}/25 题<br>
         获得星星：${state.levelStars.reduce((a,b)=>a+b,0)}/25 ⭐<br><br>
-        <span style="color:#64748b;font-size:12px;">建议：每天刷一遍保持手感<br>实际的千川后台才是最好的老师</span></p>
+        <span style="color:#8c8272;font-size:12px;">建议：每天刷一遍保持手感<br>实际的千川后台才是最好的老师</span></p>
         <div class="btn-row" style="margin-top:20px;">
           <button class="btn btn-retry" onclick="resetGame()">重新挑战</button>
         </div>
