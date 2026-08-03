@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=yes">
+<title>团队决策模拟器</title>
+<style>
+:root{--bg:#f5f1e8;--card:#fdfcf8;--border:#d4cbb8;--text:#2c2416;--muted:#8c8272;--accent:#5b4c3a;--green:#6b7f5e;--red:#b06050;--blue:#5b7a9a}
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:-apple-system,"PingFang SC","Microsoft YaHei",sans-serif;background:var(--bg);color:var(--text);min-height:100vh;line-height:1.7;padding:16px;-webkit-tap-highlight-color:transparent}
+.c{max-width:720px;margin:0 auto}
+h1{font-family:"Times New Roman","Songti SC","Noto Serif SC",Georgia,serif;font-size:22px;font-weight:400;letter-spacing:2px;text-align:center;margin:16px 0 4px}
+.sub{text-align:center;font-size:12px;color:var(--muted);margin-bottom:20px}
+
+.scenes{display:flex;gap:6px;margin-bottom:18px;overflow-x:auto;padding-bottom:4px;-webkit-overflow-scrolling:touch}
+.sbtn{flex-shrink:0;padding:10px 16px;border-radius:10px;font-size:12px;font-weight:600;border:2px solid var(--border);background:var(--card);color:var(--muted);cursor:pointer;transition:.15s;white-space:nowrap}
+.sbtn.on{background:var(--accent);color:#fdfcf8;border-color:var(--accent)}
+.sbtn.done{background:var(--green);color:#fff;border-color:var(--green)}
+
+.card{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:24px 20px;margin-bottom:14px}
+.card .scene-num{font-size:11px;color:var(--accent);font-weight:700;letter-spacing:1px;margin-bottom:4px}
+.card h3{font-size:16px;color:var(--text);margin-bottom:6px}
+.card .ctx{font-size:13px;color:var(--muted);margin-bottom:16px;line-height:1.7;background:#f8f6f0;padding:14px 16px;border-radius:8px;border-left:3px solid var(--accent)}
+.card .situation{font-size:12px;color:var(--text);line-height:1.7;margin-bottom:16px}
+
+.choices{display:flex;flex-direction:column;gap:8px;margin-bottom:16px}
+.choice{padding:14px 16px;border:2px solid var(--border);border-radius:10px;cursor:pointer;transition:.2s;background:#fff}
+.choice:hover{border-color:var(--accent)}
+.choice.selected{border-color:var(--accent);background:#f8f6f0}
+.choice .letter{display:inline-block;width:24px;height:24px;border-radius:50%;background:var(--accent);color:#fdfcf8;font-size:12px;font-weight:700;text-align:center;line-height:24px;margin-right:8px}
+.choice .ctext{font-size:13px;display:inline}
+
+.btn{padding:12px 24px;border-radius:10px;font-size:14px;font-weight:700;border:none;cursor:pointer;-webkit-appearance:none;transition:.15s}
+.btn-primary{background:var(--accent);color:#fdfcf8;width:100%}
+.btn-primary:disabled{background:var(--border);color:var(--muted);cursor:not-allowed}
+
+.result{display:none;margin-top:16px;padding:16px;border-radius:10px;font-size:12px;line-height:1.7}
+.result.show{display:block}
+.result.best{background:#f0fdf4;border:1px solid var(--green);color:#1a3a1a}
+.result.good{background:#f5efe5;border:1px solid var(--accent);color:var(--text)}
+.result.bad{background:#fef2f2;border:1px solid var(--red);color:#450a0a}
+.result .rl{font-size:10px;font-weight:700;letter-spacing:1px;margin-bottom:6px}
+
+.why{font-size:11px;color:var(--muted);margin-top:10px;padding-top:10px;border-top:1px solid var(--border)}
+.why strong{color:var(--text)}
+
+.score-bar{display:flex;gap:8px;margin-bottom:16px}
+.score-dot{flex:1;height:4px;border-radius:2px;background:var(--border)}
+.score-dot.good{background:var(--green)}
+.score-dot.best{background:var(--accent)}
+
+.btn-row{display:flex;gap:10px;margin-top:12px}
+.btn-ghost{background:transparent;border:1px solid var(--border);color:var(--muted);font-size:12px;padding:8px 16px;border-radius:8px;cursor:pointer}
+
+.total{text-align:center;margin:16px 0;font-size:13px;color:var(--muted)}
+.total strong{color:var(--accent);font-size:18px}
+
+@media(max-width:500px){.card{padding:16px 12px}}
+</style>
+</head>
+<body>
+<div class="c">
+<h1>团队决策模拟器</h1>
+<div class="sub">虚拟场景·真实决策·即时后果·对照分析</div>
+
+<div class="total" id="totalScore"></div>
+<div class="score-bar" id="scoreBar"></div>
+<div class="scenes" id="sceneNav"></div>
+<div id="main"></div>
+</div>
+
+<script>
+var scenarios=[
+  {
+    id:1,title:'裁人：你要砍掉一个组员',
+    ctx:'公司缩减预算，每个组必须优化掉一个人。你的组现在四个人：A（能力强但态度散漫，经常在脚本上敷衍）、B（能力中等但执行力好、听话）、C（新人、有潜力但还需要带）、D（资历最久、忠诚但能力已到天花板）。老板说周五前给名单。',
+    situation:'你不能不选。不能选"我都要留"。不能选"裁我自己"。你必须在四个人中选一个。',
+    choices:[
+      {text:'裁A——能力强但散漫，她的态度会影响整个团队的氛围',score:3,tier:'best',why:'正确。团队效能的公式不是"个人能力之和"，是"个人能力×协作系数"。A的个人能力强但协作系数低——她的散漫会拉低全组标准，新人看到"原来这样也能混"，B看到她"不努力也没被处理"，整个团队的标准线会往下移。裁她的同时可以跟团队传达一个信号：能力可以培养，态度不行。这个信号对你带剩下的人有正面激励效果。'},
+      {text:'裁B——能力中等，可替代性最高',score:1,tier:'bad',why:'B是你组里唯一一个"执行稳定"的人。她不出彩，但她也不需要你花精力管理。裁掉B之后你会发现：A还是散漫、C还需要带、D能力到顶——你没有一个人能稳定出活。稳定的人是你团队的底盘，底盘没了，你再好的方向也落不了地。'},
+      {text:'裁C——新人，对公司成本最低',score:2,tier:'good',why:'可以选但不是最优。裁C的逻辑是"她还没完全融入，裁她对团队的震动最小"。但你的团队如果只留A和D——一个有态度问题一个有能力天花板——你的创新能力会直接归零。C是新血，是你唯一能培养成"你要的人"的种子。'},
+      {text:'裁D——能力到天花板了，留着也没有成长空间',score:1,tier:'bad',why:'D虽然能力到顶了，但她忠诚、稳定、能带新人。你砍掉D等于砍掉了团队的稳定性和传承力。而且D资历最久，如果她走了，留下来的A会怎么想——"干得久也这个下场"，A本来就散漫，这个信号会让A更加无所谓。'}
+    ]
+  },
+  {
+    id:2,title:'抢资源：两个品抢同一个模特',
+    ctx:'你和连组同时在打不同的品，但你们共用一个模特。下周两个品都要拍量——你需要她拍3天才能完成素材量，连组也需要她拍至少2天。模特一周最多工作5天。连组的组长来跟你谈：她要3天，给你2天。',
+    situation:'你有几个选择：①接受2天——关系和谐但你的品素材不够②坚持3天——可能会跟连组闹僵③找领导仲裁——有人替你决定但你也失去了主动权。',
+    choices:[
+      {text:'接受2天，但提一个交换条件：下次资源冲突时你在先',score:2,tier:'good',why:'这是"合作博弈"的最佳解法。你没有让步——你是把这次让步变成了下次的筹码。连组组长得到了她想要的，你也得到了一个"下次我做主"的承诺。但你需要注意：口头承诺不是真的筹码。你必须在下周找个合适的时机让她兑现——比如下次再冲突时提醒她"上次我让了你这次该你先让步了"。不兑现的承诺是废纸。'},
+      {text:'坚持3天，跟连组正面谈：你的品消耗更大，需要更多素材支撑',score:2,tier:'good',why:'可以。用数据说服而不是用情绪吵架。连组组长会听——因为"谁的品消耗大谁需要更多素材"是一个客观标准。但你也要准备好：如果下次她的品消耗比你大，她会用同样的逻辑来跟你抢资源。你提出客观标准的同时，也为自己设了边界。'},
+      {text:'找领导仲裁——让梁领导决定谁先谁后',score:1,tier:'bad',why:'最差的选择。你推给了领导两个结果：①领导觉得你们两个组长连这种事都解决不了，需要他来判——你的管理能力会被打问号②领导判了之后，不管谁赢，输的那个人会觉得你不讲情面直接捅到上面。领导不是用来解决日常资源冲突的。领导是用来解决你解决不了的问题的。'},
+      {text:'让一半——你拍1.5天，剩下的用老素材混剪顶上',score:3,tier:'best',why:'最优。你不是在"要资源"，你是在"用创意解决资源短缺"。你说"我主动压缩了我的需求"——这是姿态。你说"老素材混剪可以顶上"——这是能力。姿态让连组组长欠你一个人情，能力让领导看到你"不抱怨资源不够而是想办法出结果"。更重要的是：你没有把矛盾升级，你自己消化了。领导下次分配资源时会记得——你是一个"不会因为资源不够而交不出活"的人，他会更愿意把资源给你。'}
+    ]
+  },
+  {
+    id:3,title:'方向抉择：老路稳妥还是新路冒险',
+    ctx:'你在打一个新品类，竞品已经跑了几个月，有三个验证过的爆款方向。但你觉得这三个方向同质化严重——所有人都在做同样的内容。你想尝试一个竞品没做过的新方向，但风险是：如果测试失败，你浪费了至少一周的时间和预算。品牌方下周要看数据。',
+    situation:'你手上有经验证的"安全方向"和未验证的"创新方向"。时间有限，你必须分配资源。',
+    choices:[
+      {text:'全部押安全方向——先拿到结果给品牌方看，再考虑创新',score:2,tier:'good',why:'稳妥。先证明你能在这个品类里跑出数据，建立品牌方对你的信任。然后在下一次测试周期加入创新元素。顺序对了——先存活再探索。'},
+      {text:'80%安全方向 + 20%创新方向——双线并行',score:3,tier:'best',why:'最佳。你没有在"安全"和"创新"之间二选一——你让它们同时发生。80%确保品牌方能看到数据，20%是你给自己加的一张"可能失败但也可能大爆"的彩票。这张彩票的成本很低（只花了20%预算），但一旦中了——你就是这个品类里唯一一个有差异化内容的人。你的团队也学到：日常工作里必须留出一个空间去尝试新东西。'},
+      {text:'一半一半——安全方向和创新方向对半开预算',score:1,tier:'bad',why:'你既没有足够预算支撑安全方向跑出让人满意的数据，也没有给创新方向留够试错空间。安全方向数据不够好→品牌方不满意。创新方向数据验证不充分→你无法判断是方向本身不行还是资源不够。两边都半吊子。'},
+      {text:'全部押创新方向——跟竞品拉开差异化',score:1,tier:'bad',why:'你还没在这个品类建立信任就选择了冒险。失败了品牌方会觉得你不靠谱。成功了——太好了，但你无法判断是"方向对了"还是"运气"。更关键的是——你没有对照组。你不知道安全方向和新方向到底哪个更好，因为你没给安全方向任何测试机会。'}
+    ]
+  },
+  {
+    id:4,title:'人才流失：你的核心组员要离职',
+    ctx:'你组里最能干的花花跟了你半年，现在她收到了一份薪资高2K的offer。她来找你聊——不是通知你离职，是来跟你商量。她说她在这里学到了很多，但薪资确实有点低。你知道公司没有给组员涨薪的预算。',
+    situation:'你必须在"留住她"和"放她走"之间做一个决定。你能给的筹码有限。',
+    choices:[
+      {text:'放她走，真诚祝福，保持关系——以后互相照应',score:3,tier:'best',why:'最优。你知道公司没有涨薪预算——这不是你能解决的问题。在这个限制条件下，最好的选择是：不消耗感情、不欺骗、不拖延。真诚祝福她，告诉她"你是我带过的最好的组员，以后有任何需要随时找我"。她走了但你们的关系没有断。一年后你跳槽时——她可能在新公司有推荐权。你的人脉网络就是这样建立起来的。你之前跟那个小姐姐就是这样——她走了但后来帮了你很多。'},
+      {text:'跟她说"我去帮你争取"，拖延时间，同时开始找接替人选',score:1,tier:'bad',why:'你是在用假希望换取缓冲时间。她最终还是会走——因为你争取不到。但这时候走，她心里会有一个疙瘩：你说帮我争取的，结果没有。你的信用在她心里打折了。而且她可能已经跟那个公司确认了入职——你拖延只会让她的交接更仓促。'},
+      {text:'跟她说"你再给我三个月，我把你培养到能独当一面，到时候你出去能要更高的薪资"',score:2,tier:'good',why:'这是"真诚的交换"。你承认给不了她要的薪资，但你可以给她"更强的能力"——这种能力让她下次跳槽时能要更高的价。这是双赢：你多留她三个月给自己找接替人，她多积累了三个月的核心技能。但你必须兑现承诺——这三个月你要确实把"独当一面"的能力教给她，而不是让她继续做执行。'},
+      {text:'跟公司申请破例给她涨薪——就说没有她这个品会掉',score:1,tier:'bad',why:'你越权了。公司给不了一个组员涨薪——你去申请只会让领导觉得你不会管理预期。而且如果这次破例了，下次另一个组员也来找你涨薪，你怎么办？你开了先例就收不回来。'}
+    ]
+  },
+  {
+    id:5,title:'跨组合作：连组求助你帮忙',
+    ctx:'连组的组长来找你帮忙：她的品下周要大促，素材量不够。她想让你的团队帮她拍两天。你的组下周也有自己的拍摄任务——但你判断你的素材量勉强够用。帮她意味着你的组员要加班，不帮她意味着连组可能在关键时刻掉链子——两个组都在梁领导下面，她出问题梁领导也会受影响。',
+    situation:'这不是简单的帮不帮——帮了你要牺牲自己团队的精力，不帮可能影响你跟连组和梁领导的关系。',
+    choices:[
+      {text:'无条件帮忙——告诉连组长"你的人品我信得过，以后我有需要你也帮我"',score:3,tier:'best',why:'最优。你不是在"帮同事"——你是在建立一个"双向互助协议"。这次你全力帮她，下次你需要的时候她欠你的。而且梁领导会看到——你在关键时刻"扛起了整个团队"。你不是只盯着自己组，你是看到整个盘子的风险。这个信号对你后续晋升非常重要。'},
+      {text:'帮一半——借一个人给她用两天，但你自己组的人不碰',score:2,tier:'good',by:'可以。你表达了诚意但守住了底线。连组组长会感激你——因为你确实帮了。你自己的团队损失也不大。但不如"无条件帮忙"的地方在于：你没有把自己放到"我全力挺你"的位置上——她以后帮你的时候也不会尽全力。'},
+      {text:'拒绝——我自己的素材量也不够，帮不了',score:1,tier:'bad',why:'你说了实话——但实话在这里不管用。连组组长来找你之前已经知道"你也忙"——她来找你是因为她没办法。你拒绝了她只能找别人——但她会记住"关键时刻你不帮"。下次你需要帮助的时候，她也可以说"我也不够"。你在自己还不知道的时候，关上了一个互助的门。'},
+      {text:'汇报梁领导，让她来决定资源怎么调配',score:1,tier:'bad',why:'这是最保险的选择但你失去了所有主动性。梁领导会觉得——你们组长之间的事为什么每次都要我来协调？她的精力应该花在更大决策上不是做资源调度员。你等于跟领导说：我处理不了跨组矛盾。'}
+    ]
+  },
+  {
+    id:6,title:'品牌方施压：对方要你立刻出结果',
+    ctx:'新品牌方合作第一个月，消耗还没起来。品牌方打电话来质问："你们的投放能力到底行不行？一个月了消耗还没动静，我老板在催我。"你手里有数据——测试了几个方向，有一个方向开始冒头但还没稳。你需要回应品牌方。',
+    situation:'你不能说"再给我时间"——对方要的不是时间，是确定性和信心。',
+    choices:[
+      {text:'把测试数据整理成简短的汇报发给TA——"我们测试了X个方向，其中Y方向已经开始冒头，预计Z周内消耗能到W，这是数据。"',score:3,tier:'best',why:'最优。你不是在"解释为什么还没起来"——你是在"展示你的诊断过程和预估"。你给对方三个东西：①数据证明你一直在动②一个明确的预期③一个时间节点。品牌方最怕的不是"现在数据不好"——最怕的是"不知道什么时候能好"。你给了他一个确定的时间后，他回去好跟他老板交代。他不是不信任你，他是需要有人给他一个他能拿去汇报的答案。'},
+      {text:'承诺下周一定有起色——"下周一定给你一个交代"',score:1,tier:'bad',why:'你说了一个你无法控制的承诺。万一方向测试失败？万一审核又卡了？你把自己放到一个必须兑现的位置上，但你控制不了所有变量。下周没兑现的话，信誉更难修复。'},
+      {text:'解释客观原因——品类新、测试需要周期、预算有限',score:1,tier:'bad',why:'你说的是实话。但品牌方不是来听你的困难的——他是来给他的老板一个交代的。你给他一堆"为什么不行"的理由，他拿去给他老板说的时候，等于是在帮他老板确认"这家代理确实不行"。你没有给他任何他可以拿来替他说话的武器。'},
+      {text:'把球推回去——"您这边对现在的数据有什么具体的预期？我们按您的标准调整策略"',score:2,tier:'good',why:'这招在某些情况下有用——你让对方说出他的预期数字，然后你就能判断"他是不是不切实际"。如果他说"一周内月耗要破百万"——你就知道对方不了解新品类起量的规律。但如果你真的按他的标准去执行一个不可能的目标，最后你还是背锅。所以这招是"先判断对方是否了解行情"——了解了再定下一步策略。'}
+    ]
+  },
+  {
+    id:7,title:'突发：你的组员在新人面前质疑你',
+    ctx:'你在给新人讲解素材方向。你的老组员在旁边突然插嘴："这个方向之前做过，根本跑不动。"新人的表情很明显——她不知道该听谁的。你知道老组员说的是事实——这个方向确实测试过效果不好——但她在新人面前直接否定你，让你在新人面前的权威受损。',
+    situation:'你必须处理两件事：①这个方向的问题②老组员当众质疑你的方式。你如果只处理一个，另一个会成为隐患。',
+    choices:[
+      {text:'当场回应："你说得对，这个方向确实跑不动。但我让你测这个方向是因为..."——先说对再说因为',score:3,tier:'best',why:'最优。你先承认了她说的对——这是尊重事实。然后你解释了"为什么明知跑不动还让你做"——这是展示你的思考层次比组员深一层。新人学到的是：这个组长不会被质疑激怒，而且她的判断背后有组员看不到的考量。你同时做了三件事：维护了事实、展示了自己的深度、让新人看到你能接纳不同意见。老组员不会觉得被你压制了——因为你说她对。'},
+      {text:'私下找老组员谈——"以后有什么意见私下跟我说，不要在新人面前直接反驳我"',score:2,tier:'good',why:'可以但不是当场。你给了老组员面子（没让她在众人面前下不来台），也给了自己台阶（私下沟通）。但新人会带着疑问离开——"所以那个方向到底能不能做？"新人没听到你的解释就走了，她不知道你有没有被驳倒。私下沟通是必要的，但当场的回应也是必要的。'},
+      {text:'当众说老组员说得不对，坚持这个方向继续做',score:1,tier:'bad',why:'你放弃了事实选择了面子。老组员说的是对的——这个方向测试过确实跑不动。你强行坚持只会让新人继续做无用功。而且老组员下次不会再提醒你任何错误——因为提醒你的代价是被当众否定。你赢得了一次面子，失去了一个愿意跟你说真话的人。'},
+      {text:'沉默——直接跳过这个话题，继续讲下一个方向',score:1,tier:'bad',why:'你什么都没处理。新人不知道谁对谁错。老组员不知道你是认同还是不满。你自己也不知道这个方向到底要不要继续。沉默不是处理——沉默是让问题留到下次。'}
+    ]
+  },
+  {
+    id:8,title:'战略抉择：留还是走',
+    ctx:'你在这个公司已经待了一年多。产品稳定了，团队也稳定了。但你觉得自己学不到新东西了——日常工作就是维持现有体系，没有新的挑战。你有两个选择：留——安稳、熟悉、没有风险。走——不确定、要重新适应、但可能有更大的成长空间。你纠结了半年。',
+    situation:'这不是别人的决策。这是你真实面临过的选择。你当时一直在纠结：走怕影响职业稳定性，留怕温水煮青蛙。你的最终选择是被动的——被裁了。但如果你能回到半年前，你会怎么选？',
+    choices:[
+      {text:'三个月前就主动离职——不等被裁',score:3,tier:'best',why:'你后来被裁了。如果三个月前你主动走——你多出了三个月的时间去学习、去面试、去准备。你在被裁之后做的一切——简历、作品集、AI工具、自我审计、跟我的深度对话——如果早三个月开始，你现在已经在新的岗位上稳定下来了。你当时不走的唯一原因是"怕影响简历"。但被裁之后你的简历也没受影响——因为你确实做出了结果。你只是在用"简历"这个理由掩盖了另一个原因：你怕主动选择之后的未知。被裁不是最坏结果——浪费三个月才是最坏结果。'},
+      {text:'再等半年——看看公司有没有新业务机会',score:1,tier:'bad',why:'你在等一个不会发生的事。你后来看到了——公司砍了三条产品线只留一条。没有新业务。等了半年的结果是——你被动出局了。'},
+      {text:'边工作边找工作——不裸辞但开始面试',score:2,tier:'good',why:'稳妥。你没有断收入也没有断成长。但你在职时面试有一个问题——你的精力是分散的。白天上班晚上投简历，面试没有全力以赴。而且你在职时的心态是"反正有工作"——你不会像被裁后这样全力冲刺。部分安全感会让你妥协。'},
+      {text:'跟领导谈——要求给我新挑战，否则考虑离开',score:2,tier:'good',why:'可以。你给了对方一个机会也给了自己一个台阶。如果领导真的给你了新任务——你留下了而且有了新方向。如果领导说没有——你的离开变得更名正言顺，你也可以跟下家说"我主动争取过机会但没有"。但风险是：你跟领导摊牌之后如果没走成，他会觉得你"心思已经不在"。'}
+    ]
+  }
+];
+
+var current=0, scores=[], choices={};
+
+function init(){
+  document.getElementById('sceneNav').innerHTML=scenarios.map(function(s,i){
+    var cls='sbtn';
+    if(i===current)cls+=' on';
+    if(choices[s.id]!==undefined)cls+=' done';
+    return '<button class="'+cls+'" onclick="switchScene('+i+')">'+s.id+'. '+s.title.substring(0,10)+'…</button>';
+  }).join('');
+  updateScore();
+  render();
+}
+
+function switchScene(i){current=i;render();document.querySelectorAll('.sbtn').forEach(function(b,j){b.classList.toggle('on',j===i)});}
+function updateScore(){
+  var total=scores.reduce(function(a,b){return a+b},0);
+  var max=scenarios.length*3;
+  document.getElementById('totalScore').innerHTML='总分：<strong>'+total+'</strong> / '+max;
+  var bar='';
+  scores.forEach(function(s){bar+='<div class="score-dot '+(s>=3?'best':s>=2?'good':'')+'"></div>'});
+  for(var i=scores.length;i<scenarios.length;i++)bar+='<div class="score-dot"></div>';
+  document.getElementById('scoreBar').innerHTML=bar;
+}
+
+function render(){
+  var s=scenarios[current];
+  var chosen=choices[s.id];
+  var html='<div class="card"><div class="scene-num">场景 '+s.id+' / '+scenarios.length+'</div><h3>'+s.title+'</h3><div class="ctx">'+s.ctx+'</div><div class="situation">'+s.situation+'</div>';
+  html+='<div class="choices">';
+  var letters=['A','B','C','D'];
+  s.choices.forEach(function(c,i){
+    var sel=chosen===i?' selected':'';
+    html+='<div class="choice'+sel+'" id="choice_'+i+'" onclick="selectChoice('+i+')"><span class="letter">'+letters[i]+'</span><span class="ctext">'+c.text+'</span></div>';
+  });
+  html+='</div>';
+  html+='<button class="btn btn-primary" id="submitBtn" '+(chosen===undefined?'disabled':'')+' onclick="submitChoice()">提交决策 →</button>';
+  html+='<div class="result" id="result"></div>';
+  if(chosen!==undefined){
+    html+='<div class="btn-row"><button class="btn-ghost" onclick="retryScene()">重选</button></div>';
+  }
+  html+='</div>';
+  document.getElementById('main').innerHTML=html;
+  if(chosen!==undefined)showResult();
+}
+
+var selected=null;
+function selectChoice(i){selected=i;document.querySelectorAll('.choice').forEach(function(c,j){c.classList.toggle('selected',j===i)});document.getElementById('submitBtn').disabled=false}
+
+function submitChoice(){
+  var s=scenarios[current];
+  var c=s.choices[selected];
+  choices[s.id]=selected;
+  if(!scores[current])scores[current]=c.score;
+  else scores[current]=c.score;
+
+  document.querySelectorAll('.choice').forEach(function(el){el.style.pointerEvents='none'});
+  document.getElementById('submitBtn').style.display='none';
+  document.querySelectorAll('.sbtn').forEach(function(b,j){if(choices[scenarios[j].id]!==undefined)b.classList.add('done')});
+  updateScore();
+  showResult();
+}
+
+function showResult(){
+  var s=scenarios[current];
+  var c=s.choices[choices[s.id]];
+  var r=document.getElementById('result');
+  r.className='result show '+c.tier;
+  r.innerHTML='<div class="rl">'+(c.tier==='best'?'✅ 最佳决策':c.tier==='good'?'👍 不错，有可以优化的地方':'⚠️ 有更好的选择')+'</div>'+c.why;
+  if(s.choices.filter(function(x){return x.tier==='best'}).length>0){
+    var best=s.choices.filter(function(x){return x.tier==='best'})[0];
+    if(choices[s.id]!==s.choices.indexOf(best)){
+      r.innerHTML+='<div class="why"><strong>最佳答案的思路：</strong>'+best.text.substring(0,100)+'...</div>';
+    }
+  }
+}
+
+function retryScene(){selected=null;render();document.getElementById('submitBtn').disabled=true}
+
+init();
+</script>
+</body>
+</html>
