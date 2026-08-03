@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=yes">
+<title>投递看板</title>
+<style>
+:root{--bg:#f5f1e8;--card:#fdfcf8;--border:#d4cbb8;--text:#2c2416;--muted:#8c8272;--accent:#5b4c3a;--green:#6b7f5e;--red:#b06050;--blue:#5b7a9a}
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:-apple-system,"PingFang SC","Microsoft YaHei",sans-serif;background:var(--bg);color:var(--text);min-height:100vh;padding:16px;-webkit-tap-highlight-color:transparent}
+.c{max-width:700px;margin:0 auto}
+h1{font-family:"Times New Roman","Songti SC","Noto Serif SC",Georgia,serif;font-size:22px;font-weight:400;letter-spacing:2px;text-align:center;margin:16px 0 4px}
+.sub{text-align:center;font-size:12px;color:var(--muted);margin-bottom:20px}
+
+/* stats */
+.stats{display:flex;gap:8px;margin-bottom:16px;text-align:center}
+.stat{flex:1;background:var(--card);border:1px solid var(--border);border-radius:10px;padding:12px 8px}
+.stat .n{font-size:20px;font-weight:700;color:var(--accent)}
+.stat .l{font-size:10px;color:var(--muted)}
+
+/* add form */
+.add-form{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:16px;margin-bottom:16px;display:flex;gap:8px;flex-wrap:wrap}
+.add-form input,.add-form select{padding:10px 12px;border:1.5px solid var(--border);border-radius:8px;font-size:13px;font-family:inherit;background:#fff;color:var(--text);flex:1;min-width:100px;-webkit-appearance:none}
+.add-form input:focus,.add-form select:focus{outline:none;border-color:var(--accent)}
+.add-form button{padding:10px 20px;border-radius:8px;border:none;background:var(--accent);color:#fdfcf8;font-size:13px;font-weight:700;cursor:pointer;-webkit-appearance:none}
+
+/* list */
+.list{display:flex;flex-direction:column;gap:8px}
+.item{background:var(--card);border:1px solid var(--border);border-radius:10px;padding:14px 16px;display:flex;align-items:center;gap:12px;transition:.2s}
+.item:hover{border-color:var(--accent)}
+.item .info{flex:1;min-width:0}
+.item .company{font-size:14px;font-weight:700;color:var(--text)}
+.item .role{font-size:12px;color:var(--muted)}
+.item .date{font-size:10px;color:var(--muted)}
+.item select{padding:6px 10px;border-radius:6px;border:1.5px solid var(--border);font-size:11px;background:#fff;color:var(--text);cursor:pointer;-webkit-appearance:none}
+.item select:focus{outline:none;border-color:var(--accent)}
+.item .del{background:none;border:none;color:var(--muted);font-size:18px;cursor:pointer;padding:4px 8px}
+.item .del:hover{color:var(--red)}
+.s-待回复 select{border-left:3px solid #94a3b8}
+.s-面试中 select{border-left:3px solid var(--blue)}
+.s-已结束 select{border-left:3px solid var(--red)}
+.s-已offer select{border-left:3px solid var(--green)}
+
+.empty{text-align:center;padding:40px;color:var(--muted);font-size:14px}
+
+@media(max-width:500px){.add-form{flex-direction:column}.add-form input,.add-form select{min-width:auto}}
+</style>
+</head>
+<body>
+<div class="c">
+<h1>投递看板</h1>
+<div class="sub">记录每一次投递 · 自动保存</div>
+
+<div class="stats" id="stats"></div>
+
+<div class="add-form">
+  <input id="inpCompany" placeholder="公司名">
+  <input id="inpRole" placeholder="岗位">
+  <button onclick="add()">+ 添加</button>
+</div>
+
+<div class="list" id="list"></div>
+</div>
+
+<script>
+var KEY='job_tracker_v1';
+var jobs=[];
+
+function load(){
+  try{jobs=JSON.parse(localStorage.getItem(KEY)||'[]')}catch(e){jobs=[]}
+  render();
+}
+function save(){localStorage.setItem(KEY,JSON.stringify(jobs));render()}
+function add(){
+  var c=document.getElementById('inpCompany').value.trim();
+  var r=document.getElementById('inpRole').value.trim();
+  if(!c||!r)return;
+  jobs.unshift({company:c,role:r,status:'待回复',date:new Date().toISOString().slice(0,10)});
+  document.getElementById('inpCompany').value='';
+  document.getElementById('inpRole').value='';
+  save();
+}
+function update(i,status){jobs[i].status=status;save()}
+function remove(i){if(confirm('删除这条记录？')){jobs.splice(i,1);save()}}
+
+function render(){
+  var stats={};jobs.forEach(function(j){stats[j.status]=(stats[j.status]||0)+1});
+  document.getElementById('stats').innerHTML=[
+    {k:'待回复',c:'#94a3b8'},{k:'面试中',c:'#5b7a9a'},{k:'已结束',c:'#b06050'},{k:'已offer',c:'#6b7f5e'}
+  ].map(function(s){return '<div class="stat"><div class="n" style="color:'+s.c+'">'+(stats[s.k]||0)+'</div><div class="l">'+s.k+'</div></div>'}).join('');
+
+  var list=document.getElementById('list');
+  if(jobs.length===0){list.innerHTML='<div class="empty">还没有投递记录<br><br>在上方添加第一条</div>';return}
+  list.innerHTML=jobs.map(function(j,i){
+    return '<div class="item s-'+j.status+'"><div class="info"><div class="company">'+j.company+'</div><div class="role">'+j.role+'</div><div class="date">'+j.date+'</div></div><select onchange="update('+i+',this.value)">'+['待回复','面试中','已结束','已offer'].map(function(s){return'<option'+(j.status===s?' selected':'')+'>'+s+'</option>'}).join('')+'</select><button class="del" onclick="remove('+i+')">×</button></div>';
+  }).join('');
+}
+load();
+</script>
+</body>
+</html>
